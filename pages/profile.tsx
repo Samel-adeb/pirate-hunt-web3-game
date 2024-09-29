@@ -58,38 +58,38 @@ export default function Profile() {
 
                   
                 </div>
-                <div  className="relative">
-                    <div className="h-screen"
-                        style={{
+                <div  className="relative h-[1000px]"  style={{
                         background: `linear-gradient(180deg, #A16D45 85%, #3B2819 100%),
                         linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2))`
-                        }}
+                        }}>
+                    {/* <div className=""
+                       
                     >
                        
-                    </div>
+                    </div> */}
                     {/* Overlay */}
-                    <div className="absolute inset-0 bg-[#000000B2]">
+                    <div className="absolute inset-0 bg-[#000000B2] h-[1000px]">
                         <div className="pt-16">
                             <div>
-                                <h1 className="text-[16px] leading-[24px] tracking-[0.15%] font-semibold text-white">Top Users</h1>
+                                <h1 className="text-[16px] leading-[24px] tracking-[0.15%] font-semibold text-white pl-[16px]">Top Users</h1>
                             </div>
 
-                            <div>
+                            <div className="pt-[6px]">
                                 <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
-                                    <div className="flex items-center gap-[5px]">
+                                    <div className="flex items-center gap-[10px]">
                                         <div>
                                             <Image src={GoldCup} alt="GoldCup" />
                                         </div>
 
-                                        <div className="flex items-center">
+                                        <div className="flex items-center gap-[5px]">
                                             <Image src={user1} alt="user1" />
 
                                             <div>
-                                                <h1>Naomi</h1>
+                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Naomi</h1>
 
-                                                <div className="flex items-center">
+                                                <div className="flex items-center gap-[4px]">
                                                     <Image src={FirstPlaceBadge}  alt="FirstPlaceBadge" />
-                                                    <h2>Lvl 13</h2>
+                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 13</h2>
                                                 </div>
                                             </div>
                                         </div>
@@ -100,7 +100,259 @@ export default function Profile() {
                                                 <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
                                             </div>
 
-                                            <h2>10,114,230</h2>
+                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">10,114,230</h2>
+                                        </div>
+                                    </div>
+
+                                    <div className="W-[26px] flex items-center justify-center h-[27px] p-[10px] bg-[#FFFFFF26] rounded-[50px]">
+                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">1</h1>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="pt-[6px]">
+                                <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
+                                    <div className="flex items-center gap-[10px]">
+                                        <div>
+                                            <Image src={GoldCup} alt="GoldCup" />
+                                        </div>
+
+                                        <div className="flex items-center gap-[5px]">
+                                            <Image src={user1} alt="user1" />
+
+                                            <div>
+                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Naomi</h1>
+
+                                                <div className="flex items-center gap-[4px]">
+                                                    <Image src={FirstPlaceBadge}  alt="FirstPlaceBadge" />
+                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 13</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-[5px]">
+                                            <div className="flex items-center gap-[5px]">
+                                                <Image src={AshDot} alt="AshDot" />
+                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                            </div>
+
+                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">10,114,230</h2>
+                                        </div>
+                                    </div>
+
+                                    <div className="W-[26px] flex items-center justify-center h-[27px] p-[10px] bg-[#FFFFFF26] rounded-[50px]">
+                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">1</h1>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="pt-[6px]">
+                                <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
+                                    <div className="flex items-center gap-[10px]">
+                                        <div>
+                                            <Image src={GoldCup} alt="GoldCup" />
+                                        </div>
+
+                                        <div className="flex items-center gap-[5px]">
+                                            <Image src={user1} alt="user1" />
+
+                                            <div>
+                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Naomi</h1>
+
+                                                <div className="flex items-center gap-[4px]">
+                                                    <Image src={FirstPlaceBadge}  alt="FirstPlaceBadge" />
+                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 13</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-[5px]">
+                                            <div className="flex items-center gap-[5px]">
+                                                <Image src={AshDot} alt="AshDot" />
+                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                            </div>
+
+                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">10,114,230</h2>
+                                        </div>
+                                    </div>
+
+                                    <div className="W-[26px] flex items-center justify-center h-[27px] p-[10px] bg-[#FFFFFF26] rounded-[50px]">
+                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">1</h1>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="pt-[6px]">
+                                <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
+                                    <div className="flex items-center gap-[10px]">
+                                        <div>
+                                            <Image src={GoldCup} alt="GoldCup" />
+                                        </div>
+
+                                        <div className="flex items-center gap-[5px]">
+                                            <Image src={user1} alt="user1" />
+
+                                            <div>
+                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Naomi</h1>
+
+                                                <div className="flex items-center gap-[4px]">
+                                                    <Image src={FirstPlaceBadge}  alt="FirstPlaceBadge" />
+                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 13</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-[5px]">
+                                            <div className="flex items-center gap-[5px]">
+                                                <Image src={AshDot} alt="AshDot" />
+                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                            </div>
+
+                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">10,114,230</h2>
+                                        </div>
+                                    </div>
+
+                                    <div className="W-[26px] flex items-center justify-center h-[27px] p-[10px] bg-[#FFFFFF26] rounded-[50px]">
+                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">1</h1>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="pt-[6px]">
+                                <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
+                                    <div className="flex items-center gap-[10px]">
+                                        <div>
+                                            <Image src={GoldCup} alt="GoldCup" />
+                                        </div>
+
+                                        <div className="flex items-center gap-[5px]">
+                                            <Image src={user1} alt="user1" />
+
+                                            <div>
+                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Naomi</h1>
+
+                                                <div className="flex items-center gap-[4px]">
+                                                    <Image src={FirstPlaceBadge}  alt="FirstPlaceBadge" />
+                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 13</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-[5px]">
+                                            <div className="flex items-center gap-[5px]">
+                                                <Image src={AshDot} alt="AshDot" />
+                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                            </div>
+
+                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">10,114,230</h2>
+                                        </div>
+                                    </div>
+
+                                    <div className="W-[26px] flex items-center justify-center h-[27px] p-[10px] bg-[#FFFFFF26] rounded-[50px]">
+                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">1</h1>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="pt-[6px]">
+                                <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
+                                    <div className="flex items-center gap-[10px]">
+                                        <div>
+                                            <Image src={GoldCup} alt="GoldCup" />
+                                        </div>
+
+                                        <div className="flex items-center gap-[5px]">
+                                            <Image src={user1} alt="user1" />
+
+                                            <div>
+                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Naomi</h1>
+
+                                                <div className="flex items-center gap-[4px]">
+                                                    <Image src={FirstPlaceBadge}  alt="FirstPlaceBadge" />
+                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 13</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-[5px]">
+                                            <div className="flex items-center gap-[5px]">
+                                                <Image src={AshDot} alt="AshDot" />
+                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                            </div>
+
+                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">10,114,230</h2>
+                                        </div>
+                                    </div>
+
+                                    <div className="W-[26px] flex items-center justify-center h-[27px] p-[10px] bg-[#FFFFFF26] rounded-[50px]">
+                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">1</h1>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="pt-[6px]">
+                                <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
+                                    <div className="flex items-center gap-[10px]">
+                                        <div>
+                                            <Image src={GoldCup} alt="GoldCup" />
+                                        </div>
+
+                                        <div className="flex items-center gap-[5px]">
+                                            <Image src={user1} alt="user1" />
+
+                                            <div>
+                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Naomi</h1>
+
+                                                <div className="flex items-center gap-[4px]">
+                                                    <Image src={FirstPlaceBadge}  alt="FirstPlaceBadge" />
+                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 13</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-[5px]">
+                                            <div className="flex items-center gap-[5px]">
+                                                <Image src={AshDot} alt="AshDot" />
+                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                            </div>
+
+                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">10,114,230</h2>
+                                        </div>
+                                    </div>
+
+                                    <div className="W-[26px] flex items-center justify-center h-[27px] p-[10px] bg-[#FFFFFF26] rounded-[50px]">
+                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">1</h1>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="pt-[6px]">
+                                <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
+                                    <div className="flex items-center gap-[10px]">
+                                        <div>
+                                            <Image src={GoldCup} alt="GoldCup" />
+                                        </div>
+
+                                        <div className="flex items-center gap-[5px]">
+                                            <Image src={user1} alt="user1" />
+
+                                            <div>
+                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Naomi</h1>
+
+                                                <div className="flex items-center gap-[4px]">
+                                                    <Image src={FirstPlaceBadge}  alt="FirstPlaceBadge" />
+                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 13</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-[5px]">
+                                            <div className="flex items-center gap-[5px]">
+                                                <Image src={AshDot} alt="AshDot" />
+                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                            </div>
+
+                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">10,114,230</h2>
                                         </div>
                                     </div>
 
