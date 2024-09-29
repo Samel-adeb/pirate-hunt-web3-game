@@ -2,26 +2,93 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+
+@keyframes slideInFromBottom {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
-}
+  
+  .slide-in {
+    animation: slideInFromBottom 0.5s ease-out;
+  }
+
+
+  @keyframes easeInOutBack {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    50% {
+      transform: translateY(-10%);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .ease-in-out-back {
+    animation: easeInOutBack 0.8s ease-in-out;
+  }
+
+
+  @keyframes waveEffect {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+  
+  .aliveImage {
+    animation: waveEffect 5s infinite ease-in-out;
+  }
+
+
+   @keyframes ripple {
+    0% {
+      transform: scale(0.9);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.2);
+      opacity: 0;
+    }
+  }
+  
+  .rippleContainer {
+    position: relative;
+    width: 394px;
+    height: 760px;
+  }
+  
+  .aliveImage {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .rippleOverlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: ripple 2s infinite ease-in-out;
+    pointer-events: none; /* To make sure it doesn't block interactions */
+  }
+
+  
