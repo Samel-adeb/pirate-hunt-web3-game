@@ -35,7 +35,7 @@ export default function GameLoad() {
                     <Image width={393} height={460} src={BlueSail} alt="BlueSail" />
                 </div>
 
-                <div className="bg-[#000000] pb-[10px] w-full flex flex-col items-center justify-center">
+                <div className="bg-[#000000] h-[400px] pb-[10px] w-full flex flex-col items-center justify-center">
                     <div className="flex flex-col items justify-center text-center">
                         <h1 className="text-[32px] leading-[32px] font-medium text-white">Pirate hunt</h1>
                         <p className="pt-[20px] font-medium text-white text-[12px] leading-[16px] max-w-[344px]">Ahoy, matey! Welcome to Pirate Hunt, a Telegram clicker mini-game that&apos;s a treasure trove of fun and excitement on<br /> the Ton Network</p>
