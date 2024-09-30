@@ -2,7 +2,7 @@ import { GameNavbar } from "@/app/components/GameNavbar";
 import Image from "next/image";
 import Link from 'next/link';
 import "../app/globals.css";
-
+import  ProgressBar  from '@/app/components/ProgressBar';
 import piratehomeBg from "../public/assets/piratehomeBg.svg";
 import Island from "../public/assets/Island.svg";
 import boatHome from "../public/assets/boatHome.svg";
@@ -40,7 +40,7 @@ export default function GameHome() {
             <div className="h-screen">
                 <GameNavbar />
                 <div className="relative overflow-hidden">
-                    <div className=" relative w-full bg-cover bg-center overflow-hidden">
+                    <div className=" relative w-full bg-cover bg-center overflow-hidden h-[800px]">
                         <div className="absolute px-5 py-[6px] bg-[#854C348C] w-full h-[51px]">
                             <div className="flex items-center gap-[20px]">
                                 <Link href="/profile">
@@ -250,6 +250,7 @@ export default function GameHome() {
                                     <Image src={Cross} alt="CrossImg" />
                                 </button>
                             </div>
+                            <ProgressBar progress={75} /> {/* Change the progress value as needed */}
                     </div>
             )}
                     </div>
