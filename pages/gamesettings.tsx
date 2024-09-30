@@ -1,5 +1,5 @@
 import { GameNavbar } from "@/app/components/GameNavbar";
-import Link from 'next/link';
+
 import "../app/globals.css";
 import Image from "next/image";
 

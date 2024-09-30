@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { GameNavbar } from "@/app/components/GameNavbar";
-import Link from 'next/link';
+
 import "../app/globals.css";
 import Image from "next/image";
 import  BinanceOverlay  from "@/app/components/BinanceOverlay";
@@ -8,15 +8,14 @@ import  BinanceOverlay  from "@/app/components/BinanceOverlay";
 import CaretRight from '../public/assets/Caretright.svg'
 import XAS from "../public/assets/XAS.svg";
 import Check from '../public/assets/Check.svg'
-import { useRouter } from 'next/navigation';
+
 import UseRouteChange from '../hooks/useRouteChange';
 
 export default function ChooseExchange() {
     const [checked, setChecked] = useState(false);
     const [overlayVisible, setOverlayVisible] = useState(false);
-    const router = useRouter();
+   
 
-    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   const handleClick = async () => {
     // Perform your check here
@@ -115,6 +114,4 @@ export default function ChooseExchange() {
     )
 }
 
-function useRouteChange(arg0: string, arg1: () => void) {
-    throw new Error('Function not implemented.');
-}
+

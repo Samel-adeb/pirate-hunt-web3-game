@@ -9,7 +9,7 @@ interface OverlayProps {
     onClose: () => void;
 }
 
-const  BinanceOverlay: React.FC<OverlayProps> = ({ message, onClose }) => {
+const  BinanceOverlay: React.FC<OverlayProps> = ({ onClose }) => {
     return (
       <div className="fixed inset-0 top-60 flex items-center justify-center bg-black/50 z-50">
         
@@ -26,7 +26,7 @@ const  BinanceOverlay: React.FC<OverlayProps> = ({ message, onClose }) => {
                 
 
                 <div className="bg-[#0F0E0E61] border-[1px] border-[#FFFFFF26] px-[14px] py-[10px] rounded-tl-[8px] rounded-br-[8px] rounded-bl-[25px] rounded-tr-[25px]">
-                    <h2 className="text-white font-semibold text-[16px]">You've successfully linked Binance as your wallet exchange</h2>
+                    <h2 className="text-white font-semibold text-[16px]">You&apos;ve successfully linked Binance as your wallet exchange</h2>
                 </div>
 
 

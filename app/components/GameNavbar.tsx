@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import Link from 'next/link';
 import Image from "next/image";
 import dotCircle from "../../public/assets/dotCircle.svg";

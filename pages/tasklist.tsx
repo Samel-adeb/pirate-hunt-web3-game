@@ -1,7 +1,7 @@
 import { GameNavbar } from "@/app/components/GameNavbar";
 import { useState } from 'react';
 import Image from "next/image";
-import Link from 'next/link';
+
 import "../app/globals.css";
 import Cross from "../public/assets/Cross.svg";
 import standingdollarcoin from "../public/assets/standingdollarcoin.svg";

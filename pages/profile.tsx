@@ -1,6 +1,6 @@
 import { GameNavbar } from "@/app/components/GameNavbar";
 import Image from "next/image";
-import Link from 'next/link';
+
 import "../app/globals.css";
 
 import HandonChest from "../public/assets/HandonChest.png";
@@ -9,11 +9,16 @@ import userProfile from "../public/assets/userProfile.png";
 import GoldCup from "../public/assets/GoldCup.png";
 import SilverCup from "../public/assets/SilverCup.png";
 import greenCup from "../public/assets/greenCup.png";
+import ThickGoldCup from "../public/assets/ThickGold.png";
+import friend1 from "../public/assets/friend1.png";
 import user1 from "../public/assets/user1.png";
 import user2 from "../public/assets/user2.png";
 import AshDot from "../public/assets/AshDot.svg";
 import FirstPlaceBadge from "../public/assets/FirstPlaceBadge.png";
 import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
+import pinkBadge from "../public/assets/pinkBadge.png";
+import yellowBadge from "../public/assets/yellowBadge.png";
+
 
 
 
@@ -88,7 +93,7 @@ export default function Profile() {
                                                 <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Naomi</h1>
 
                                                 <div className="flex items-center gap-[4px]">
-                                                    <Image src={FirstPlaceBadge}  alt="FirstPlaceBadge" />
+                                                    <Image width={12} height={12} src={FirstBadge}  alt="FirstBadge" />
                                                     <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 13</h2>
                                                 </div>
                                             </div>
@@ -114,18 +119,18 @@ export default function Profile() {
                                 <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
                                     <div className="flex items-center gap-[10px]">
                                         <div>
-                                            <Image src={GoldCup} alt="GoldCup" />
+                                            <Image src={SilverCup} alt="SilverCup" />
                                         </div>
 
                                         <div className="flex items-center gap-[5px]">
-                                            <Image src={user1} alt="user1" />
+                                            <Image src={friend1} alt="friend1" />
 
                                             <div>
-                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Naomi</h1>
+                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Juliet</h1>
 
                                                 <div className="flex items-center gap-[4px]">
-                                                    <Image src={FirstPlaceBadge}  alt="FirstPlaceBadge" />
-                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 13</h2>
+                                                    <Image src={yellowBadge}  alt="yellowBadge" />
+                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 12</h2>
                                                 </div>
                                             </div>
                                         </div>
@@ -136,12 +141,12 @@ export default function Profile() {
                                                 <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
                                             </div>
 
-                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">10,114,230</h2>
+                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">8,114,230</h2>
                                         </div>
                                     </div>
 
                                     <div className="W-[26px] flex items-center justify-center h-[27px] p-[10px] bg-[#FFFFFF26] rounded-[50px]">
-                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">1</h1>
+                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">2</h1>
                                     </div>
                                 </div>
                             </div>
@@ -150,18 +155,18 @@ export default function Profile() {
                                 <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
                                     <div className="flex items-center gap-[10px]">
                                         <div>
-                                            <Image src={GoldCup} alt="GoldCup" />
+                                            <Image src={greenCup} alt="greenCup" />
                                         </div>
 
                                         <div className="flex items-center gap-[5px]">
-                                            <Image src={user1} alt="user1" />
+                                            <Image src={user2} alt="user2" />
 
                                             <div>
-                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Naomi</h1>
+                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Jasmine</h1>
 
                                                 <div className="flex items-center gap-[4px]">
-                                                    <Image src={FirstPlaceBadge}  alt="FirstPlaceBadge" />
-                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 13</h2>
+                                                    <Image src={pinkBadge}  alt="pinkBadge" />
+                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 11</h2>
                                                 </div>
                                             </div>
                                         </div>
@@ -172,12 +177,12 @@ export default function Profile() {
                                                 <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
                                             </div>
 
-                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">10,114,230</h2>
+                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">7,114,230</h2>
                                         </div>
                                     </div>
 
                                     <div className="W-[26px] flex items-center justify-center h-[27px] p-[10px] bg-[#FFFFFF26] rounded-[50px]">
-                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">1</h1>
+                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">3</h1>
                                     </div>
                                 </div>
                             </div>
@@ -186,18 +191,18 @@ export default function Profile() {
                                 <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
                                     <div className="flex items-center gap-[10px]">
                                         <div>
-                                            <Image src={GoldCup} alt="GoldCup" />
+                                            <Image src={SilverCup} alt="SilverCup" />
                                         </div>
 
                                         <div className="flex items-center gap-[5px]">
                                             <Image src={user1} alt="user1" />
 
                                             <div>
-                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Naomi</h1>
+                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Tariq</h1>
 
                                                 <div className="flex items-center gap-[4px]">
-                                                    <Image src={FirstPlaceBadge}  alt="FirstPlaceBadge" />
-                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 13</h2>
+                                                    <Image width={12} height={12}  src={FirstBadge}  alt="FirstBadge" />
+                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 10</h2>
                                                 </div>
                                             </div>
                                         </div>
@@ -208,12 +213,12 @@ export default function Profile() {
                                                 <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
                                             </div>
 
-                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">10,114,230</h2>
+                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">6,114,230</h2>
                                         </div>
                                     </div>
 
                                     <div className="W-[26px] flex items-center justify-center h-[27px] p-[10px] bg-[#FFFFFF26] rounded-[50px]">
-                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">1</h1>
+                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">4</h1>
                                     </div>
                                 </div>
                             </div>
@@ -222,18 +227,18 @@ export default function Profile() {
                                 <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
                                     <div className="flex items-center gap-[10px]">
                                         <div>
-                                            <Image src={GoldCup} alt="GoldCup" />
+                                            <Image src={ThickGoldCup} alt="ThickGoldCup" />
                                         </div>
 
                                         <div className="flex items-center gap-[5px]">
                                             <Image src={user1} alt="user1" />
 
                                             <div>
-                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Naomi</h1>
+                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Kelvin</h1>
 
                                                 <div className="flex items-center gap-[4px]">
-                                                    <Image src={FirstPlaceBadge}  alt="FirstPlaceBadge" />
-                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 13</h2>
+                                                    <Image width={12} height={12}  src={FirstBadge}  alt="FirstBadge" />
+                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 9</h2>
                                                 </div>
                                             </div>
                                         </div>
@@ -244,12 +249,12 @@ export default function Profile() {
                                                 <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
                                             </div>
 
-                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">10,114,230</h2>
+                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">4,114,230</h2>
                                         </div>
                                     </div>
 
                                     <div className="W-[26px] flex items-center justify-center h-[27px] p-[10px] bg-[#FFFFFF26] rounded-[50px]">
-                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">1</h1>
+                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">5</h1>
                                     </div>
                                 </div>
                             </div>
@@ -257,19 +262,16 @@ export default function Profile() {
                             <div className="pt-[6px]">
                                 <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
                                     <div className="flex items-center gap-[10px]">
-                                        <div>
-                                            <Image src={GoldCup} alt="GoldCup" />
-                                        </div>
 
                                         <div className="flex items-center gap-[5px]">
                                             <Image src={user1} alt="user1" />
 
                                             <div>
-                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Naomi</h1>
+                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Smith</h1>
 
                                                 <div className="flex items-center gap-[4px]">
-                                                    <Image src={FirstPlaceBadge}  alt="FirstPlaceBadge" />
-                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 13</h2>
+                                                    <Image width={12} height={12}  src={FirstBadge}  alt="FirstBadge" />
+                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 7</h2>
                                                 </div>
                                             </div>
                                         </div>
@@ -280,12 +282,12 @@ export default function Profile() {
                                                 <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
                                             </div>
 
-                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">10,114,230</h2>
+                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">2,114,230</h2>
                                         </div>
                                     </div>
 
                                     <div className="W-[26px] flex items-center justify-center h-[27px] p-[10px] bg-[#FFFFFF26] rounded-[50px]">
-                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">1</h1>
+                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">7</h1>
                                     </div>
                                 </div>
                             </div>
@@ -293,19 +295,16 @@ export default function Profile() {
                             <div className="pt-[6px]">
                                 <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
                                     <div className="flex items-center gap-[10px]">
-                                        <div>
-                                            <Image src={GoldCup} alt="GoldCup" />
-                                        </div>
 
                                         <div className="flex items-center gap-[5px]">
                                             <Image src={user1} alt="user1" />
 
                                             <div>
-                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Naomi</h1>
+                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Janet</h1>
 
                                                 <div className="flex items-center gap-[4px]">
                                                     <Image src={FirstPlaceBadge}  alt="FirstPlaceBadge" />
-                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 13</h2>
+                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 6</h2>
                                                 </div>
                                             </div>
                                         </div>
@@ -316,12 +315,12 @@ export default function Profile() {
                                                 <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
                                             </div>
 
-                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">10,114,230</h2>
+                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">1,114,230</h2>
                                         </div>
                                     </div>
 
                                     <div className="W-[26px] flex items-center justify-center h-[27px] p-[10px] bg-[#FFFFFF26] rounded-[50px]">
-                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">1</h1>
+                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">8</h1>
                                     </div>
                                 </div>
                             </div>
@@ -329,19 +328,16 @@ export default function Profile() {
                             <div className="pt-[6px]">
                                 <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
                                     <div className="flex items-center gap-[10px]">
-                                        <div>
-                                            <Image src={GoldCup} alt="GoldCup" />
-                                        </div>
 
                                         <div className="flex items-center gap-[5px]">
                                             <Image src={user1} alt="user1" />
 
                                             <div>
-                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Naomi</h1>
+                                                <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">Bryan</h1>
 
                                                 <div className="flex items-center gap-[4px]">
                                                     <Image src={FirstPlaceBadge}  alt="FirstPlaceBadge" />
-                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 13</h2>
+                                                    <h2 className="text-[12px] leading-[16px] text-[#FFFFFF]">Lvl 1</h2>
                                                 </div>
                                             </div>
                                         </div>
@@ -352,12 +348,12 @@ export default function Profile() {
                                                 <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
                                             </div>
 
-                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">10,114,230</h2>
+                                            <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">114,230</h2>
                                         </div>
                                     </div>
 
                                     <div className="W-[26px] flex items-center justify-center h-[27px] p-[10px] bg-[#FFFFFF26] rounded-[50px]">
-                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">1</h1>
+                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">10000+</h1>
                                     </div>
                                 </div>
                             </div>
