@@ -202,7 +202,7 @@ export default function GameHome() {
 
 
 
-                    <div className="absolute top-[400px] left-[180px]">
+                    <div className="absolute top-[450px] left-[180px]">
                         <Image src={TapCoin} alt="TapCoin" />
                     </div>
 
@@ -217,8 +217,12 @@ export default function GameHome() {
                         </div>
                     </div>
 
+                    <div className="w-[200.31px] h-[5.57px] absolute top-[675px] left-[105.6px]">
+                        <ProgressBar  progress={60} /> {/* Change the progress value as needed */}
+                    </div>
+
                     {/* Boost */}
-                    <div className="absolute top-[622px] left-[246.53px]" onClick={handleBoostClick}>
+                    <div className="absolute top-[710px] left-[246.53px]" onClick={handleBoostClick}>
                         <div className="bg-[#1A314E] px-[7.75px] max-w-[133.47px] h-[51px] flex items-center gap-[5px] border-[2.8px] border-[#FFFFFF] rounded-[20.87px] ">
                             <div>
                                 <Image src={lightning} alt="lightning" />
@@ -250,7 +254,7 @@ export default function GameHome() {
                                     <Image src={Cross} alt="CrossImg" />
                                 </button>
                             </div>
-                            <ProgressBar progress={75} /> {/* Change the progress value as needed */}
+                            
                     </div>
             )}
                     </div>
