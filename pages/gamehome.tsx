@@ -40,7 +40,7 @@ export default function GameHome() {
             <div className="h-screen">
                 <GameNavbar />
                 <div className="relative overflow-hidden">
-                    <div className=" relative w-full bg-cover bg-center">
+                    <div className=" relative w-full bg-cover bg-center overflow-hidden">
                         <div className="absolute px-5 py-[6px] bg-[#854C348C] w-full h-[51px]">
                             <div className="flex items-center gap-[20px]">
                                 <Link href="/profile">
@@ -119,7 +119,7 @@ export default function GameHome() {
                         </div>
 
                         <Image
-                         className="overflow-hidden"
+                         className="w-full h-full object-cover overflow-hidden"
                          width={393}
                          height={754}
                          src={piratehomeBg}
