@@ -119,7 +119,7 @@ export default function GameHome() {
                         </div>
 
                         <Image
-                         className=""
+                         className="overflow-hidden"
                          width={393}
                          height={754}
                          src={piratehomeBg}
@@ -218,7 +218,7 @@ export default function GameHome() {
                     </div>
 
                     {/* Boost */}
-                    <div className="absolute top-[672px] left-[246.53px]" onClick={handleBoostClick}>
+                    <div className="absolute top-[622px] left-[246.53px]" onClick={handleBoostClick}>
                         <div className="bg-[#1A314E] px-[7.75px] max-w-[133.47px] h-[51px] flex items-center gap-[5px] border-[2.8px] border-[#FFFFFF] rounded-[20.87px] ">
                             <div>
                                 <Image src={lightning} alt="lightning" />
