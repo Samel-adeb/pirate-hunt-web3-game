@@ -19,7 +19,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
     }}
     >
       <div
-        className="h-full bg-[#00A6DE] rounded-full"
+        className="h-[0.38px] bg-[#00A6DE] rounded-full"
         style={{
           width: `${progress}%`, // Control the width based on progress
           transition: 'width 0.3s ease-in-out',

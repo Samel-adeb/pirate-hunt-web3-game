@@ -40,7 +40,7 @@ export default function GameHome() {
             <div className="h-screen">
                 <GameNavbar />
                 <div className="relative overflow-hidden">
-                    <div className=" relative w-full bg-cover bg-center overflow-hidden h-[800px]">
+                    <div className=" relative w-full bg-cover bg-center overflow-hidden h-[700px]">
                         <div className="absolute px-5 py-[6px] bg-[#854C348C] w-full h-[51px]">
                             <div className="flex items-center gap-[20px]">
                                 <Link href="/profile">
@@ -202,7 +202,7 @@ export default function GameHome() {
 
 
 
-                    <div className="absolute top-[450px] left-[180px]">
+                    <div className="absolute top-[380px] left-[180px]">
                         <Image src={TapCoin} alt="TapCoin" />
                     </div>
 
@@ -217,12 +217,12 @@ export default function GameHome() {
                         </div>
                     </div>
 
-                    <div className="w-[200.31px] h-[5.57px] absolute top-[675px] left-[105.6px]">
-                        <ProgressBar  progress={60} /> {/* Change the progress value as needed */}
-                    </div>
+                    {/* <div className="w-[200.31px] h-[5.57px] absolute top-[675px] left-[105.6px]">
+                        <ProgressBar  progress={60} />
+                    </div> */}
 
                     {/* Boost */}
-                    <div className="absolute top-[710px] left-[246.53px]" onClick={handleBoostClick}>
+                    <div className="absolute top-[622px] left-[246.53px]" onClick={handleBoostClick}>
                         <div className="bg-[#1A314E] px-[7.75px] max-w-[133.47px] h-[51px] flex items-center gap-[5px] border-[2.8px] border-[#FFFFFF] rounded-[20.87px] ">
                             <div>
                                 <Image src={lightning} alt="lightning" />

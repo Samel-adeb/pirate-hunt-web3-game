@@ -2,7 +2,7 @@ import { GameNavbar } from "@/app/components/GameNavbar";
 import Image from "next/image";
 
 import "../app/globals.css";
-
+import  ProfileProgressBar  from '@/app/components/ProfileProgressBar';
 import HandonChest from "../public/assets/HandonChest.png";
 import FirstBadge from "../public/assets/FirstBadge.png";
 import userProfile from "../public/assets/userProfile.png";
@@ -18,6 +18,7 @@ import FirstPlaceBadge from "../public/assets/FirstPlaceBadge.png";
 import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
 import pinkBadge from "../public/assets/pinkBadge.png";
 import yellowBadge from "../public/assets/yellowBadge.png";
+import Link from "next/link";
 
 
 
@@ -60,7 +61,7 @@ export default function Profile() {
                         </div>
                     </div>
 
-
+                   
                   
                 </div>
                 <div  className="relative h-[1000px]"  style={{
@@ -73,7 +74,16 @@ export default function Profile() {
                        
                     </div> */}
                     {/* Overlay */}
+
+                   
                     <div className="absolute inset-0 bg-[#000000B2] h-[1000px]">
+                        <Link href="/profileshare">
+                            <div className="absolute -top-[50px] left-[35px] border-[1px] rounded-[16px] border-[#FFFFFF40] p-[16px]">
+                            
+                                <ProfileProgressBar  progress={40} /> {/* Change the progress value as needed */}
+                            
+                            </div>
+                        </Link>
                         <div className="pt-16">
                             <div>
                                 <h1 className="text-[16px] leading-[24px] tracking-[0.15%] font-semibold text-white pl-[16px]">Top Users</h1>
