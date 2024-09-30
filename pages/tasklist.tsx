@@ -14,6 +14,8 @@ import Wallet from "../public/assets/Wallet.svg";
 import Cinema from "../public/assets/Cinema.svg";
 import GiftBox from "../public/assets/GiftBox.png";
 
+import  DayOneOverlay  from "@/app/components/DayOneOverlay";
+
 
 
 export default function TaskList() {
@@ -26,6 +28,17 @@ export default function TaskList() {
     const closeOverlay = () => {
         setIsOverlayVisible(false);
     };
+
+    const [isDayOneOverlayVisible, setIsDayOneOverlayVisible] = useState(false);
+
+    const handleDayOneOverlay = () => {
+      setIsDayOneOverlayVisible(true);
+    };
+  
+    const closeDayOneOverlay = () => {
+      setIsDayOneOverlayVisible(false);
+    };
+  
 
     return (
 
@@ -76,10 +89,15 @@ export default function TaskList() {
 
                                     <div className="pt-[20px] flex items-center justify-center">
                                         <div className="grid grid-cols-4 gap-[15px]">
-                                            <div className="flex flex-col w-[82.1px] border-[0.5px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                <h1 className="text-white">Day 1</h1>
-                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                <p className="text-white">500</p>
+                                            <div>
+                                                <div className="flex flex-col w-[82.1px] border-[0.5px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center"  onClick={handleDayOneOverlay}>
+                                                    <h1 className="text-white">Day 1</h1>
+                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                    <p className="text-white">500</p>
+                                                </div>
+
+                                                 {/* Triggering the separate overlay component */}
+                                                <DayOneOverlay isVisible={isDayOneOverlayVisible} closeOverlay={closeDayOneOverlay} />
                                             </div>
 
                                             <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
