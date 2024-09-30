@@ -13,7 +13,7 @@ import ProfileSvg from "../public/assets/ProfileSvg.svg";
 import Prize from "../public/assets/Prize.svg";
 import golddollarcoin from "../public/assets/golddollarcoin.svg";
 import XAS from "../public/assets/XAS.svg";
-import info from "../public/assets/info.svg";
+import Info from "../public/assets/Info.svg";
 import settings from "../public/assets/settings.svg";
 import lightning from "../public/assets/lightning.svg";
 import treasureChest from "../public/assets/treasure chest.svg";
@@ -97,7 +97,7 @@ export default function GameHome() {
                                             <Image width={12.34} height={12.34} src={golddollarcoin} alt="Gold Dollar Coin" />
                                             <h1 className="text-[12.34px] font-bold leading-[16.46px] text-white">+1.17M</h1>
                                             
-                                            <Image  width={12.34} height={12.34} src={info} alt="Info Icon" />
+                                            <Image  width={12.34} height={12.34} src={Info} alt="Info Icon" />
                                                 
                                         </div>
                                     </div>
