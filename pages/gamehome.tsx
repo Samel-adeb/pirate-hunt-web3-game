@@ -2,8 +2,8 @@ import { GameNavbar } from "@/app/components/GameNavbar";
 import Image from "next/image";
 import Link from 'next/link';
 import "../app/globals.css";
-
-import piratehomeBg from "../public/assets/piratehomeBg.svg";
+// import  ProgressBar  from '@/app/components/ProgressBar';
+import piratehomeBg from "../public/assets/piratehomeBg.png";
 import Island from "../public/assets/Island.svg";
 import boatHome from "../public/assets/boatHome.svg";
 import Users from "../public/assets/Users.png";
