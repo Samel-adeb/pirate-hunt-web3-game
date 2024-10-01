@@ -3,6 +3,7 @@ import Cross from "/public/assets/Cross.svg";
 import GiftBox from "/public/assets/GiftBox.png";
 import standingdollarcoin from "/public/assets/standingdollarcoin.svg";
 import Image from "next/image";
+import Link from 'next/link';
 interface OverlayProps {
   isVisible: boolean;
   closeOverlay: () => void;
@@ -36,11 +37,13 @@ const DayOneOverlay: FC<OverlayProps> = ({ isVisible, closeOverlay }) => {
                 </div>
             </div>
 
-            <div className="pt-6" onClick={closeOverlay}>
-                <button className="w-[361px] h-[52px] bg-[#00A6DE] p-[16px] rounded-[16px] text-white font-medium">
-                    Claim
-                </button>
-            </div>
+            <Link href="/claimReward">
+              <div className="pt-6" onClick={closeOverlay}>
+                  <button className="w-[361px] h-[52px] bg-[#00A6DE] p-[16px] rounded-[16px] text-white font-medium">
+                      Claim
+                  </button>
+              </div>
+            </Link>
        </div>
 
         <button onClick={closeOverlay} className="absolute top-2 right-2">

@@ -41,7 +41,7 @@ export default function GameHome() {
             <div className="h-screen">
                 <GameNavbar />
                 <div className="relative overflow-hidden">
-                    <div className=" relative w-full bg-cover bg-center overflow-hidden h-[700px]">
+                    <div className=" relative w-full bg-cover bg-center overflow-hidden h-[720px]">
                         <div className="absolute px-5 py-[6px] bg-[#854C348C] w-full h-[51px]">
                             <div className="flex items-center gap-[20px]">
                                 <Link href="/profile">
@@ -93,7 +93,7 @@ export default function GameHome() {
 
                                
                                     <div className="flex flex-col items-center justify-center px-[5px]">
-                                        <p className="text-[8px] leading-[12px] font-medium text-[#FFFFFFBF] text-center">Pirate Token</p>
+                                        <p className="text-[8px] leading-[12px] font-medium text-[#FFFFFFBF] text-center whitespace-nowrap">Pirate Token</p>
                                         <div className="flex items-center">
                                             <Image width={12.34} height={12.34} src={golddollarcoin} alt="Gold Dollar Coin" />
                                             <h1 className="text-[12.34px] font-bold leading-[16.46px] text-white">+1.17M</h1>
@@ -233,7 +233,7 @@ export default function GameHome() {
 
 
                         {isOverlayVisible && (
-                            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={closeOverlay}>
+                            <div className="fixed inset-0 flex items-center justify-center z-50" onClick={closeOverlay}>
                                 <div className="bg-gradient-to-b from-black  to-brown-dark  border-t-[4px] border-t-[#6B4C2D] rounded-lg w-full mt-60 h-[80%] flex flex-col items-center justify-center p-4 relative" onClick={(e) => e.stopPropagation()}>
                                 <Image src={treasureChest} alt="treasureChest" className="-mt-24" />
                                 <h2 className="text-[24px] leading-[32px] font-semibold text-white">Boost your Pirate Token</h2>

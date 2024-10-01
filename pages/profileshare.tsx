@@ -8,9 +8,12 @@ import Prize from "../public/assets/Prize.svg";
 import golddollarcoin from "../public/assets/golddollarcoin.svg";
 import baby from "../public/assets/baby.svg";
 import ProgressBar from "@/app/components/ProgressBar";
-import standingdollarcoin from "/public/assets/standingdollarcoin.svg";
-import ShareButton from "/public/assets/ShareButton.svg";
-import brownCross from "/public/assets/brownCross.svg";
+import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
+import ShareButton from "../public/assets/ShareButton.svg";
+import brownCross from "../public/assets/brownCross.svg";
+import Insta from "../public/assets/Insta.svg";
+import Telegrame from "../public/assets/Telegrame.svg";
+import Tweet from "../public/assets/Tweet.svg";
 
 
 export default function ProfileShare() {
@@ -102,29 +105,65 @@ export default function ProfileShare() {
 
                     {isOverlayVisible && (
                         <div
-                        className="fixed inset-0 z-50 flex flex-col justify-end bg-black bg-opacity-50"
+                        className="fixed inset-0 z-50 flex flex-col justify-end "
                         style={{ backdropFilter: 'blur(15px)' }} // Blur effect for the entire page
                         onClick={closeOverlay} // Clicking the overlay outside the bottom content will close it
                         >
                         {/* Bottom Content with Background */}
                         <div
-                            className="bg-[#1C1208] text-white w-full py-8 px-6 rounded-t-lg"
+                            className="bg-[#1C1208] relative h-[370px] text-white w-full py-8 px-6 rounded-t-lg"
                             onClick={(e) => e.stopPropagation()} // Prevent overlay close when clicking inside
                         >
-                            <h1 className="text-center text-[24px] font-bold">Share This Story</h1>
-                            <p className="text-center mt-4 text-[16px]">
-                            Use the button below to share your story with others.
+                            <h1 className="text-center text-[16px] leading-[16px] font-medium tracking-[0.4px]">Share On</h1>
+
+                            <p className="text-center pt-2 text-[12px] leading-[16px] text-[#FFFFFF8C]  font-medium tracking-[0.4px]">
+                                You can share to multiply social medials 
                             </p>
-                            <div className="mt-8 flex justify-center">
-                            <button className="px-4 py-2 bg-[#FFC247] text-black font-semibold rounded-lg">
-                                Share Now
-                            </button>
+
+                            <div>
+                                <div className="pt-[20px]">
+                                    <div className=' px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247]   border-[1px] border-[#FFC247]'>
+                                        <div className="flex items-center gap-[8px]">
+                                            <Image src={Telegrame} alt="Telegrame" />
+                                            <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Telegram story</h1>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="pt-[5px]">
+                                    <div className=' px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247]   border-[1px] border-[#FFC247]'>
+                                        <div className="flex items-center gap-[8px]">
+                                            <Image src={Insta} alt="Insta" />
+                                            <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Instagram story</h1>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="pt-[5px]">
+                                    <div className=' px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247]   border-[1px] border-[#FFC247]'>
+                                        <div className="flex items-center gap-[8px]">
+                                            <Image src={Tweet} alt="Tweet" />
+                                            <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Twitter story</h1>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
+                            <Link href="/sharecard">
+                                <div className="pt-[10px]">
+                                    <div className="bg-[#FFC247] p-[10px] rounded-[25px] h-[51px] flex flex-col items-center justify-center">
+                                        <button className="text-[16px] leading-[16px] tracking-[0.4px] text-center  text-white font-medium">
+                                            Share
+                                        </button>
+                                    </div>
+                                </div>
+                            </Link>
+
                             <button
                             onClick={closeOverlay}
                             className="absolute top-4 right-4 text-white font-bold text-xl"
                             >
-                            &times; {/* Close icon */}
+                                <Image src={brownCross} alt="brownCross" />
                             </button>
                         </div>
                         </div>
