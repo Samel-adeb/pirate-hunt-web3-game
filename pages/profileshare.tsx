@@ -1,3 +1,4 @@
+import  { useState } from 'react';
 import { GameNavbar } from "@/app/components/GameNavbar";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,9 +9,22 @@ import golddollarcoin from "../public/assets/golddollarcoin.svg";
 import baby from "../public/assets/baby.svg";
 import ProgressBar from "@/app/components/ProgressBar";
 import standingdollarcoin from "/public/assets/standingdollarcoin.svg";
+import ShareButton from "/public/assets/ShareButton.svg";
+import brownCross from "/public/assets/brownCross.svg";
 
 
 export default function ProfileShare() {
+
+    const [isOverlayVisible, setOverlayVisible] = useState(false);
+
+    const handleShareClick = () => {
+      setOverlayVisible(true);
+    };
+  
+    const closeOverlay = () => {
+      setOverlayVisible(false);
+    };
+
     return (
         <>
 
@@ -61,7 +75,7 @@ export default function ProfileShare() {
                         </div>
                     </div>
 
-                    <div className="flex flex-col items-left gap-y-0">
+                    <div className="flex flex-col items-left gap-y-0 whitespace-nowrap">
                         <h1 className="text-[12px] leading-[32px] text-[#FFFFFF8C]">Pirate Token</h1>
                         <div className="flex gap-[2px] items-center -mt-[7px]">
                             <Image
@@ -74,6 +88,47 @@ export default function ProfileShare() {
                             <h1 className="text-[16px] leading-[32px] font-bold text-white">10000</h1>
                         </div>
                     </div>
+                </div>
+
+                <div>
+                    <div className="pl-[16px] pt-[15px]" onClick={handleShareClick}>
+                        <div className="flex flex-col items-left">
+                            <div  className="pl-[10px]">
+                                <Image src={ShareButton} alt="ShareButton" />
+                            </div>
+                            <p className="text-[16px] leading-[32px] font-bold text-white">Share story</p>
+                        </div>
+                    </div>
+
+                    {isOverlayVisible && (
+                        <div
+                        className="fixed inset-0 z-50 flex flex-col justify-end bg-black bg-opacity-50"
+                        style={{ backdropFilter: 'blur(15px)' }} // Blur effect for the entire page
+                        onClick={closeOverlay} // Clicking the overlay outside the bottom content will close it
+                        >
+                        {/* Bottom Content with Background */}
+                        <div
+                            className="bg-[#1C1208] text-white w-full py-8 px-6 rounded-t-lg"
+                            onClick={(e) => e.stopPropagation()} // Prevent overlay close when clicking inside
+                        >
+                            <h1 className="text-center text-[24px] font-bold">Share This Story</h1>
+                            <p className="text-center mt-4 text-[16px]">
+                            Use the button below to share your story with others.
+                            </p>
+                            <div className="mt-8 flex justify-center">
+                            <button className="px-4 py-2 bg-[#FFC247] text-black font-semibold rounded-lg">
+                                Share Now
+                            </button>
+                            </div>
+                            <button
+                            onClick={closeOverlay}
+                            className="absolute top-4 right-4 text-white font-bold text-xl"
+                            >
+                            &times; {/* Close icon */}
+                            </button>
+                        </div>
+                        </div>
+                    )}
                 </div>
 
                 <div className="pt-10 flex flex-col items-center justify-center">
