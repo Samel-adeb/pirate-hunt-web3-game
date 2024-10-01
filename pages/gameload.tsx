@@ -33,7 +33,7 @@ export default function GameLoad() {
       const timer = setTimeout(() => {
         setIsLoading(false);
         router.push('/gamehome'); // Redirect to gamehome page
-      }, 3000); // 3 seconds timeout
+      }, 8000); // 3 seconds timeout
   
       return () => clearTimeout(timer); // Clean up the timer on component unmount
     }, [router]);
