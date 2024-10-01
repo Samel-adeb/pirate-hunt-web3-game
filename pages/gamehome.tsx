@@ -21,6 +21,7 @@ import Cross from "../public/assets/Cross.svg";
 import GiftBox from "../public/assets/gift box.png";
 
 import { useState } from "react";
+import ProgressBar from "@/app/components/ProgressBar";
 
 export default function GameHome() {
 
@@ -217,9 +218,9 @@ export default function GameHome() {
                         </div>
                     </div>
 
-                    {/* <div className="w-[200.31px] h-[5.57px] absolute top-[675px] left-[105.6px]">
+                    <div className="w-[200.31px] h-[5.57px] absolute top-[675px] left-[105.6px]">
                         <ProgressBar  progress={60} />
-                    </div> */}
+                    </div>
 
                     {/* Boost */}
                     <div className="absolute top-[622px] left-[246.53px]" onClick={handleBoostClick}>
