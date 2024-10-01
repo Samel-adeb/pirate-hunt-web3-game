@@ -24,7 +24,7 @@ function PurchaseTreasureOverlay() {
             </div>
             <p className='fw-light fs-6 text-grey mb-3 text-warning'>To get random amount of coins</p>
             <div className='mt-3'>
-                <Image alt='vertical coin' src={standingdollarcoin.src} width={30} height={30} />
+                <Image alt='vertical coin' src={standingdollarcoin.src} width={50} height={50} />
             </div>
             <div className='my-2 fw-bold text-white'>
                 10,000 - 200,000 Coins

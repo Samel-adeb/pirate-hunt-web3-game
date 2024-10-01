@@ -7,8 +7,8 @@ function Tester() {
 
   return (
     // <ClaimReward />
-    // <PurchaseTreasureOverlay />
-    <PurchaseCongratulationOverlay />
+    <PurchaseTreasureOverlay />
+    //<PurchaseCongratulationOverlay />
   )
 }
 
