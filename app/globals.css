@@ -13,7 +13,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: "Playwrite DE Grund", cursive;
+  font-family: "Playwrite DE Grund", cursive !important;
   font-optical-sizing: auto;
 
   font-style: normal;
@@ -128,4 +128,9 @@ a {
 }
 .bg-black{
   background-color: #000!important;
+}
+
+:root{
+  --bs-warning: #ffc247!important;
+  --bs-warning-rgb: 255, 194, 71!important;
 }
