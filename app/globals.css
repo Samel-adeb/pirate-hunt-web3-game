@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+DE+Grund:wght@100..400&display=swap');
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,7 +13,10 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family:cursive !important;
+  font-family: "Playwrite DE Grund", cursive;
+  font-optical-sizing: auto;
+
+  font-style: normal;
 }
 
 
@@ -84,30 +90,32 @@ body {
   }
 }
 
-.rippleContainer {
-  position: relative;
-  width: 394px;
-  height: 760px;
+.tapcoin-animation {
+  transition: transform 0.2s ease-in-out;
 }
 
-.aliveImage {
-  width: 100%;
-  height: 100%;
+/* Shrinks the coin on tap */
+.tapcoin-animation:active {
+  transform: scale(0.9); /* Slightly reduce the size */
 }
 
-.rippleOverlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 150px;
-  height: 150px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  animation: ripple 2s infinite ease-in-out;
-  pointer-events: none;
-  /* To make sure it doesn't block interactions */
+/* coin-animation.css */
+
+@keyframes coinAnimation {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
 }
+
+.coin-animation {
+  animation: coinAnimation 2s ease-out forwards;
+}
+
 
 a {
   color: inherit !important;
