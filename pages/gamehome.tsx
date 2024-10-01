@@ -21,6 +21,7 @@ import Cross from "../public/assets/Cross.svg";
 import GiftBox from "../public/assets/gift box.png";
 
 import { useState } from "react";
+// import ProgressBar from "@/app/components/ProgressBar";
 
 export default function GameHome() {
 
