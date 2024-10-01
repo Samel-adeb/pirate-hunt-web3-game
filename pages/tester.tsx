@@ -1,7 +1,7 @@
 
 import PurchaseTreasureOverlay from '@/app/components/PurchaseTreasureOverlay';
-import ClaimReward from '@/app/components/ClaimReward';
-import PurchaseCongratulationOverlay from '@/app/components/PurchaseCongratulationOverlay';
+// import ClaimReward from '@/app/components/ClaimReward';
+// import PurchaseCongratulationOverlay from '@/app/components/PurchaseCongratulationOverlay';
 
 function Tester() {
 
