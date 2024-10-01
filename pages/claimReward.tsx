@@ -9,7 +9,7 @@ import standingdollarcoin from '../public/assets/standingdollarcoin.svg'
 import MoneyBagChest from '../public/assets/MoneyBagChest.png'
 import Image from 'next/image';
 
-function claimReward() {
+function ClaimReward() {
   useEffect(() => {
     AOS.init({
       duration: 500, // Animation duration
@@ -45,4 +45,4 @@ function claimReward() {
   )
 }
 
-export default claimReward
+export default ClaimReward
