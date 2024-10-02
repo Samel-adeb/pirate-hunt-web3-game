@@ -48,6 +48,10 @@ export default function GameHome() {
     const [coins, setCoins] = useState<number[]>([]);
 
     const handleTap = () => {
+
+        if (navigator.vibrate) {
+            navigator.vibrate(200);  // 200ms vibration
+        }
       // Create a new coin element by pushing a unique ID
       const newCoinId = Date.now(); // Use timestamp as a unique ID
       setCoins((prevCoins) => [...prevCoins, newCoinId]);
