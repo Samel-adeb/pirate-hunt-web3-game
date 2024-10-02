@@ -19,6 +19,29 @@ body {
   font-style: normal;
 }
 
+@media screen  and (max-width: 475px) {
+  html,body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+}
+
+@media screen  and (max-width: 375px) {
+  html,body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+}
+
+
 
 @keyframes slideInFromBottom {
   0% {
