@@ -12,7 +12,7 @@ import Boost3 from "../public/assets/Boost3.png";
 import Boost4 from "../public/assets/Boost4.png";
 import Boost5 from "../public/assets/Boost5.png";
 import Boost6 from "../public/assets/Boost6.png";
-import EnlargedBoost1 from "../public/assets/Boost1.png";
+
 import Unlocked from "../public/assets/unlocked.svg";
 import Link from "next/link";
 
