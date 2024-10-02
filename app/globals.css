@@ -134,3 +134,19 @@ a {
   --bs-warning: #ffc247!important;
   --bs-warning-rgb: 255, 194, 71!important;
 }
+
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease-out;
+}
