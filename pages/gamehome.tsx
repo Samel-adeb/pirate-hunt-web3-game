@@ -167,7 +167,7 @@ export default function GameHome() {
                                                     </div>
                 
                                                         {isOverlayVisible && (
-                                                                <div className="fixed inset-0 flex items-center justify-center z-50" onClick={closeOverlay}>
+                                                                <div className="fixed bg-[#000000A6] inset-0 flex items-center justify-center z-50" onClick={closeOverlay}>
                                                                     <div className="bg-gradient-to-b from-black  to-brown-dark  border-t-[4px] border-t-[#6B4C2D] rounded-lg w-full mt-60 h-[80%] flex flex-col items-center justify-center p-4 relative" onClick={(e) => e.stopPropagation()}>
                                                                     <Image src={treasureChest} alt="treasureChest" className="-mt-24" />
                                                                     <h2 className="text-[24px] leading-[32px] font-semibold text-white">Boost your Pirate Token</h2>
@@ -403,7 +403,7 @@ export default function GameHome() {
                                 <h1 className="text-[10.87px] leading-[25.02px] font-semibold text-white">1000<span className="text-[8.51px] leading-[18.77px] text-[#FFFFFFA6]">/1000</span></h1>
                             </div>
                             {isEnergyOverlayVisible && (
-                                <div className="fixed inset-0 flex items-center justify-center z-50" onClick={closeEnergyBoostOverlay}>
+                                <div className="fixed inset-0 bg-[#000000A6]  flex items-center justify-center z-50" onClick={closeEnergyBoostOverlay}>
                                     <div className="bg-gradient-to-b from-black  to-brown-dark  border-t-[4px] border-t-[#6B4C2D] rounded-lg w-full mt-60 h-[570px] flex flex-col items-center justify-center p-4 relative" onClick={(e) => e.stopPropagation()}>
                                     <Image width={100} height={100} src={ BigLightning} alt=" BigLightning" className="-mt-52" />
                                     <h2 className="pt-10 text-[24px] leading-[32px] font-semibold text-white">Energy Limit</h2>
