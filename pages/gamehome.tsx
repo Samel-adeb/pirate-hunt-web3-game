@@ -52,12 +52,12 @@ export default function GameHome() {
             const bal = parseInt(localStorage.tempbal);
             if (bal > 0) {
                 addTapTransaction(userId, bal);
-                setUserBalance(parseInt(userBalance)+bal);
+                setUserBalance(parseInt(userBalance) + bal);
                 localStorage.removeItem('tempbal');
             }
-            
+
         }
-        
+
 
 
     }, []);
@@ -147,10 +147,12 @@ export default function GameHome() {
             setCoins((prevCoins) => prevCoins.filter((id) => id !== newCoinId));
         }, 2000);
 
-        setUserBalance(userBalance + user_tap_rate_level);
-        setTempbal(tempbal + user_tap_rate_level);
-        localStorage.setItem('tempbal', (tempbal + user_tap_rate_level).toString());
-        setEnergyLevel(energyLevel - user_tap_rate_level);
+        if (energyLevel > user_tap_rate_level) {
+            setUserBalance(userBalance + user_tap_rate_level);
+            setTempbal(tempbal + user_tap_rate_level);
+            localStorage.setItem('tempbal', (tempbal + user_tap_rate_level).toString());
+            setEnergyLevel(energyLevel - user_tap_rate_level);
+        }
     };
 
     const [isOverlayVisible, setOverlayVisible] = useState(false);
