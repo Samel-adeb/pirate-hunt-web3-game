@@ -108,7 +108,7 @@ export default function Profile() {
                             {
                                 allRanks ? (
 
-                                    allRanks.map((user: any, index: any) => (
+                                    allRanks.map((user: Object|any) => (
                                         <div className="pt-[6px]" key={user.user_id}> {/* Add a unique key for each mapped element */}
                                             <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
                                                 <div className="flex items-center gap-[10px]">
