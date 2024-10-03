@@ -13,6 +13,7 @@ export function AppWrapper({ children }: {
     const [user_tap_rate_level, setUser_tap_rate_level] = useState(1);
     const [userBalance, setUserBalance] = useState(0);
     const [userRank, setUserRank] = useState({})
+    const [userDailyRewardInfo, setUserDailyRewardInfo] = useState({});
 
 
     return (
@@ -29,6 +30,8 @@ export function AppWrapper({ children }: {
             setUserBalance,
             userRank,
             setUserRank,
+            userDailyRewardInfo,
+            setUserDailyRewardInfo,
         }}>
             {children}
         </AppContext.Provider>

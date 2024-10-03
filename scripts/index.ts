@@ -88,7 +88,7 @@ export const regusterUser = async (userId: string | null, username: string | nul
     }
     const httpMethod = 'POST';
     const response = await fetchApi(endpoint, parameters, httpMethod);
-    console.log(response);
+    ////console.log(response);
     if (!(response && 'message' in response) && !('errors' in response)) {
         showFailedMessage(response.message);
         return;
@@ -96,11 +96,11 @@ export const regusterUser = async (userId: string | null, username: string | nul
 
 }
 
-export const getUserInfo = async (userId: string | null, setUsername: Function, setLevel: Function, setUser_tap_rate_level: Function, setUserBalance: Function, setUserRank: Function) => {
+export const getUserInfo = async (userId: string | null, setUsername: Function, setLevel: Function, setUser_tap_rate_level: Function, setUserBalance: Function, setUserRank: Function, setUserDailyRewardInfo: Function) => {
     const endpoint = '/api/users/user-info/' + userId + '/';
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
-    console.log(response);
+    ////console.log(response);
     if (!(response && 'user_id' in response)) {
         showFailedMessage(response.message);
         return;
@@ -111,6 +111,7 @@ export const getUserInfo = async (userId: string | null, setUsername: Function, 
         getUserBalance(userId, setUserBalance);
         getUserLevel(userId, setLevel);
         getUserRank(userId, setUserRank);
+        getDailyRewardInfo(userId, setUserDailyRewardInfo);
     }
 
 }
@@ -119,7 +120,7 @@ export const getUserBalance = async (userId: string | null, setUserBalance: Func
     const endpoint = '/api/transactions/balance/' + userId + '/';
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
-    console.log(response);
+    ////console.log(response);
     if (!(response && 'coin_balance' in response)) {
         showFailedMessage(response.message);
         return;
@@ -132,7 +133,7 @@ export const getUserRank = async (userId: string | null, setUserRank: Function) 
     const endpoint = '/api/ranks/user/' + userId + '/';
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
-    console.log(response);
+    ////console.log(response);
     if (!(response && 'user_id' in response)) {
         showFailedMessage(response.message);
         return;
@@ -146,12 +147,25 @@ export const getUserLevel = async (userId: string | null, setLevel: Function) =>
     const endpoint = '/api/levels/level/' + userId + '/';
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
-    console.log(response);
+    //console.log(response);
     if (!(response && 'current_level' in response)) {
         showFailedMessage(response.message);
         return;
     } else {
         setLevel(response);
+    }
+}
+
+export const getDailyRewardInfo = async (userId: string | null, setUserDailyRewardInfo: Function) => {
+    const endpoint = '/api/bonuses/daily/next-claim-time/' + userId + '/';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response && 'next_claim_time' in response)) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        setUserDailyRewardInfo(response);
     }
 }
 

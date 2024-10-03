@@ -26,40 +26,107 @@ import BigCoin from "../public/assets/BigCoin.svg";
 import BigDot from "../public/assets/BigDot.svg";
 import Coinfromtap from "../public/assets/Coinfromtap.svg";
 import { useEffect, useRef } from 'react';
+import { useAppContext } from '@/context';
 import { useState } from "react";
 import DayOneOverlay from "@/app/components/DayOneOverlay";
 // import ProgressBar from "@/app/components/ProgressBar";
 
 export default function GameHome() {
-
+    const { username, level, userBalance, setUserBalance, userRank, userDailyRewardInfo, user_tap_rate_level } = useAppContext();
+    let [energyLevel, setEnergyLevel] = useState(0);
     const audioRef = useRef<HTMLAudioElement | null>(null);
+    const ENERGY_CAPACITY_VALUE = 1000; // Maximum energy capacity
+    let [fillText, setFillText] = useState("");
+    let [fillWidth, setFillWidth] = useState(100);
+    const [coins, setCoins] = useState<number[]>([]);
+    const [timeLeft, setTimeLeft] = useState<string>('');
+    const targetDate = userDailyRewardInfo ? new Date(userDailyRewardInfo.next_claim_time).getTime() : new Date();
 
     // Automatically start playing the background music
     useEffect(() => {
-      if (audioRef.current) {
-        audioRef.current.volume = 0.5; // Adjust the volume (0.0 to 1.0)
-        audioRef.current.play().catch((err) => {
-          console.error('Failed to play audio:', err);
-        });
-      }
-    }, []);
-    
+        // Play background music automatically when the component mounts
+        if (audioRef.current) {
+            audioRef.current.volume = 0.5; // Adjust volume (0.0 to 1.0)
+            audioRef.current.play().catch((err) => {
+                console.error('Failed to play audio:', err);
+            });
+        }
 
-    const [coins, setCoins] = useState<number[]>([]);
+        // Countdown logic
+        const interval = setInterval(() => {
+            const now = new Date().getTime(); // Current time
+            const difference = targetDate - now; // Difference in milliseconds
+
+            if (difference > 0) {
+                // Calculate remaining time in days, hours, minutes, and seconds
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+            } else {
+                setTimeLeft('0s');
+                clearInterval(interval); // Stop the countdown when the target date is reached
+            }
+        }, 1000); // Update every second
+
+        // Cleanup interval on component unmount
+        return () => clearInterval(interval);
+    }, [targetDate]);
+
+
+    function setFill() {
+
+        if (energyLevel > ENERGY_CAPACITY_VALUE) {
+            setEnergyLevel(ENERGY_CAPACITY_VALUE);
+        }
+        var levelfrac = energyLevel / ENERGY_CAPACITY_VALUE;
+        setFillText('' + energyLevel + '/' + ENERGY_CAPACITY_VALUE);
+        setFillWidth(100 * levelfrac);
+    }
+
+    // Function to update energy level over time
+    function updateEnergyLevel() {
+        // Define constants
+        if (typeof window !== 'undefined') {
+            const RECHARGE_SPEED = 1; // Energy increase per second when below maximum
+            const currentTime = Date.now();
+            const lastUpdateTime = parseInt(localStorage.getItem('lastUpdateTime') || '') || currentTime;
+            const elapsedTime = (currentTime - lastUpdateTime) / 1000; // Convert milliseconds to seconds
+            energyLevel = parseInt(localStorage.getItem('energy') || '') || ENERGY_CAPACITY_VALUE; // Retrieve from local storage or set to maximum
+
+            // If energy level is below maximum, increase it
+            if (energyLevel < ENERGY_CAPACITY_VALUE) {
+                const energyIncrease = RECHARGE_SPEED * elapsedTime;
+                energyLevel = Math.min(energyLevel + energyIncrease, ENERGY_CAPACITY_VALUE); // Ensure energy level doesn't exceed maximum
+                localStorage.setItem('energy', energyLevel.toString());
+            }
+
+            // Update last update time
+            localStorage.setItem('lastUpdateTime', currentTime.toString());
+            setFill();
+            return energyLevel;
+        }
+    }
+    // Continuously update energy level every second
+    setInterval(updateEnergyLevel, 1000);
+
+
 
     const handleTap = () => {
 
         if (navigator.vibrate) {
             navigator.vibrate(200);  // 200ms vibration
         }
-      // Create a new coin element by pushing a unique ID
-      const newCoinId = Date.now(); // Use timestamp as a unique ID
-      setCoins((prevCoins) => [...prevCoins, newCoinId]);
-  
-      // Remove the coin after 2 seconds (or any duration you prefer)
-      setTimeout(() => {
-        setCoins((prevCoins) => prevCoins.filter((id) => id !== newCoinId));
-      }, 2000);
+        // Create a new coin element by pushing a unique ID
+        const newCoinId = Date.now(); // Use timestamp as a unique ID
+        setCoins((prevCoins) => [...prevCoins, newCoinId]);
+
+        // Remove the coin after 2 seconds (or any duration you prefer)
+        setTimeout(() => {
+            setCoins((prevCoins) => prevCoins.filter((id) => id !== newCoinId));
+        }, 2000);
     };
 
     const [isOverlayVisible, setOverlayVisible] = useState(false);
@@ -95,12 +162,13 @@ export default function GameHome() {
     const [isDayOneOverlayVisible, setIsDayOneOverlayVisible] = useState(false);
 
     const handleDayOneOverlay = () => {
-      setIsDayOneOverlayVisible(true);
+        setIsDayOneOverlayVisible(true);
     };
-  
+
     const closeDayOneOverlay = () => {
-      setIsDayOneOverlayVisible(false);
+        setIsDayOneOverlayVisible(false);
     };
+
 
 
     return (
@@ -110,29 +178,33 @@ export default function GameHome() {
                     <GameNavbar />
                     <div className="relative overflow-hidden">
                         <div className=" relative w-full bg-cover bg-center overflow-hidden h-[800px]">
-                            <div className="absolute px-5 py-[6px] bg-[#854C348C] w-full h-[51px]">
+                            <div className="absolute px-5 py-[6px] bg-[#854C348C] w-full ">
                                 <div className="flex items-center justify-between">
                                     <Link href="/profile">
-                                        <div className="border border-white/40 rounded-md w-[100px] h-[37.13px] flex items-center justify-start p-1">
+                                        <div className="border border-white/40 rounded-md flex items-center justify-start p-1">
                                             <Image
-                                                width={25.24}
-                                                height={25.24}
-                                                src={ProfileSvg}
+                                                width={35}
+                                                height={35}
+                                                src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : ProfileSvg} // Properly handle fallback
                                                 alt="Profile Picture"
-                                                className="mr-1"
+                                                className="mr-1 rounded-[16px]"
                                             />
+
                                             <div className="flex flex-col justify-center">
-                                                <h1 className="text-[8.64px] text-white font-semibold leading-tight">BRYAN</h1>
-                                                <div className="flex items-center  whitespace-nowrap">
-                                                <Image
-                                                    width={10}
-                                                    height={10}
-                                                    src={Prize}
-                                                    alt="Prize Icon"
-                                                />
-                                                <p className="text-[6px] font-semibold text-white leading-tight max-w-[36.95px]">
-                                                    Rank 1<span className="text-white/70"> / 13</span>
-                                                </p>
+                                                <h1 className="text-[10px] text-white font-semibold leading-tight">{username ? username.toUpperCase() : "Name"}</h1>
+                                                <div className="items-center  whitespace-nowrap">
+                                                    <div className="flex items-center">
+                                                        <Image
+                                                            width={15}
+                                                            height={15}
+                                                            src={Prize}
+                                                            alt="Prize Icon"
+                                                        />
+                                                        <p className="text-[8px] font-semibold text-white leading-tight max-w-">
+                                                            Level <span className="text-white/70">{level.level}</span>
+                                                        </p>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -146,67 +218,67 @@ export default function GameHome() {
                                                 alt="Gold Dollar Coin"
                                                 className="flex-shrink-0"
                                             />
-                                            <h1 className="text-[10px] leading-[32px] font-bold text-white">10000</h1>
+                                            <h1 className="leading-[40.28px] text-[12px] font-bold text-white">{userBalance ? userBalance : 0}</h1>
                                         </div>
                                     </Link>
                                     <div className="bg-[#1A314E] rounded-[25.71px] px-[6px] py-[4px] flex items-center">
-                
+
                                         <Link href="/chooseexchange">
                                             <div className="mr-[5px]">
                                                 <Image src={XAS} alt="XAS Icon" className="flex-shrink-0" />
                                             </div>
                                         </Link>
-                
+
                                         <div className="border-r-[1px] border-r-[#FFFFFF8C] h-[16px]"></div>
-                
+
                                         <div className="flex flex-col items-center justify-center px-[5px]">
-                                            <p className="text-[8px] leading-[12px] font-medium text-[#FFFFFFBF] text-center whitespace-nowrap">Pirate Token</p>
+                                            {/* <p className="text-[8px] leading-[12px] font-medium text-[#FFFFFFBF] text-center whitespace-nowrap">Pirate Token</p> */}
                                             <div className="flex items-center">
                                                 <Image width={12.34} height={12.34} src={golddollarcoin} alt="Gold Dollar Coin" />
                                                 <h1 className="text-[8.34px] font-bold leading-[16.46px] text-white">+1.17M</h1>
-                
+
                                                 <div>
-                                                    <div  onClick={handleBoostClick}>
-                                                        <Image  width={30.34} height={25.34} src={Info} alt="Info Icon" />
+                                                    <div onClick={handleBoostClick}>
+                                                        <Image width={30.34} height={25.34} src={Info} alt="Info Icon" />
                                                     </div>
-                
-                                                        {isOverlayVisible && (
-                                                                <div className="fixed bg-[#000000A6] inset-0 flex items-center justify-center z-50" onClick={closeOverlay}>
-                                                                    <div className="bg-gradient-to-b from-black  to-brown-dark  border-t-[4px] border-t-[#6B4C2D] rounded-lg w-full mt-60 h-[80%] flex flex-col items-center justify-center p-4 relative" onClick={(e) => e.stopPropagation()}>
-                                                                    <Image src={treasureChest} alt="treasureChest" className="-mt-24" />
-                                                                    <h2 className="text-[24px] leading-[32px] font-semibold text-white">Boost your Pirate Token</h2>
-                                                                    <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white">Tap the treasure hunt menu to buy upgrades for your exchange</p>
-                                                                    <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal">Earn even when offline</p>
-                
-                                                                    <Link href="/boosttreasurechest">
-                                                                        <div className="pt-10">
-                                                                            <button className="w-[365px] h-[48px] rounded-[16px] bg-[#00A6DE] text-center text-white text-[16px] leading-[16px] font-semibold">
-                                                                                Upgrade
-                                                                            </button>
-                                                                        </div>
-                                                                    </Link>
-                
-                
-                                                                    <button onClick={closeOverlay} className="absolute top-2 right-2">
-                                                                        <Image src={Cross} alt="CrossImg" />
-                                                                    </button>
-                                                                </div>
-                
+
+                                                    {isOverlayVisible && (
+                                                        <div className="fixed bg-[#000000A6] inset-0 flex items-center justify-center z-50" onClick={closeOverlay}>
+                                                            <div className="bg-gradient-to-b from-black  to-brown-dark  border-t-[4px] border-t-[#6B4C2D] rounded-lg w-full mt-60 h-[80%] flex flex-col items-center justify-center p-4 relative" onClick={(e) => e.stopPropagation()}>
+                                                                <Image src={treasureChest} alt="treasureChest" className="-mt-24" />
+                                                                <h2 className="text-[24px] leading-[32px] font-semibold text-white">Boost your Pirate Token</h2>
+                                                                <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white">Tap the treasure hunt menu to buy upgrades for your exchange</p>
+                                                                <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal">Earn even when offline</p>
+
+                                                                <Link href="/boosttreasurechest">
+                                                                    <div className="pt-10">
+                                                                        <button className="w-[365px] h-[48px] rounded-[16px] bg-[#00A6DE] text-center text-white text-[16px] leading-[16px] font-semibold">
+                                                                            Upgrade
+                                                                        </button>
+                                                                    </div>
+                                                                </Link>
+
+
+                                                                <button onClick={closeOverlay} className="absolute top-2 right-2">
+                                                                    <Image src={Cross} alt="CrossImg" />
+                                                                </button>
+                                                            </div>
+
                                                         </div>
                                                     )}
-                
+
                                                 </div>
-                
-                
+
+
                                             </div>
                                         </div>
-                
+
                                         <div className="border-r-[1px] pl-[1px]  border-r-[#FFFFFF8C] h-[16px]"></div>
-                
+
                                         <div className="pl-[5px]">
                                             <Link href="/gamesettings">
                                                 <div >
-                                                <Image width={15} height={15} src={settings} alt="Settings Icon" className="flex-shrink-0 w-auto h-auto" />
+                                                    <Image width={15} height={15} src={settings} alt="Settings Icon" className="flex-shrink-0 w-auto h-auto" />
                                                 </div>
                                             </Link>
                                         </div>
@@ -214,116 +286,116 @@ export default function GameHome() {
                                 </div>
                             </div>
                             <Image
-                             className="w-full h-full object-cover overflow-hidden"
-                             width={393}
-                             height={754}
-                             src={piratehomeBg}
-                             alt="piratehomeBg"
+                                className="w-full h-full object-cover overflow-hidden"
+                                width={393}
+                                height={754}
+                                src={piratehomeBg}
+                                alt="piratehomeBg"
                             />
                         </div>
-                        
+
                         <div>
                             <div className="absolute top-[54px] left-[290px]" onClick={handleDailyBonusClick}>
                                 <div className="flex flex-col items-center justify-center bg-white w-[63.92px] h-[49.74px] border-[1px] border-[#B30202] p-[5.06px] gap-y-[0.63px] rounded-[7.59px] ">
                                     <Image src={GiftBox} alt="GiftBoxImg" />
                                     <h2 className="text-[7.59px] leading-[9.49px] text-[#1A314E] whitespace-nowrap">Daily Rewards</h2>
-                                    <p className="text-[7.65px] leading-[15.19px] tracking-[0.15%] font-medium  text-[#1A314EBF]">19:02:23</p>
+                                    <p className="text-[7.65px] leading-[15.19px] tracking-[0.15%] font-medium  text-[#1A314EBF]">{userDailyRewardInfo ? timeLeft: "0s"}</p>
                                 </div>
                             </div>
 
                             {isDailyOverlayVisible && (
-                            <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50" onClick={closeDailyOverlay}>
-                                <div className="bg-[#000000] border-t-[4px]  border-t-[#FFFFFF40] rounded-lg w-full mt-60 h-[100%] my-[190px]  flex flex-col items-center justify-center p-4 relative slide-up" onClick={(e) => e.stopPropagation()}>
-                                    <Image src={BigGiftBox} alt="BigGiftBox" className="" />
-                                    <h2 className="text-[24px] leading-[32px] font-semibold text-white">Daily Reward</h2>
-                                    <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white">One of the ways to increase your coin daily</p>
+                                <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50" onClick={closeDailyOverlay}>
+                                    <div className="bg-[#000000] border-t-[4px]  border-t-[#FFFFFF40] rounded-lg w-full mt-60 h-[100%] my-[190px]  flex flex-col items-center justify-center p-4 relative slide-up" onClick={(e) => e.stopPropagation()}>
+                                        <Image src={BigGiftBox} alt="BigGiftBox" className="" />
+                                        <h2 className="text-[24px] leading-[32px] font-semibold text-white">Daily Reward</h2>
+                                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white">One of the ways to increase your coin daily</p>
 
-                                    <div className="pt-[20px] flex items-center justify-center">
-                                        <div className="grid grid-cols-4 gap-[15px]">
-                                            <div>
-                                                <div className="flex flex-col w-[82.1px] border-[0.5px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center"  onClick={handleDayOneOverlay}>
-                                                    <h1 className="text-white">Day 1</h1>
-                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                    <p className="text-white">500</p>
+                                        <div className="pt-[20px] flex items-center justify-center">
+                                            <div className="grid grid-cols-4 gap-[15px]">
+                                                <div>
+                                                    <div className="flex flex-col w-[82.1px] border-[0.5px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center" onClick={handleDayOneOverlay}>
+                                                        <h1 className="text-white">Day 1</h1>
+                                                        <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                        <p className="text-white">500</p>
+                                                    </div>
+
+                                                    {/* Triggering the separate overlay component */}
+                                                    <DayOneOverlay isVisible={isDayOneOverlayVisible} closeOverlay={closeDayOneOverlay} />
                                                 </div>
 
-                                                 {/* Triggering the separate overlay component */}
-                                                <DayOneOverlay isVisible={isDayOneOverlayVisible} closeOverlay={closeDayOneOverlay} />
-                                            </div>
+                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                    <h1 className="text-white">Day 2</h1>
+                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                    <p className="text-white">1k</p>
+                                                </div>
 
-                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                <h1 className="text-white">Day 2</h1>
-                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                <p className="text-white">1k</p>
-                                            </div>
+                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                    <h1 className="text-white">Day 3</h1>
+                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                    <p className="text-white">2.5k</p>
+                                                </div>
 
-                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                <h1 className="text-white">Day 3</h1>
-                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                <p className="text-white">2.5k</p>
-                                            </div>
+                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                    <h1 className="text-white">Day 4</h1>
+                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                    <p className="text-white">5k</p>
+                                                </div>
 
-                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                <h1 className="text-white">Day 4</h1>
-                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                <p className="text-white">5k</p>
-                                            </div>
+                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                    <h1 className="text-white">Day 5</h1>
+                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                    <p className="text-white">15k</p>
+                                                </div>
 
-                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                <h1 className="text-white">Day 5</h1>
-                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                <p className="text-white">15k</p>
-                                            </div>
+                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                    <h1 className="text-white">Day 6</h1>
+                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                    <p className="text-white">25k</p>
+                                                </div>
 
-                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                <h1 className="text-white">Day 6</h1>
-                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                <p className="text-white">25k</p>
-                                            </div>
+                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                    <h1 className="text-white">Day 7</h1>
+                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                    <p className="text-white">50k</p>
+                                                </div>
 
-                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                <h1 className="text-white">Day 7</h1>
-                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                <p className="text-white">50k</p>
-                                            </div>
+                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                    <h1 className="text-white">Day 8</h1>
+                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                    <p className="text-white">100k</p>
+                                                </div>
 
-                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                <h1 className="text-white">Day 8</h1>
-                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                <p className="text-white">100k</p>
-                                            </div>
+                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                    <h1 className="text-white">Day 9</h1>
+                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                    <p className="text-white">250k</p>
+                                                </div>
 
-                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                <h1 className="text-white">Day 9</h1>
-                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                <p className="text-white">250k</p>
-                                            </div>
-
-                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                <h1 className="text-white">Day 10</h1>
-                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                <p className="text-white">500k</p>
+                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                    <h1 className="text-white">Day 10</h1>
+                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                    <p className="text-white">500k</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    
 
-                                    <button onClick={closeDailyOverlay} className="absolute top-2 right-2">
-                                        <Image src={Cross} alt="CrossImg" />
-                                    </button>
+
+                                        <button onClick={closeDailyOverlay} className="absolute top-2 right-2">
+                                            <Image src={Cross} alt="CrossImg" />
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
                         </div>
-                     
-                
-                
-                
-                
+
+
+
+
+
                         <div className="absolute top-28 -right-40 ">
                             <div className="relative">
                                 <div className="fadeImageContainer">
-                                    <Image  width={289} height={273} src={Island} alt="Island" />
+                                    <Image width={289} height={273} src={Island} alt="Island" />
                                 </div>
                                 <Link href="/inviteafriend">
                                     <div className="absolute top-[0px] left-[70px] ">
@@ -333,7 +405,7 @@ export default function GameHome() {
                                         <h1 className="text-[12.47px] leading-[18.7px] font-bold text-white text-center">Invite</h1>
                                     </div>
                                 </Link>
-                
+
                             </div>
                             <style jsx>{`
                                  .fadeImageContainer {
@@ -358,20 +430,20 @@ export default function GameHome() {
                                     );
                                 }
                             `}</style>
-                
+
                         </div>
                         <div className="absolute top-36 -left-10">
                             <Image src={boatHome} alt="boatHome" />
                         </div>
-                
+
                         <Link href="/tasklist">
                             <div className="absolute top-[240px] left-[25px] animate-bounce-up">
                                 <Image src={TaskForHunt} alt="TaskForHunt" />
                             </div>
                         </Link>
                         <div>
-                            <div className="absolute top-[380px] left-[180px]"  onClick={handleTap}>
-                
+                            <div className="absolute top-[380px] left-[180px]" onClick={handleTap}>
+
                                 <div className="tapcoin-animation">
                                     <Image src={TapCoin} alt="TapCoin" />
                                 </div>
@@ -391,7 +463,7 @@ export default function GameHome() {
                                 <div>
                                     <Image width={35.68} height={51.9} src={Prize} alt="PrizeSvg" />
                                 </div>
-                
+
                                 <h1 className="text-[10.76px] leading-[31.14px] font-semibold text-white">10000<span className="text-[8.57px] leading-[23.36px] font-semibold text-[#FFFFFFA6]">/15000</span></h1>
                             </div>
                         </div>
@@ -409,37 +481,37 @@ export default function GameHome() {
                             {isEnergyOverlayVisible && (
                                 <div className="fixed inset-0 bg-[#000000A6]  flex items-center justify-center z-50" onClick={closeEnergyBoostOverlay}>
                                     <div className="bg-gradient-to-b from-black  to-brown-dark  border-t-[4px] border-t-[#6B4C2D] rounded-lg w-full mt-60 h-[570px] flex flex-col items-center justify-center p-4 relative" onClick={(e) => e.stopPropagation()}>
-                                    <Image width={100} height={100} src={ BigLightning} alt=" BigLightning" className="-mt-52" />
-                                    <h2 className="pt-10 text-[24px] leading-[32px] font-semibold text-white">Energy Limit</h2>
-                                    <p className="pt-[2px] text-[12px] leading-[16px] tracking-[0.4px] text-center text-white">Increase the amount of energy you can earn per tap</p>
-                                    <div className="pt-[20px] flex items-center gap-[15px]">
-                                        <div className="flex items-center gap-[10px]">
-                                            <Image width={43} height={43} src={BigCoin} alt="BigCoin" />
-                                            <h1 className="text-[32.25px] leading-[43px] tracking-[1.08px] font-semibold text-white">5000</h1>
+                                        <Image width={100} height={100} src={BigLightning} alt=" BigLightning" className="-mt-52" />
+                                        <h2 className="pt-10 text-[24px] leading-[32px] font-semibold text-white">Energy Limit</h2>
+                                        <p className="pt-[2px] text-[12px] leading-[16px] tracking-[0.4px] text-center text-white">Increase the amount of energy you can earn per tap</p>
+                                        <div className="pt-[20px] flex items-center gap-[15px]">
+                                            <div className="flex items-center gap-[10px]">
+                                                <Image width={43} height={43} src={BigCoin} alt="BigCoin" />
+                                                <h1 className="text-[32.25px] leading-[43px] tracking-[1.08px] font-semibold text-white">5000</h1>
+                                            </div>
+                                            <div className="flex items-center gap-[10px]">
+                                                <Image width={10.75} height={10.75} src={BigDot} alt="BigDot" />
+                                                <h1 className="text-[#FFFFFFBF] text-[32.25px] leading-[43px] font-normal tracking-[1.08px]">Level 1</h1>
+                                            </div>
                                         </div>
-                                        <div className="flex items-center gap-[10px]">
-                                            <Image width={10.75} height={10.75} src={BigDot} alt="BigDot" />
-                                            <h1 className="text-[#FFFFFFBF] text-[32.25px] leading-[43px] font-normal tracking-[1.08px]">Level 1</h1>
-                                        </div>
+
+
+                                        <Link href="/boosttreasurechest">
+                                            <div className="pt-10 -mb-[25px]">
+                                                <button className="w-[365px] h-[48px] rounded-[16px] bg-[#00A6DE] text-center text-white text-[16px] leading-[16px] font-semibold">
+                                                    Upgrade
+                                                </button>
+                                            </div>
+                                        </Link>
+
+
+                                        <button onClick={closeEnergyBoostOverlay} className="absolute top-2 right-2">
+                                            <Image src={Cross} alt="CrossImg" />
+                                        </button>
                                     </div>
-                
-                
-                                    <Link href="/boosttreasurechest">
-                                        <div className="pt-10 -mb-[25px]">
-                                            <button className="w-[365px] h-[48px] rounded-[16px] bg-[#00A6DE] text-center text-white text-[16px] leading-[16px] font-semibold">
-                                                Upgrade
-                                            </button>
-                                        </div>
-                                    </Link>
-                
-                
-                                    <button onClick={closeEnergyBoostOverlay} className="absolute top-2 right-2">
-                                        <Image src={Cross} alt="CrossImg" />
-                                    </button>
+
                                 </div>
-                
-                        </div>
-                )}
+                            )}
                         </div>
                     </div>
                 </div>
@@ -452,9 +524,9 @@ export default function GameHome() {
                 </audio>
             </div>
 
-                  
-                
-                    
+
+
+
         </>
     )
 }

@@ -4,11 +4,6 @@ import "./globals.css";
 
 
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 86463b98833a248da053514a0a44c3a5c343ac15
 // Import Inter font from Google Fonts
 const inter = Inter({
   subsets: ["latin"],
