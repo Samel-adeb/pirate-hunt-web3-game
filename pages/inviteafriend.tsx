@@ -48,7 +48,7 @@ export default function InviteAFriend() {
                         </div>
                     </div>
 
-                    <div className="absolute top-[40px] left-10" onClick={handleBackClick} style={{ cursor: 'pointer' }}>
+                    <div className="absolute top-[20px] left-[20px]" onClick={handleBackClick} style={{ cursor: 'pointer' }}>
                         <Image src={BackButton} alt="BackButton" />
                     </div>
 
