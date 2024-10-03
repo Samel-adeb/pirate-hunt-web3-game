@@ -6,41 +6,49 @@ import BlueSail from "../public/assets/BlueSail.png";
 import Cap from "../public/assets/Cap.png";
 import telegramSvg from "../public/assets/telegramSvg.svg";
 import TwitterSvg from "../public/assets/TwitterSvg.svg";
-import { useState} from "react";
+import { useState } from "react";
 import { useRouter } from 'next/navigation'; // Using App Router's useRouter
 import { GameNavbar } from '@/app/components/GameNavbar';
+import { useAppContext } from '@/context';
+import { getUserInfo, regusterUser } from '@/scripts';
 
 export default function GameLoad() {
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
+    const { userId, username, setUsername, setLevel, setUser_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
+    const load = async () => {
+        await regusterUser(userId, username);
+        await getUserInfo(userId, setUsername, setLevel, setUser_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo);
+    }
 
     // Automatically start playing the background music
     useEffect(() => {
-      if (audioRef.current) {
-        audioRef.current.volume = 0.5; // Adjust the volume (0.0 to 1.0)
-        audioRef.current.play().catch((err) => {
-          console.error('Failed to play audio:', err);
-        });
-      }
+        load();
+        if (audioRef.current) {
+            audioRef.current.volume = 0.5; // Adjust the volume (0.0 to 1.0)
+            audioRef.current.play().catch((err) => {
+                console.error('Failed to play audio:', err);
+            });
+        }
     }, []);
 
 
     const [isLoading, setIsLoading] = useState(true); // State for loader
     const router = useRouter();
-  
+
     useEffect(() => {
-      // Set a timeout to simulate loading and redirect
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-        router.push('/gamehome'); // Redirect to gamehome page
-      }, 8000); // 3 seconds timeout
-  
-      return () => clearTimeout(timer); // Clean up the timer on component unmount
+        // Set a timeout to simulate loading and redirect
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+            router.push('/gamehome'); // Redirect to gamehome page
+        }, 8000); // 3 seconds timeout
+
+        return () => clearTimeout(timer); // Clean up the timer on component unmount
     }, [router]);
 
-    
+
     return (
-  
+
         <div>
             <div className="relative h-screen">
                 <GameNavbar />
@@ -55,7 +63,7 @@ export default function GameLoad() {
                         </div>
                         <div className="flex flex-col items-center justify-center">
                             <h2 className="pt-16 text-center text-white text-[14px] leading-[24px] font-bold tracking-[0.15%]">Connect with us</h2>
-            
+
                             <div className="flex items-center gap-[10px]">
                                 <div className="flex items-center gap-[2px] text-white text-[8.78px] leading-[13.9px] font-medium">
                                     <Image src={telegramSvg} alt="telegramSvg" />
@@ -66,19 +74,19 @@ export default function GameLoad() {
                                     Twitter:<Link href="/" className="underline">x.com/piratequest</Link>
                                 </div>
                             </div>
-                      </div>
+                        </div>
                     </div>
                 </div>
-                  {/* Loader overlay */}
+                {/* Loader overlay */}
                 {isLoading && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-opacity-75 z-50">
-                    {/* Loading Image */}
-                    <Image width={100} height={100} src={Cap} alt="Cap" />
-                    {/* Loading Text with Circular Dots */}
-                    <p className="text-white text-[20px] font-semibold mt-4">
-                    Loading<span className="dot-anim"></span>
-                    </p>
-                    <style jsx>{`
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-opacity-75 z-50">
+                        {/* Loading Image */}
+                        <Image width={100} height={100} src={Cap} alt="Cap" />
+                        {/* Loading Text with Circular Dots */}
+                        <p className="text-white text-[20px] font-semibold mt-4">
+                            Loading<span className="dot-anim"></span>
+                        </p>
+                        <style jsx>{`
                     .dot-anim {
                         display: inline-flex;
                         margin-left: 8px;
@@ -122,7 +130,7 @@ export default function GameLoad() {
                         }
                     }
                     `}</style>
-                </div>
+                    </div>
                 )}
             </div>
 
@@ -132,6 +140,6 @@ export default function GameLoad() {
                 Your browser does not support the audio element.
             </audio>
         </div>
-        
+
     );
 }
