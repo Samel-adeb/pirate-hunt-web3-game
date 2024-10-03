@@ -1,3 +1,4 @@
+<<<<<<< HEAD:trash/page_.tsx
 'use client';
 
 
@@ -32,4 +33,15 @@ export default function Home() {
       </button>
     </div>
   );
+=======
+
+
+import { redirect } from "next/navigation";
+
+
+export default function Home() {
+  redirect("/gameload");
+  
+  return null; 
+>>>>>>> 86463b98833a248da053514a0a44c3a5c343ac15:app/page.tsx
 }

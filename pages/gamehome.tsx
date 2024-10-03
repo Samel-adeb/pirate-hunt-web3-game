@@ -19,12 +19,15 @@ import lightning from "../public/assets/lightning.svg";
 import treasureChest from "../public/assets/treasure chest.svg";
 import Cross from "../public/assets/Cross.svg";
 import GiftBox from "../public/assets/gift box.png";
+import BigGiftBox from "../public/assets/GiftBox.png";
 import BigLightning from "../public/assets/BigLightning.svg";
+import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
 import BigCoin from "../public/assets/BigCoin.svg";
 import BigDot from "../public/assets/BigDot.svg";
 import Coinfromtap from "../public/assets/Coinfromtap.svg";
 import { useEffect, useRef } from 'react';
 import { useState } from "react";
+import DayOneOverlay from "@/app/components/DayOneOverlay";
 // import ProgressBar from "@/app/components/ProgressBar";
 
 export default function GameHome() {
@@ -45,6 +48,10 @@ export default function GameHome() {
     const [coins, setCoins] = useState<number[]>([]);
 
     const handleTap = () => {
+
+        if (navigator.vibrate) {
+            navigator.vibrate(200);  // 200ms vibration
+        }
       // Create a new coin element by pushing a unique ID
       const newCoinId = Date.now(); // Use timestamp as a unique ID
       setCoins((prevCoins) => [...prevCoins, newCoinId]);
@@ -75,6 +82,26 @@ export default function GameHome() {
         setOverlayVisible(false);
     };
 
+    const [isDailyOverlayVisible, setIsDailyOverlayVisible] = useState(false);
+
+    const handleDailyBonusClick = () => {
+        setIsDailyOverlayVisible(true);
+    };
+
+    const closeDailyOverlay = () => {
+        setIsDailyOverlayVisible(false);
+    };
+
+    const [isDayOneOverlayVisible, setIsDayOneOverlayVisible] = useState(false);
+
+    const handleDayOneOverlay = () => {
+      setIsDayOneOverlayVisible(true);
+    };
+  
+    const closeDayOneOverlay = () => {
+      setIsDayOneOverlayVisible(false);
+    };
+
 
     return (
         <>
@@ -82,7 +109,7 @@ export default function GameHome() {
                 <div className="h-screen">
                     <GameNavbar />
                     <div className="relative overflow-hidden">
-                        <div className=" relative w-full bg-cover bg-center overflow-hidden h-[720px]">
+                        <div className=" relative w-full bg-cover bg-center overflow-hidden h-[800px]">
                             <div className="absolute px-5 py-[6px] bg-[#854C348C] w-full h-[51px]">
                                 <div className="flex items-center justify-between">
                                     <Link href="/profile">
@@ -144,7 +171,7 @@ export default function GameHome() {
                                                     </div>
                 
                                                         {isOverlayVisible && (
-                                                                <div className="fixed inset-0 flex items-center justify-center z-50" onClick={closeOverlay}>
+                                                                <div className="fixed bg-[#000000A6] inset-0 flex items-center justify-center z-50" onClick={closeOverlay}>
                                                                     <div className="bg-gradient-to-b from-black  to-brown-dark  border-t-[4px] border-t-[#6B4C2D] rounded-lg w-full mt-60 h-[80%] flex flex-col items-center justify-center p-4 relative" onClick={(e) => e.stopPropagation()}>
                                                                     <Image src={treasureChest} alt="treasureChest" className="-mt-24" />
                                                                     <h2 className="text-[24px] leading-[32px] font-semibold text-white">Boost your Pirate Token</h2>
@@ -194,15 +221,101 @@ export default function GameHome() {
                              alt="piratehomeBg"
                             />
                         </div>
-                        <Link href="/tasklist">
-                            <div className="absolute top-[54px] left-[290px]">
-                                <div className="flex flex-col items-center justify-center bg-white w-[63.92px] h-[49.74px] border-[1px] border-[#B30202] p-[5.06px] gap-y-[0.63px] rounded-[7.59px]">
+                        
+                        <div>
+                            <div className="absolute top-[54px] left-[290px]" onClick={handleDailyBonusClick}>
+                                <div className="flex flex-col items-center justify-center bg-white w-[63.92px] h-[49.74px] border-[1px] border-[#B30202] p-[5.06px] gap-y-[0.63px] rounded-[7.59px] ">
                                     <Image src={GiftBox} alt="GiftBoxImg" />
                                     <h2 className="text-[7.59px] leading-[9.49px] text-[#1A314E] whitespace-nowrap">Daily Rewards</h2>
                                     <p className="text-[7.65px] leading-[15.19px] tracking-[0.15%] font-medium  text-[#1A314EBF]">19:02:23</p>
                                 </div>
                             </div>
-                        </Link>
+
+                            {isDailyOverlayVisible && (
+                            <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50" onClick={closeDailyOverlay}>
+                                <div className="bg-[#000000] border-t-[4px]  border-t-[#FFFFFF40] rounded-lg w-full mt-60 h-[100%] my-[190px]  flex flex-col items-center justify-center p-4 relative slide-up" onClick={(e) => e.stopPropagation()}>
+                                    <Image src={BigGiftBox} alt="BigGiftBox" className="" />
+                                    <h2 className="text-[24px] leading-[32px] font-semibold text-white">Daily Reward</h2>
+                                    <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white">One of the ways to increase your coin daily</p>
+
+                                    <div className="pt-[20px] flex items-center justify-center">
+                                        <div className="grid grid-cols-4 gap-[15px]">
+                                            <div>
+                                                <div className="flex flex-col w-[82.1px] border-[0.5px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center"  onClick={handleDayOneOverlay}>
+                                                    <h1 className="text-white">Day 1</h1>
+                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                    <p className="text-white">500</p>
+                                                </div>
+
+                                                 {/* Triggering the separate overlay component */}
+                                                <DayOneOverlay isVisible={isDayOneOverlayVisible} closeOverlay={closeDayOneOverlay} />
+                                            </div>
+
+                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                <h1 className="text-white">Day 2</h1>
+                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                <p className="text-white">1k</p>
+                                            </div>
+
+                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                <h1 className="text-white">Day 3</h1>
+                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                <p className="text-white">2.5k</p>
+                                            </div>
+
+                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                <h1 className="text-white">Day 4</h1>
+                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                <p className="text-white">5k</p>
+                                            </div>
+
+                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                <h1 className="text-white">Day 5</h1>
+                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                <p className="text-white">15k</p>
+                                            </div>
+
+                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                <h1 className="text-white">Day 6</h1>
+                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                <p className="text-white">25k</p>
+                                            </div>
+
+                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                <h1 className="text-white">Day 7</h1>
+                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                <p className="text-white">50k</p>
+                                            </div>
+
+                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                <h1 className="text-white">Day 8</h1>
+                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                <p className="text-white">100k</p>
+                                            </div>
+
+                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                <h1 className="text-white">Day 9</h1>
+                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                <p className="text-white">250k</p>
+                                            </div>
+
+                                            <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
+                                                <h1 className="text-white">Day 10</h1>
+                                                <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                <p className="text-white">500k</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <button onClick={closeDailyOverlay} className="absolute top-2 right-2">
+                                        <Image src={Cross} alt="CrossImg" />
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                        </div>
+                     
                 
                 
                 
@@ -273,7 +386,7 @@ export default function GameHome() {
                                 </div>
                             ))}
                         </div>
-                        <div className="absolute top-[622px] left-[11px]">
+                        <div className="absolute top-[700px] left-[11px]">
                             <div className="flex items-center  p-[10.38px] bg-[#1A314E] border-[3.24px] border-white max-w-[165.97px] h-[51.9px] rounded-[20.76px] gap-[2px]">
                                 <div>
                                     <Image width={35.68} height={51.9} src={Prize} alt="PrizeSvg" />
@@ -286,7 +399,7 @@ export default function GameHome() {
                             <ProgressBar  progress={60} />
                         </div> */}
                         {/* Boost */}
-                        <div className="absolute top-[622px] left-[246.53px]" onClick={handleEnergyBoostClick}>
+                        <div className="absolute top-[700px] left-[246.53px]" onClick={handleEnergyBoostClick}>
                             <div className="bg-[#1A314E] px-[7.75px] max-w-[133.47px] h-[51px] flex items-center gap-[5px] border-[2.8px] border-[#FFFFFF] rounded-[20.87px] ">
                                 <div>
                                     <Image src={lightning} alt="lightning" />
@@ -294,7 +407,7 @@ export default function GameHome() {
                                 <h1 className="text-[10.87px] leading-[25.02px] font-semibold text-white">1000<span className="text-[8.51px] leading-[18.77px] text-[#FFFFFFA6]">/1000</span></h1>
                             </div>
                             {isEnergyOverlayVisible && (
-                                <div className="fixed inset-0 flex items-center justify-center z-50" onClick={closeEnergyBoostOverlay}>
+                                <div className="fixed inset-0 bg-[#000000A6]  flex items-center justify-center z-50" onClick={closeEnergyBoostOverlay}>
                                     <div className="bg-gradient-to-b from-black  to-brown-dark  border-t-[4px] border-t-[#6B4C2D] rounded-lg w-full mt-60 h-[570px] flex flex-col items-center justify-center p-4 relative" onClick={(e) => e.stopPropagation()}>
                                     <Image width={100} height={100} src={ BigLightning} alt=" BigLightning" className="-mt-52" />
                                     <h2 className="pt-10 text-[24px] leading-[32px] font-semibold text-white">Energy Limit</h2>

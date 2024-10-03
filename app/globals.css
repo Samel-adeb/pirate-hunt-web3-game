@@ -19,6 +19,29 @@ body {
   font-style: normal;
 }
 
+@media screen  and (max-width: 475px) {
+  html,body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+}
+
+@media screen  and (max-width: 375px) {
+  html,body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+}
+
+
 
 @keyframes slideInFromBottom {
   0% {
@@ -59,36 +82,13 @@ body {
 }
 
 
-@keyframes waveEffect {
-  0% {
-    transform: translateY(0);
-  }
 
-  50% {
-    transform: translateY(-10px);
-  }
-
-  100% {
-    transform: translateY(0);
-  }
-}
 
 .aliveImage {
   animation: waveEffect 5s infinite ease-in-out;
 }
 
 
-@keyframes ripple {
-  0% {
-    transform: scale(0.9);
-    opacity: 1;
-  }
-
-  100% {
-    transform: scale(1.2);
-    opacity: 0;
-  }
-}
 
 .tapcoin-animation {
   transition: transform 0.2s ease-in-out;
@@ -133,4 +133,20 @@ a {
 :root{
   --bs-warning: #ffc247!important;
   --bs-warning-rgb: 255, 194, 71!important;
+}
+
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease-out;
 }

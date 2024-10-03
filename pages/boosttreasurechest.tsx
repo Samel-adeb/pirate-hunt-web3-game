@@ -4,14 +4,15 @@ import { useState } from 'react';
 import "../app/globals.css";
 
 import MoneyBagChest from "../public/assets/MoneyBagChest.png";
-import Locked from "../public/assets/Locked.svg";
+
 import Boost1 from "../public/assets/Boost1.png";
+import Boost1Svg from "../public/assets/BoostSvg.svg";
 import Boost2 from "../public/assets/Boost2.png";
 import Boost3 from "../public/assets/Boost3.png";
 import Boost4 from "../public/assets/Boost4.png";
 import Boost5 from "../public/assets/Boost5.png";
 import Boost6 from "../public/assets/Boost6.png";
-import EnlargedBoost1 from "../public/assets/Boost1.png";
+
 import Unlocked from "../public/assets/unlocked.svg";
 import Link from "next/link";
 
@@ -50,13 +51,11 @@ export default function BoostTreasureChest() {
 
                 <div className="pt-10 pb-10">
                     <div className="flex items-center justify-between mx-auto rounded-[8px] px-[16px] py-[8px] border-[1px] border-[#FFC247A6] w-[361px] hover:bg-[#FFC247]" onClick={handleClick}>
-                        <div className="relative">
+                        <div>
                             <Image src={Boost1} alt="Boost1" />
-
-                            <div className="absolute top-[0px]">
-                                <Image src={Locked} alt="Locked" />
-                            </div>
                         </div>
+
+                            
                             
                         <div className="flex flex-col items-right gap-y-[10px]">
                             <h2 className="text-[16px] leading-[16px] tracking-[0.4px] text-white font-bold">10,000-50,000</h2>
@@ -77,10 +76,8 @@ export default function BoostTreasureChest() {
                                 {/* Enlarged image */}
                                 <div className="pt-10">
                                     <div className="relative">
-                                        <Image src={Boost1} alt="Boost1" width={318.23} height={323} />
-                                        <div className="absolute top-0">
-                                            <Image src={Locked} alt="Locked" width={318.23} height={323} />
-                                        </div>
+                                        <Image src={Boost1Svg} alt="Boost1Svg" width={318.23} height={323} />
+                                        
                                         {/* Buttons */}
                                         <div>
                                             <div className="flex justify-center gap-4 mt-4">
@@ -104,7 +101,7 @@ export default function BoostTreasureChest() {
                                                         </div>
                                                         <div className="relative">
                                                             {/* Enlarged Boost1 Image (without Locked) */}
-                                                            <Image src={EnlargedBoost1} alt="EnlargedBoost1" width={318.23} height={323} />
+                                                            <Image src={Boost1Svg} alt="Boost1Svg" width={318.23} height={323} />
                                                             {/* Button for Claiming Token */}
                                                             <Link href="/gamehome">
                                                                 <div className="flex justify-center mt-4">
@@ -127,13 +124,11 @@ export default function BoostTreasureChest() {
 
                     <div className="pt-[10px]">
                         <div className="flex items-center justify-between mx-auto rounded-[8px] px-[16px] py-[8px] border-[1px] border-[#FFC247A6] w-[361px] hover:bg-[#FFC247]">
-                            <div className="relative">
+                            <div>
                                 <Image src={Boost2} alt="Boost2" />
-
-                                <div className="absolute top-0">
-                                    <Image src={Locked} alt="Locked" />
-                                </div>
                             </div>
+
+                               
                             <div className="flex flex-col items-right gap-y-[10px]">
                                 <h2 className="text-[16px] leading-[16px] tracking-[0.4px] text-white font-bold">50,000-500,000</h2>
                                 <p className="text-[20px] leading-[16px] tracking-[0.4px] text-white font-semibold text-right">$2</p>
@@ -144,13 +139,11 @@ export default function BoostTreasureChest() {
 
                     <div className="pt-[10px]">
                         <div className="flex items-center justify-between mx-auto rounded-[8px] px-[16px] py-[8px] border-[1px] border-[#FFC247A6] w-[361px] hover:bg-[#FFC247]">
-                            <div className="relative">
+                            <div>
                                 <Image src={Boost3} alt="Boost3" />
-
-                                <div className="absolute top-0">
-                                    <Image src={Locked} alt="Locked" />
-                                </div>
                             </div>
+
+                               
                             <div className="flex flex-col items-right gap-y-[10px]">
                                 <h2 className="text-[16px] leading-[16px] tracking-[0.4px] text-white font-bold">1,000,000-10,000,000</h2>
                                 <p className="text-[20px] leading-[16px] tracking-[0.4px] text-white font-semibold text-right">$5</p>
@@ -161,13 +154,11 @@ export default function BoostTreasureChest() {
 
                     <div className="pt-[10px]">
                         <div className="flex items-center justify-between mx-auto rounded-[8px] px-[16px] py-[8px] border-[1px] border-[#FFC247A6] w-[361px] hover:bg-[#FFC247]">
-                            <div className="relative">
+                            <div>
                                 <Image src={Boost4} alt="Boost4" />
-
-                                <div className="absolute top-0">
-                                    <Image src={Locked} alt="Locked" />
-                                </div>
                             </div>
+
+                              
                             <div className="flex flex-col items-right gap-y-[10px]">
                                 <h2 className="text-[16px] leading-[16px] tracking-[0.4px] text-white font-bold">10,000-100,000</h2>
                                 <p className="text-[20px] leading-[16px] tracking-[0.4px] text-white font-semibold text-right">$2</p>
@@ -178,13 +169,11 @@ export default function BoostTreasureChest() {
 
                     <div className="pt-[10px]">
                         <div className="flex items-center justify-between mx-auto rounded-[8px] px-[16px] py-[8px] border-[1px] border-[#FFC247A6] w-[361px] hover:bg-[#FFC247]">
-                            <div className="relative">
+                            <div>
                                 <Image src={Boost5} alt="Boost5" />
-
-                                <div className="absolute top-0">
-                                    <Image src={Locked} alt="Locked" />
-                                </div>
                             </div>
+
+                               
                             <div className="flex flex-col items-right gap-y-[10px]">
                                 <h2 className="text-[16px] leading-[16px] tracking-[0.4px] text-white font-bold">50,000-500,000</h2>
                                 <p className="text-[20px] leading-[16px] tracking-[0.4px] text-white font-semibold text-right">$5</p>
@@ -195,13 +184,11 @@ export default function BoostTreasureChest() {
 
                     <div className="pt-[10px]">
                         <div className="flex items-center justify-between mx-auto rounded-[8px] px-[16px] py-[8px] border-[1px] border-[#FFC247A6] w-[361px] hover:bg-[#FFC247]">
-                            <div className="relative">
+                            <div>
                                 <Image src={Boost6} alt="Boost6" />
-
-                                <div className="absolute top-0">
-                                    <Image src={Locked} alt="Locked" />
-                                </div>
                             </div>
+
+                               
                             <div className="flex flex-col items-right gap-y-[10px]">
                                 <h2 className="text-[16px] leading-[16px] tracking-[0.4px] text-white font-bold">100,000-1,000,000</h2>
                                 <p className="text-[20px] leading-[16px] tracking-[0.4px] text-white font-semibold text-right">$10</p>
