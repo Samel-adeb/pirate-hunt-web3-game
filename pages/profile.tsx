@@ -21,7 +21,7 @@ import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
 import Link from "next/link";
 import { useAppContext } from "@/context";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
-import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect } from "react";
+import { useEffect } from "react";
 import { getAllRankInfo } from "@/scripts";
 
 
@@ -38,7 +38,16 @@ export default function Profile() {
     useEffect(() => {
         getAllRank();
     }, [])
-
+    interface User {
+        user_id: number;
+        username: string;
+        rank: number;
+        level: number;
+        level_name: string;
+        level_image_url: string;
+        coin_balance: string;
+    }
+    
     return (
         <>
 
@@ -108,7 +117,7 @@ export default function Profile() {
                             {
                                 allRanks ? (
 
-                                    allRanks.map((user: { user_id: Key | null | undefined; level_image_url: string | number; username: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; level: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; coin_balance: { toLocaleString: () => string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; }; rank: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; }) => (
+                                    allRanks.map((user:User) => (
                                         <div className="pt-[6px]" key={user.user_id}> {/* Add a unique key for each mapped element */}
                                             <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
                                                 <div className="flex items-center gap-[10px]">
@@ -117,7 +126,7 @@ export default function Profile() {
                                                     </div>
 
                                                     <div className="flex items-center gap-[5px]">
-                                                        <Image src={user.level_image_url && process.env.NEXT_PUBLIC_API_URL ? process.env.NEXT_PUBLIC_API_URL + user.level_image_url : user1} alt="user" className="rounded-[50px]" width='50' height='50' /> {/* Use user's image or fallback to user1 */}
+                                                        <Image src={user.level_image_url ? process.env.NEXT_PUBLIC_API_URL + user.level_image_url : user1} alt="user" className="rounded-[50px]" width='50' height='50' /> {/* Use user's image or fallback to user1 */}
                                                         <div>
                                                             <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">
                                                                 {user.username} {/* Display the user's name */}
