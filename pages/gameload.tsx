@@ -16,7 +16,6 @@ export default function GameLoad() {
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const { userId, username, setUsername, setLevel, setUser_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
-
     const load = async () => {
         await regusterUser(userId, username);
         await getUserInfo(userId, setUsername, setLevel, setUser_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo);

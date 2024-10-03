@@ -29,18 +29,39 @@ import { useEffect, useRef } from 'react';
 import { useAppContext } from '@/context';
 import { useState } from "react";
 import DayOneOverlay from "@/app/components/DayOneOverlay";
+import { addTapTransaction } from "@/scripts";
+
 // import ProgressBar from "@/app/components/ProgressBar";
 
+
 export default function GameHome() {
-    const { username, level, userBalance, setUserBalance, userRank, userDailyRewardInfo, user_tap_rate_level } = useAppContext();
-    let [energyLevel, setEnergyLevel] = useState(0);
+
+    const { userId, username, level, userBalance, setUserBalance, userRank, userDailyRewardInfo, user_tap_rate_level } = useAppContext();
+    const [energyLevel, setEnergyLevel] = useState<number>(0);
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const ENERGY_CAPACITY_VALUE = 1000; // Maximum energy capacity
-    let [fillText, setFillText] = useState("");
-    let [fillWidth, setFillWidth] = useState(100);
-    const [coins, setCoins] = useState<number[]>([]);
     const [timeLeft, setTimeLeft] = useState<string>('');
     const targetDate = userDailyRewardInfo ? new Date(userDailyRewardInfo.next_claim_time).getTime() : new Date();
+    const [coins, setCoins] = useState<number[]>([]);
+    const [tempbal, setTempbal] = useState<number>(0);
+
+
+
+    useEffect(() => {
+        if (localStorage.tempbal) {
+            const bal = parseInt(localStorage.tempbal);
+            if (bal > 0) {
+                addTapTransaction(userId, bal);
+                setUserBalance(parseInt(userBalance)+bal);
+                localStorage.removeItem('tempbal');
+            }
+            
+        }
+        
+
+
+    }, []);
+
 
     // Automatically start playing the background music
     useEffect(() => {
@@ -52,10 +73,14 @@ export default function GameHome() {
             });
         }
 
+        // Retrieve energy level from local storage or set it to maximum
+        const storedEnergy = parseInt(localStorage.getItem('energy') || '') || ENERGY_CAPACITY_VALUE;
+        setEnergyLevel(storedEnergy);
+
         // Countdown logic
         const interval = setInterval(() => {
             const now = new Date().getTime(); // Current time
-            const difference = targetDate - now; // Difference in milliseconds
+            const difference = targetDate.valueOf() - now; // Difference in milliseconds
 
             if (difference > 0) {
                 // Calculate remaining time in days, hours, minutes, and seconds
@@ -75,42 +100,36 @@ export default function GameHome() {
         return () => clearInterval(interval);
     }, [targetDate]);
 
-
-    function setFill() {
-
-        if (energyLevel > ENERGY_CAPACITY_VALUE) {
-            setEnergyLevel(ENERGY_CAPACITY_VALUE);
-        }
-        var levelfrac = energyLevel / ENERGY_CAPACITY_VALUE;
-        setFillText('' + energyLevel + '/' + ENERGY_CAPACITY_VALUE);
-        setFillWidth(100 * levelfrac);
-    }
-
     // Function to update energy level over time
-    function updateEnergyLevel() {
-        // Define constants
-        if (typeof window !== 'undefined') {
-            const RECHARGE_SPEED = 1; // Energy increase per second when below maximum
-            const currentTime = Date.now();
-            const lastUpdateTime = parseInt(localStorage.getItem('lastUpdateTime') || '') || currentTime;
-            const elapsedTime = (currentTime - lastUpdateTime) / 1000; // Convert milliseconds to seconds
-            energyLevel = parseInt(localStorage.getItem('energy') || '') || ENERGY_CAPACITY_VALUE; // Retrieve from local storage or set to maximum
+    const updateEnergyLevel = () => {
+        const RECHARGE_SPEED = 1; // Energy increase per second when below maximum
+        const currentTime = Date.now();
+        const lastUpdateTime = parseInt(localStorage.getItem('lastUpdateTime') || '') || currentTime;
+        const elapsedTime = (currentTime - lastUpdateTime) / 1000; // Convert milliseconds to seconds
 
-            // If energy level is below maximum, increase it
-            if (energyLevel < ENERGY_CAPACITY_VALUE) {
-                const energyIncrease = RECHARGE_SPEED * elapsedTime;
-                energyLevel = Math.min(energyLevel + energyIncrease, ENERGY_CAPACITY_VALUE); // Ensure energy level doesn't exceed maximum
-                localStorage.setItem('energy', energyLevel.toString());
-            }
-
-            // Update last update time
-            localStorage.setItem('lastUpdateTime', currentTime.toString());
-            setFill();
-            return energyLevel;
+        // If energy level is below maximum, increase it
+        if (energyLevel < ENERGY_CAPACITY_VALUE) {
+            const energyIncrease = RECHARGE_SPEED * elapsedTime;
+            const newEnergyLevel = Math.min(energyLevel + energyIncrease, ENERGY_CAPACITY_VALUE); // Ensure energy level doesn't exceed maximum
+            setEnergyLevel(newEnergyLevel); // Update state
+            localStorage.setItem('energy', newEnergyLevel.toString()); // Store updated energy in local storage
         }
-    }
-    // Continuously update energy level every second
-    setInterval(updateEnergyLevel, 1000);
+
+        // Update last update time
+        localStorage.setItem('lastUpdateTime', currentTime.toString());
+    };
+
+    // Continuously update energy level every 5 seconds
+    useEffect(() => {
+
+        const energyInterval = setInterval(() => {
+            updateEnergyLevel();
+        }, 1000);
+
+        // Cleanup interval on component unmount
+        return () => clearInterval(energyInterval);
+    }, [energyLevel]); // This effect runs whenever energyLevel changes
+
 
 
 
@@ -127,6 +146,11 @@ export default function GameHome() {
         setTimeout(() => {
             setCoins((prevCoins) => prevCoins.filter((id) => id !== newCoinId));
         }, 2000);
+
+        setUserBalance(userBalance + user_tap_rate_level);
+        setTempbal(tempbal + user_tap_rate_level);
+        localStorage.setItem('tempbal', (tempbal + user_tap_rate_level).toString());
+        setEnergyLevel(energyLevel - user_tap_rate_level);
     };
 
     const [isOverlayVisible, setOverlayVisible] = useState(false);
@@ -178,7 +202,7 @@ export default function GameHome() {
                     <GameNavbar />
                     <div className="relative overflow-hidden">
                         <div className=" relative w-full bg-cover bg-center overflow-hidden h-[800px]">
-                            <div className="absolute px-5 py-[6px] bg-[#854C348C] w-full ">
+                            <div className="absolute px-[14px] py-[6px] bg-[#854C348C] w-full ">
                                 <div className="flex items-center justify-between">
                                     <Link href="/profile">
                                         <div className="border border-white/40 rounded-md flex items-center justify-start p-1">
@@ -190,7 +214,7 @@ export default function GameHome() {
                                                 className="mr-1 rounded-[16px]"
                                             />
 
-                                            <div className="flex flex-col justify-center">
+                                            <div className="flex flex-col justify-center px-[6px]">
                                                 <h1 className="text-[10px] text-white font-semibold leading-tight">{username ? username.toUpperCase() : "Name"}</h1>
                                                 <div className="items-center  whitespace-nowrap">
                                                     <div className="flex items-center">
@@ -235,11 +259,11 @@ export default function GameHome() {
                                             {/* <p className="text-[8px] leading-[12px] font-medium text-[#FFFFFFBF] text-center whitespace-nowrap">Pirate Token</p> */}
                                             <div className="flex items-center">
                                                 <Image width={12.34} height={12.34} src={golddollarcoin} alt="Gold Dollar Coin" />
-                                                <h1 className="text-[8.34px] font-bold leading-[16.46px] text-white">+1.17M</h1>
+                                                <h1 className="text-[8.34px] p-2 font-bold leading-[16.46px] text-white">+1.17M</h1>
 
                                                 <div>
                                                     <div onClick={handleBoostClick}>
-                                                        <Image width={30.34} height={25.34} src={Info} alt="Info Icon" />
+                                                        <Image width={20} height={20} src={Info} alt="Info Icon" />
                                                     </div>
 
                                                     {isOverlayVisible && (
@@ -278,7 +302,7 @@ export default function GameHome() {
                                         <div className="pl-[5px]">
                                             <Link href="/gamesettings">
                                                 <div >
-                                                    <Image width={15} height={15} src={settings} alt="Settings Icon" className="flex-shrink-0 w-auto h-auto" />
+                                                    <Image width={25} height={25} src={settings} alt="Settings Icon" className="flex-shrink-0 w-auto h-auto" />
                                                 </div>
                                             </Link>
                                         </div>
@@ -299,7 +323,7 @@ export default function GameHome() {
                                 <div className="flex flex-col items-center justify-center bg-white w-[63.92px] h-[49.74px] border-[1px] border-[#B30202] p-[5.06px] gap-y-[0.63px] rounded-[7.59px] ">
                                     <Image src={GiftBox} alt="GiftBoxImg" />
                                     <h2 className="text-[7.59px] leading-[9.49px] text-[#1A314E] whitespace-nowrap">Daily Rewards</h2>
-                                    <p className="text-[7.65px] leading-[15.19px] tracking-[0.15%] font-medium  text-[#1A314EBF]">{userDailyRewardInfo ? timeLeft: "0s"}</p>
+                                    <p className="text-[7.65px] leading-[15.19px] tracking-[0.15%] font-medium  text-[#1A314EBF]">{userDailyRewardInfo ? timeLeft : "0s"}</p>
                                 </div>
                             </div>
 
@@ -464,7 +488,7 @@ export default function GameHome() {
                                     <Image width={35.68} height={51.9} src={Prize} alt="PrizeSvg" />
                                 </div>
 
-                                <h1 className="text-[10.76px] leading-[31.14px] font-semibold text-white">10000<span className="text-[8.57px] leading-[23.36px] font-semibold text-[#FFFFFFA6]">/15000</span></h1>
+                                <h1 className="text-[10.76px] leading-[31.14px] font-semibold text-white">{userRank.rank}<span className="text-[8.57px] leading-[23.36px] font-semibold text-[#FFFFFFA6]"> / {userRank.total_users}</span></h1>
                             </div>
                         </div>
                         {/* <div className="w-[200.31px] h-[5.57px] absolute top-[675px] left-[105.6px]">
@@ -476,7 +500,7 @@ export default function GameHome() {
                                 <div>
                                     <Image src={lightning} alt="lightning" />
                                 </div>
-                                <h1 className="text-[10.87px] leading-[25.02px] font-semibold text-white">1000<span className="text-[8.51px] leading-[18.77px] text-[#FFFFFFA6]">/1000</span></h1>
+                                <h1 className="text-[10.87px] leading-[25.02px] font-semibold text-white">{energyLevel.toFixed(0)}<span className="text-[8.51px] leading-[18.77px] text-[#FFFFFFA6]"> / {ENERGY_CAPACITY_VALUE}</span></h1>
                             </div>
                             {isEnergyOverlayVisible && (
                                 <div className="fixed inset-0 bg-[#000000A6]  flex items-center justify-center z-50" onClick={closeEnergyBoostOverlay}>

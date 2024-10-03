@@ -13,7 +13,7 @@ import { useAppContext } from '@/context';
 
 export default function GameIntro() {
   const router = useRouter();
-  const { userId, setUserid, username, setUsername } = useAppContext();
+  const { setUserid, setUsername } = useAppContext();
   const getId = async () => {
     const muserId = await getUserId();
     const musername = await getUsername();
@@ -29,7 +29,7 @@ export default function GameIntro() {
     }, 2000); // 2-second delay (adjust as needed)
 
     return () => clearTimeout(timer); // Cleanup timer on unmount
-  }, [router]);
+  }, [router, getId]);
 
   return (
 

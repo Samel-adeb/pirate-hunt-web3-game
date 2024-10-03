@@ -4,26 +4,26 @@ const urll = process.env.NEXT_PUBLIC_API_URL;
 
 export const getUserId = async () => {
     // Get the URL
-    var url = window.location.href;
+    const url = window.location.href;
 
 
     // Decode the URL twice
-    var decodedUrl = decodeURIComponent(decodeURIComponent(url));
+    const decodedUrl = decodeURIComponent(decodeURIComponent(url));
 
 
     // Parse URL to get query parameters
-    var queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+    const queryString = decodedUrl.split('#tgWebAppData=user=')[1];
 
 
-    var querytring = queryString.split('&')[0];
+    const querytring = queryString.split('&')[0];
     // Parse user data JSON
-    var userData = JSON.parse(querytring);
+    const userData = JSON.parse(querytring);
 
     // Extract user information
-    var userId = userData.id;
-    var firstName = userData.first_name;
-    var lastName = userData.last_name;
-    var username = userData.username;
+    const userId = userData.id;
+    const firstName = userData.first_name;
+    const lastName = userData.last_name;
+    const username = userData.username;
 
 
     return userId;
@@ -31,26 +31,26 @@ export const getUserId = async () => {
 }
 export const getUsername = async () => {
     // Get the URL
-    var url = window.location.href;
+    const url = window.location.href;
 
 
     // Decode the URL twice
-    var decodedUrl = decodeURIComponent(decodeURIComponent(url));
+    const decodedUrl = decodeURIComponent(decodeURIComponent(url));
 
 
     // Parse URL to get query parameters
-    var queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+    const queryString = decodedUrl.split('#tgWebAppData=user=')[1];
 
 
-    var querytring = queryString.split('&')[0];
+    const querytring = queryString.split('&')[0];
     // Parse user data JSON
-    var userData = JSON.parse(querytring);
+    const userData = JSON.parse(querytring);
 
     // Extract user information
-    var userId = userData.id;
-    var firstName = userData.first_name;
-    var lastName = userData.last_name;
-    var username = userData.username;
+    const userId = userData.id;
+    const firstName = userData.first_name;
+    const lastName = userData.last_name;
+    const username = userData.username;
 
 
     return username;
@@ -166,6 +166,25 @@ export const getDailyRewardInfo = async (userId: string | null, setUserDailyRewa
         return;
     } else {
         setUserDailyRewardInfo(response);
+    }
+}
+
+export const addTapTransaction = async (userId: string | null, amount: number) => {
+    const endpoint = '/api/transactions/add/' + userId + '/';
+    const httpMethod = 'POST';
+    const parameters = {
+        "transaction_type":"credit",
+        "transaction_description": "User earned from tap",
+        "transaction_amount" :amount,
+        "transaction_name":"tap"
+    }
+    const response = await fetchApi(endpoint, parameters, httpMethod);
+    //console.log(response);
+    if (!(response && 'message' in response)) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        //showSuccessMessage("Tap transaction added successfully!");
     }
 }
 
