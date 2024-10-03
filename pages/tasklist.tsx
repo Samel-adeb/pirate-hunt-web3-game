@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import { GameNavbar } from "@/app/components/GameNavbar";
 import { useState } from 'react';
 import Image from "next/image";
@@ -13,12 +14,18 @@ import YouTubee from "../public/assets/YouTubee.svg";
 import Wallet from "../public/assets/Wallet.svg";
 import Cinema from "../public/assets/Cinema.svg";
 import GiftBox from "../public/assets/GiftBox.png";
-
+import BackButton from "../public/assets/backButton.svg";
 import  DayOneOverlay  from "@/app/components/DayOneOverlay";
 
 
 
 export default function TaskList() {
+    const router = useRouter(); // Initialize the router
+
+    const handleBackClick = () => {
+      router.back(); // Go back to the previous page
+    };
+    
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 
     const handleDailyBonusClick = () => {
@@ -45,11 +52,15 @@ export default function TaskList() {
         <>
             <GameNavbar />
 
-            <div className="bg-[#000000] h-[100vh + 200px] pt-16 pb-20">
+            <div className="relative bg-[#000000] h-[100vh + 200px] pt-16 pb-20">
                 <div className="flex flex-col items-center justify-center text-center">
                     <Image src={standingdollarcoin} alt="standingdollarcoin" />
 
                     <h1 className="pt-[20px] text-[24px] leading-[44px] text-white font-bold">Earn More Coins</h1>
+                </div>
+
+                <div className="absolute top-[20px] left-[20px]" onClick={handleBackClick} style={{ cursor: 'pointer' }}>
+                    <Image src={BackButton} alt="BackButton" />
                 </div>
 
                 <div>

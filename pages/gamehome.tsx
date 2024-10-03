@@ -249,7 +249,7 @@ export default function GameHome() {
                                     </Link>
                                     <div className="bg-[#1A314E] rounded-[25.71px] px-[6px] py-[4px] flex items-center">
 
-                                        <Link href="/chooseexchange">
+                                        <Link href="">
                                             <div className="mr-[5px]">
                                                 <Image src={XAS} alt="XAS Icon" className="flex-shrink-0" />
                                             </div>

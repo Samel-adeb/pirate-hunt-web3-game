@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import { GameNavbar } from "@/app/components/GameNavbar";
 import Image from "next/image";
 import { useState } from 'react';
@@ -21,6 +22,12 @@ import Link from "next/link";
 
 
 export default function BoostTreasureChest() {
+    const router = useRouter(); // Initialize the router
+
+    const handleBackClick = () => {
+      router.back(); // Go back to the previous page
+    };
+
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 
     // Toggle the overlay visibility
@@ -41,12 +48,16 @@ export default function BoostTreasureChest() {
         <>
             <GameNavbar />
 
-            <div className="bg-[#000000] h-[100vh + 100px]">
+            <div className="relative bg-[#000000] h-[100vh + 100px]">
                 <div className="flex flex-col items-center justify-center text-center">
                     <Image src={MoneyBagChest} alt="MoneyBagChest" />
 
                     <h1 className="font-semibold text-white text-[24px] leading-[32px]">Boosts Treasure Chests</h1>
                     <p className="pt-[10px] text-[12px] leading-[16px] tracking-[0.4px] max-w-[352px] text-[#FFFFFFA6] font-normal">Without the treasure hunt, winning gets tougher! Buy now to discover treasures and keep your edge in the game!</p>
+                </div>
+
+                <div className="absolute top-[20px] left-[20px]" onClick={handleBackClick} style={{ cursor: 'pointer' }}>
+                    <Image src={BackButton} alt="BackButton" />
                 </div>
 
                 <div className="pt-10 pb-10">
