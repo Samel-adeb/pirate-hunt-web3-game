@@ -4,16 +4,22 @@ const urll = process.env.NEXT_PUBLIC_API_URL;
 
 export const getUserId = async () => {
     // Get the URL
-    const url = window.location.href;
+    let url = window.location.href;
 
 
     // Decode the URL twice
-    const decodedUrl = decodeURIComponent(decodeURIComponent(url));
-
+    let decodedUrl = decodeURIComponent(decodeURIComponent(url));
 
     // Parse URL to get query parameters
-    const queryString = decodedUrl.split('#tgWebAppData=user=')[1];
-
+    let queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+    if(queryString !== undefined){
+        localStorage.setItem('url', url);
+    }else{
+        
+        url = localStorage.getItem('url') || '/';
+        decodedUrl = decodeURIComponent(decodeURIComponent(url));
+        queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+    }
 
     const querytring = queryString.split('&')[0];
     // Parse user data JSON
@@ -31,16 +37,22 @@ export const getUserId = async () => {
 }
 export const getUsername = async () => {
     // Get the URL
-    const url = window.location.href;
+    let url = window.location.href;
 
 
     // Decode the URL twice
-    const decodedUrl = decodeURIComponent(decodeURIComponent(url));
-
+    let decodedUrl = decodeURIComponent(decodeURIComponent(url));
 
     // Parse URL to get query parameters
-    const queryString = decodedUrl.split('#tgWebAppData=user=')[1];
-
+    let queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+    if(queryString !== undefined){
+        localStorage.setItem('url', url);
+    }else{
+       
+        url = localStorage.getItem('url') || '/';
+        decodedUrl = decodeURIComponent(decodeURIComponent(url));
+        queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+    }
 
     const querytring = queryString.split('&')[0];
     // Parse user data JSON
@@ -51,6 +63,7 @@ export const getUsername = async () => {
     const firstName = userData.first_name;
     const lastName = userData.last_name;
     const username = userData.username;
+
 
 
     return username;
@@ -188,4 +201,22 @@ export const addTapTransaction = async (userId: string | null, amount: number) =
     }
 }
 
+export const getAllRankInfo = async (setAllRanks: Function) => {
+    const endpoint = '/api/ranks/all/full';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response && 'username' in response[0])) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        setAllRanks(sortUsersByRank(response));
+        // console.log(response);
+        
+        
+    }
+}
+const sortUsersByRank = (userArray:Array<any>) => {
+    return userArray.sort((a, b) => a.rank - b.rank);
+};
 
