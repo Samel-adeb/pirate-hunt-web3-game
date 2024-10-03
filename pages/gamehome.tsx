@@ -84,7 +84,7 @@ export default function GameHome() {
                     <div className="relative overflow-hidden">
                         <div className=" relative w-full bg-cover bg-center overflow-hidden h-[720px]">
                             <div className="absolute px-5 py-[6px] bg-[#854C348C] w-full h-[51px]">
-                                <div className="flex items-center gap-[20px]">
+                                <div className="flex items-center justify-between">
                                     <Link href="/profile">
                                         <div className="border border-white/40 rounded-md w-[100px] h-[37.13px] flex items-center justify-start p-1">
                                             <Image

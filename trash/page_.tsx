@@ -1,16 +1,25 @@
-'use client'; 
+'use client';
+
 
 
 // import { GameStartPage } from "./components/GameStartPage";
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
 
 export default function Home() {
   const router = useRouter();
+ 
 
-  const handleStartGame = () => {
+  const handleStartGame = async () => {
     // Navigate to the gameintro page
+    
+    
     router.push('/gameintro');
   };
+  useEffect(() =>{
+    handleStartGame();
+  },[]);
 
   return (
     <div className="lg:hidden md:hidden flex flex-col items-center justify-center h-screen">
