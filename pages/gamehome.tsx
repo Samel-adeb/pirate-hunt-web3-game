@@ -14,7 +14,7 @@ import Prize from "../public/assets/Prize.svg";
 import golddollarcoin from "../public/assets/golddollarcoin.svg";
 import XAS from "../public/assets/XAS.svg";
 import Info from "../public/assets/Info.svg";
-import settings from "../public/assets/settings.svg";
+import settings from "../public/assets/setting.png";
 import lightning from "../public/assets/lightning.svg";
 import treasureChest from "../public/assets/treasure chest.svg";
 import Cross from "../public/assets/Cross.svg";
@@ -302,7 +302,7 @@ export default function GameHome() {
                                         <div className="pl-[5px]">
                                             <Link href="/gamesettings">
                                                 <div >
-                                                    <Image width={25} height={25} src={settings} alt="Settings Icon" className="flex-shrink-0 w-auto h-auto" />
+                                                    <Image width={20} height={20} src={settings} alt="Settings Icon" className="flex-shrink-0" />
                                                 </div>
                                             </Link>
                                         </div>
