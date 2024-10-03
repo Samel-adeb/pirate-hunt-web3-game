@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import { GameNavbar } from "@/app/components/GameNavbar";
 
 import "../app/globals.css";
@@ -6,7 +7,6 @@ import Image from "next/image";
 import CaretRight from '../public/assets/Caret right.svg'
 import BackButton from "../public/assets/backButton.svg";
 
-import { useRouter } from 'next/navigation';
 
 
 
@@ -31,12 +31,15 @@ export default function GameSettings() {
 
             <div className="relaive bg-[#000000] h-screen">
 
-                <div className="absolute top-[20px] left-[20px]" onClick={handleBackClick} style={{ cursor: 'pointer' }}>
-                    <Image src={BackButton} alt="BackButton" />
-                </div>
+               
+
                 <div className="relative pt-10">
                     <div className="flex items-center justify-center text-center">
                         <h1 className="text-[24px] font-semibold leading-[32px] text-white">Settings</h1>
+                    </div>
+
+                    <div className="absolute top-[20px] left-[20px]" onClick={handleBackClick} style={{ cursor: 'pointer' }}>
+                        <Image src={BackButton} alt="BackButton" />
                     </div>
 
                     
