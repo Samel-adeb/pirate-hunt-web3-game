@@ -1,3 +1,5 @@
+import { useRouter } from 'next/navigation';
+
 import { GameNavbar } from "@/app/components/GameNavbar";
 import Image from "next/image";
 
@@ -13,8 +15,15 @@ import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
 import FirstPlaceBadge from "../public/assets/FirstPlaceBadge.png";
 import Friend from "../public/assets/Friend.svg";
 import Copy from "../public/assets/Copy.svg";
+import BackButton from "../public/assets/backButton.svg";
 
 export default function InviteAFriend() {
+
+    const router = useRouter(); // Initialize the router
+
+    const handleBackClick = () => {
+      router.back(); // Go back to the previous page
+    };
 
     return (
        <>
@@ -24,6 +33,8 @@ export default function InviteAFriend() {
 
             <div>
                 <div className="relative h-[100vh + 200px] pb-20" style={{ background: 'linear-gradient(173.23deg, #000000 -5.41%, #171000 36.99%, #150E00 91.05%)' }}>
+
+
                     {/* Image Container */}
                     <div className="relative">
                         <Image src={CaptainDogs} alt="CaptainDogs" />
@@ -35,6 +46,10 @@ export default function InviteAFriend() {
                                 <p className="text-white text-[15.11px] leading-[20.14px] tracking-[0.5px]">you and your friend will receive a bonuses</p>
                             </div>
                         </div>
+                    </div>
+
+                    <div className="absolute top-10 left-20" onClick={handleBackClick} style={{ cursor: 'pointer' }}>
+                        <Image src={BackButton} alt="BackButton" />
                     </div>
 
 
