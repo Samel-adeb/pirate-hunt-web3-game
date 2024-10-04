@@ -203,7 +203,7 @@ export default function GameHome() {
                 <div className="h-screen">
                     <GameNavbar />
                     <div className="relative overflow-hidden">
-                        <div className=" relative w-full bg-cover bg-center overflow-hidden h-[800px]">
+                        <div className=" relative w-full bg-cover bg-center overflow-hidden h-screen">
                             <div className="absolute px-[14px] py-[6px] bg-[#854C348C] w-full ">
                                 <div className="flex items-center justify-between">
                                     <Link href="/profile">
@@ -312,9 +312,9 @@ export default function GameHome() {
                                 </div>
                             </div>
                             <Image
-                                className="w-full h-full object-cover overflow-hidden"
-                                width={393}
-                                height={754}
+                                className="w-full h-screen object-cover overflow-hidden"
+                                // width={393}
+                                // height={754}
                                 src={piratehomeBg}
                                 alt="piratehomeBg"
                             />
@@ -484,7 +484,7 @@ export default function GameHome() {
                                 </div>
                             ))}
                         </div>
-                        <div className="absolute top-[700px] left-[11px]">
+                        <div className="absolute" style={{ bottom: '5%', left: '10%' }}>
                             <div className="flex items-center  p-[10.38px] bg-[#1A314E] border-[3.24px] border-white max-w-[165.97px] h-[51.9px] rounded-[20.76px] gap-[2px]">
                                 <div>
                                     <Image width={35.68} height={51.9} src={Prize} alt="PrizeSvg" />
@@ -497,7 +497,7 @@ export default function GameHome() {
                             <ProgressBar  progress={60} />
                         </div> */}
                         {/* Boost */}
-                        <div className="absolute top-[700px] left-[246.53px]" onClick={handleEnergyBoostClick}>
+                        <div className="absolute" style={{ bottom: '5%', right: '10%' }} onClick={handleEnergyBoostClick}>
                             <div className="bg-[#1A314E] px-[7.75px] max-w-[133.47px] h-[51px] flex items-center gap-[5px] border-[2.8px] border-[#FFFFFF] rounded-[20.87px] ">
                                 <div>
                                     <Image src={lightning} alt="lightning" />
