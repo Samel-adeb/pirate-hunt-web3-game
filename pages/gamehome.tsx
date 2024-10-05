@@ -50,7 +50,7 @@ export default function GameHome() {
     useEffect(() => {
         if (localStorage.tempbal) {
             const bal = parseInt(localStorage.tempbal);
-            if (bal > 0) {
+            if (bal > 0 && userId) {
                 addTapTransaction(userId, bal);
                 setUserBalance(parseInt(userBalance) + bal);
                 localStorage.removeItem('tempbal');
@@ -148,10 +148,10 @@ export default function GameHome() {
         }, 2000);
 
         if (energyLevel > user_tap_rate_level) {
-            setUserBalance(userBalance + user_tap_rate_level);
-            setTempbal(tempbal + user_tap_rate_level);
-            localStorage.setItem('tempbal', (tempbal + user_tap_rate_level).toString());
-            setEnergyLevel(energyLevel - user_tap_rate_level);
+            setUserBalance(parseInt(userBalance) + parseInt(user_tap_rate_level));
+            setTempbal(tempbal + parseInt(user_tap_rate_level));
+            localStorage.setItem('tempbal', (tempbal + parseInt(user_tap_rate_level)).toString());
+            setEnergyLevel(energyLevel - parseInt(user_tap_rate_level));
         }
     };
 
@@ -471,7 +471,7 @@ export default function GameHome() {
                             <div className="absolute top-[380px] left-[180px]" onClick={handleTap}>
 
                                 <div className="tapcoin-animation">
-                                    <Image src={TapCoin} alt="TapCoin" />
+                                    <Image src={TapCoin} alt="TapCoin" className="gap-[50px]" />
                                 </div>
                             </div>
                             {coins.map((coinId) => (

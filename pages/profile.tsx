@@ -28,7 +28,7 @@ import { getAllRankInfo } from "@/scripts";
 
 
 export default function Profile() {
-    const { username, level, userBalance, userRank,  allRanks, setAllRanks } = useAppContext();
+    const { username, level, userBalance, userRank, allRanks, setAllRanks } = useAppContext();
 
     const getAllRank = async () => {
         await getAllRankInfo(setAllRanks);
@@ -47,7 +47,7 @@ export default function Profile() {
         level_image_url: string;
         coin_balance: string;
     }
-    
+
     return (
         <>
 
@@ -117,7 +117,7 @@ export default function Profile() {
                             {
                                 allRanks ? (
 
-                                    allRanks.map((user:User) => (
+                                    allRanks.map((user: User) => (
                                         <div className="pt-[6px]" key={user.user_id}> {/* Add a unique key for each mapped element */}
                                             <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF26] mx-auto">
                                                 <div className="flex items-center gap-[10px]">
@@ -148,7 +148,7 @@ export default function Profile() {
                                                         </div>
 
                                                         <h2 className="text-[#FFFFFF8C] text-[12px] leading-[16px] tracking-[0.4px] font-medium">
-                                                            {user.coin_balance.toLocaleString()} {/* Format the coin balance */}
+                                                            {user.coin_balance ? user.coin_balance.toLocaleString() : '0'} {/* Format the coin balance */}
                                                         </h2>
                                                     </div>
                                                 </div>
@@ -169,7 +169,7 @@ export default function Profile() {
                             }
 
 
-                            <div className="pt-[6px] my-4">
+                            <div className="pt-[6px] my-6">
                                 <div className="flex items-center justify-between bg-[#00000026] w-[358px] h-[78px] rounded-[16px] p-[16px] border-[1px] border-[#FFFFFF] mx-auto">
                                     <div className="flex items-center gap-[10px]">
                                         <div>
@@ -177,7 +177,11 @@ export default function Profile() {
                                         </div>
 
                                         <div className="flex items-center gap-[5px]">
-                                            <Image src={user1} alt="user1" />
+                                            <Image
+                                                className="mr-1 rounded-[16px]"
+                                                width={35}
+                                                height={35}
+                                                src={level.image_url ? process.env.NEXT_PUBLIC_API_URL + level.image_url : user1} alt="user1" />
 
                                             <div>
                                                 <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">{username ? username : "Me"}</h1>
@@ -198,7 +202,7 @@ export default function Profile() {
                                     </div>
 
                                     <div className="W-[26px] flex items-center justify-center h-[27px] p-[10px] bg-[#FFFFFF26] rounded-[50px]">
-                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">{userRank.rank?userRank.rank:''}</h1>
+                                        <h1 className="text-[12px] leading-[16px] tracking-[0.4px]  text-[#FFFFFF] font-semibold">{userRank.rank ? userRank.rank : ''}</h1>
                                     </div>
                                 </div>
                             </div>

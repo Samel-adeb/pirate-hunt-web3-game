@@ -10,7 +10,7 @@ function Redirect() {
         // Check if userId is not defined
         if (!userId && router.pathname !== '/') {
             // Redirect to the desired page, e.g., login page or home page
-            router.push('/'); // Adjust the route based on your application
+            //router.push('/'); // Adjust the route based on your application
         }
     }, [userId, router]); // Run effect when userId or router changes
 

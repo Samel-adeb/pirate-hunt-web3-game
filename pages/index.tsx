@@ -65,7 +65,7 @@ export default function GameLoad() {
         const timer = setTimeout(() => {
             setIsLoading(false);
 
-        }, 8000); // 3 seconds timeout
+        }, 5000); // 3 seconds timeout
 
         return () => clearTimeout(timer); // Clean up the timer on component unmount
     }, [router]);
@@ -112,7 +112,7 @@ export default function GameLoad() {
                                 Loading<span className="dot-anim"></span>
                             </p>
                         ) :
-                            (<div className='bg-[#000000A6] m-5 p-2 px-6 rounded-[20.76px] text-[24px] text-white' onClick={changePage}>Play</div>)
+                            (<div className='bg-[#000000A6] m-5 p-2 px-6 rounded-[20.76px] text-[24px] text-white cursor-pointer' onClick={changePage}>Play</div>)
                     }
                     <style jsx>{`
                     .dot-anim {
