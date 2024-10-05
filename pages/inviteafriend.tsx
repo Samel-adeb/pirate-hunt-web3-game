@@ -1,5 +1,7 @@
 import { useRouter } from 'next/navigation';
 
+import { useRouter } from 'next/navigation';
+
 import { GameNavbar } from "@/app/components/GameNavbar";
 import Image from "next/image";
 
@@ -85,6 +87,10 @@ export default function InviteAFriend() {
                                 <p className="text-white text-[15.11px] leading-[20.14px] tracking-[0.5px]">you and your friend will receive a bonuses</p>
                             </div>
                         </div>
+                    </div>
+
+                    <div className="absolute top-[20px] left-[20px]" onClick={handleBackClick} style={{ cursor: 'pointer' }}>
+                        <Image src={BackButton} alt="BackButton" />
                     </div>
 
                     <div className="absolute top-[20px] left-[20px]" onClick={handleBackClick} style={{ cursor: 'pointer' }}>
