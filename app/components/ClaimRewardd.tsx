@@ -6,9 +6,9 @@ import standingdollarcoinb from '../../public/assets/standingdollarcoinb.png'
 import standingdollarcoin from '../../public/assets/standingdollarcoin.svg'
 import MoneyBagChest from '../../public/assets/MoneyBagChest.png'
 import Image from 'next/image';
-import Link from 'next/link';
 
-function ClaimReward({ setShowClaimSuccess }:{ setShowClaimSuccess: Function}) {
+
+function ClaimReward({ setShowClaimSuccess }:{ setShowClaimSuccess: (arg0:boolean)=>void}) {
   
   useEffect(() => {
     AOS.init({

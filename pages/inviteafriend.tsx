@@ -9,8 +9,8 @@ import CaptainDogs from "../public/assets/CaptainDogs.png";
 import bluegiftbox from "../public/assets/bluegiftbox.png";
 import Dot from "../public/assets/Dot.svg";
 import friend1 from "../public/assets/friend1.png";
-import friend2 from "../public/assets/friend2.png";
-import friend3 from "../public/assets/friend3.png";
+// import friend2 from "../public/assets/friend2.png";
+// import friend3 from "../public/assets/friend3.png";
 import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
 import FirstPlaceBadge from "../public/assets/FirstPlaceBadge.png";
 import Friend from "../public/assets/Friend.svg";
@@ -142,7 +142,7 @@ export default function InviteAFriend() {
                         {
                             userInvites ? (
                                 userInvites.map((invite: invite) => (
-                                    <div className="pt-[9px]">
+                                    <div className="pt-[9px]" key={invite.id}>
                                         <div className=" flex items-center justify-between w-[358px] h-[62px] py-[8px] px-[16px] mx-auto bg-[#080019] border-[1px] border-[#FFFFFF26] rounded-[8px]">
                                             <div className="flex items-center gap-[10px]">
                                                 <Image src={invite.level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${invite.level.image_url}` : friend1} alt="friend1" width={30} height={30} className="mr-1 rounded-[16px]" />

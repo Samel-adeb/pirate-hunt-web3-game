@@ -15,7 +15,7 @@ import Wallet from "../public/assets/Wallet.svg";
 import Cinema from "../public/assets/Cinema.svg";
 import GiftBox from "../public/assets/GiftBox.png";
 import BackButton from "../public/assets/backButton.svg";
-import  DayOneOverlay  from "@/app/components/DayOneOverlay";
+// import  DayOneOverlay  from "@/app/components/DayOneOverlay";
 
 
 
@@ -37,14 +37,14 @@ export default function TaskList() {
     };
 
     const [isDayOneOverlayVisible, setIsDayOneOverlayVisible] = useState(false);
-
+    isDayOneOverlayVisible;
     const handleDayOneOverlay = () => {
       setIsDayOneOverlayVisible(true);
     };
   
-    const closeDayOneOverlay = () => {
-      setIsDayOneOverlayVisible(false);
-    };
+    // const closeDayOneOverlay = () => {
+    //   setIsDayOneOverlayVisible(false);
+    // };
   
 
     return (

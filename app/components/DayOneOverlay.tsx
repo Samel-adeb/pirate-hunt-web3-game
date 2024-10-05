@@ -15,22 +15,22 @@ interface OverlayProps {
     amount: string;
   };
   closeOverlay: () => void;
-  load:()=>void;
+  load: () => void;
 }
 
 const DayOneOverlay: FC<OverlayProps> = ({ isVisible, currentDayBonus, closeOverlay, load }) => {
-  if (!isVisible) return null; // Do not render if overlay is not visible
+
   const [showClaimSuccess, setShowClaimSuccess] = useState(false);
   const { userId, userBalance, setUserBalance, setUserDailyRewardInfo } = useAppContext();
 
   const handleClaim = async () => {
 
     const isSuccessful = await claimDailyBonus(userId, currentDayBonus.id)
-    
+
 
     setShowClaimSuccess(isSuccessful);
     load();
-    await getDailyRewardInfo(userId, setUserDailyRewardInfo );
+    await getDailyRewardInfo(userId, setUserDailyRewardInfo);
     if (isSuccessful) {
       setUserBalance(parseInt(userBalance) + parseInt(currentDayBonus.amount));
     }
@@ -39,11 +39,11 @@ const DayOneOverlay: FC<OverlayProps> = ({ isVisible, currentDayBonus, closeOver
       setShowClaimSuccess(false);
       closeOverlay();
     }, 3000);
-    
 
-    
+
+
   }
-
+  if (!isVisible) return null; // Do not render if overlay is not visible
   return (
     <div
       className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50"
