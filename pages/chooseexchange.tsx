@@ -1,56 +1,52 @@
-import { useState } from 'react';
-import { GameNavbar } from "@/app/components/GameNavbar";
+// import { useState } from 'react';
+// import { GameNavbar } from "@/app/components/GameNavbar";
 
-import "../app/globals.css";
-import Image from "next/image";
-import  BinanceOverlay  from "@/app/components/BinanceOverlay";
+// import "../app/globals.css";
+// import Image from "next/image";
+// import  BinanceOverlay  from "@/app/components/BinanceOverlay";
 
-import CaretRight from '../public/assets/Caretright.svg'
-import XAS from "../public/assets/XAS.svg";
-import Check from '../public/assets/Check.svg'
+// import CaretRight from '../public/assets/Caretright.svg'
+// import XAS from "../public/assets/XAS.svg";
+// import Check from '../public/assets/Check.svg'
 
-import UseRouteChange from '../hooks/useRouteChange';
+// import UseRouteChange from '../hooks/useRouteChange';
 
 export default function ChooseExchange() {
-    const [checked, setChecked] = useState(false);
-    const [overlayVisible, setOverlayVisible] = useState(false);
+    // const [checked, setChecked] = useState(false);
+    // const [overlayVisible, setOverlayVisible] = useState(false);
    
 
 
-  const handleClick = async () => {
-    // Perform your check here
-    if (!checked) {
-      setChecked(true); // Update the state to show the checkmark
+//   const handleClick = async () => {
+ 
+//     if (!checked) {
+//       setChecked(true); 
       
-      // Show the overlay
-      setOverlayVisible(true);
+     
+//       setOverlayVisible(true);
 
-      // Delay before navigation
-    //   await delay(2000); // Delay for 2 seconds (2000 milliseconds)
-      
-    //   // Navigate to game home
-    //   router.push('/gamehome');
-    }
-  };
+     
+//     }
+//   };
 
   // Ensure the overlay visibility is handled correctly
-  UseRouteChange('/gamehome', () => {
-    if (checked) { // Ensure it shows only after the check is done
-      setOverlayVisible(true);
-    }
-  });
+//   UseRouteChange('/gamehome', () => {
+//     if (checked) { 
+//       setOverlayVisible(true);
+//     }
+//   });
 
-  const handleOverlayClose = () => {
-    setOverlayVisible(false); // Hide overlay
-  };
+//   const handleOverlayClose = () => {
+//     setOverlayVisible(false); 
+//   };
     
 
-    return (
-        <>
+    return null;
+    
 
-            <GameNavbar />
+    
 
-            <div className="bg-[#000000] h-screen">
+            {/* <div className="bg-[#000000] h-screen">
                 <div className="pt-10">
                     <div className="flex items-center justify-center text-center">
                         <h1 className="text-[24px] font-semibold leading-[32px] text-white">Choose Exchange</h1>
@@ -107,11 +103,10 @@ export default function ChooseExchange() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
         
-        </>
-    )
+    
 }
 
 

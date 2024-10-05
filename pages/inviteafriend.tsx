@@ -1,3 +1,5 @@
+import { useRouter } from 'next/navigation';
+
 import { GameNavbar } from "@/app/components/GameNavbar";
 import Image from "next/image";
 
@@ -13,52 +15,10 @@ import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
 import FirstPlaceBadge from "../public/assets/FirstPlaceBadge.png";
 import Friend from "../public/assets/Friend.svg";
 import Copy from "../public/assets/Copy.svg";
-import { useAppContext } from "@/context";
-import { getInviteLink, getUserInvivites } from "@/scripts";
-import { useEffect } from "react";
-import LoadingSpinner from "@/app/components/LoadingSpinner";
-import { showInfoMessage } from "@/scripts/utils";
+import LoadingSpinner from '@/app/components/LoadingSpinner';
 
 export default function InviteAFriend() {
-    const { userId, userInvites, setUserInvites, inviteLink, setInviteLink } = useAppContext();
-    console.log(userInvites);
-    
-    const load = async () => {
-        await getUserInvivites(userId, setUserInvites);
-        await getInviteLink(userId, setInviteLink);
-    }
-    useEffect(() => {
-        if(userId){
-            load();
-        }
-       
-    }, []);
 
-    const handleCopyInviteLink = async()=>{
-        try {
-            await navigator.clipboard.writeText(inviteLink);
-            showInfoMessage('Invite Link copied to clipboard!');
-        } catch (err) {
-            console.error('Failed to copy text: ', err);
-        }
-        
-    }
-
-    interface invite {
-        id: number,
-        coin_balance: number,
-        username: string,
-        user_id: number,
-        level: {
-            id: number,
-            level_name: string,
-            level_reward: number,
-            level_threshold: number,
-            image_url: string,
-            created_at: Date,
-            updated_at: Date
-        }
-    }
     return (
         <>
 
@@ -66,7 +26,7 @@ export default function InviteAFriend() {
 
 
             <div>
-                <div className="relative h-screen pb-20" style={{ background: 'linear-gradient(173.23deg, #000000 -5.41%, #171000 36.99%, #150E00 91.05%)' }}>
+                <div className="relative h-[100vh + 200px] pb-20" style={{ background: 'linear-gradient(173.23deg, #000000 -5.41%, #171000 36.99%, #150E00 91.05%)' }}>
                     {/* Image Container */}
                     <div className="relative">
                         <Image src={CaptainDogs} alt="CaptainDogs" />
@@ -78,6 +38,10 @@ export default function InviteAFriend() {
                                 <p className="text-white text-[15.11px] leading-[20.14px] tracking-[0.5px]">you and your friend will receive a bonuses</p>
                             </div>
                         </div>
+                    </div>
+
+                    <div className="absolute top-[20px] left-[20px]" onClick={handleBackClick} style={{ cursor: 'pointer' }}>
+                        <Image src={BackButton} alt="BackButton" />
                     </div>
 
 
