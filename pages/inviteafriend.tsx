@@ -1,7 +1,5 @@
 import { useRouter } from 'next/navigation';
 
-import { useRouter } from 'next/navigation';
-
 import { GameNavbar } from "@/app/components/GameNavbar";
 import Image from "next/image";
 
