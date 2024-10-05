@@ -216,6 +216,75 @@ export const getAllRankInfo = async (setAllRanks: Function) => {
         
     }
 }
+
+export const getUserInvivites = async (userId: string | null, setUserInvites: Function) => {
+    const endpoint = '/api/invitations/invites/' + userId + '';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response)) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        setUserInvites(response);
+    }
+}
+
+export const getInviteLink = async (userId: string | null, setInviteLink: Function) => {
+    const endpoint = '/api/invitations/invite-link/' + userId + '';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response && 'invite_link' in response)) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        setInviteLink(response.invite_link);
+    }
+}
+
+export const getAllDailyBounuses = async (setAllDailyBonues: Function) => {
+    const endpoint = '/api/bonuses/daily';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response)) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        setAllDailyBonues(response);
+    }
+}
+
+export const claimDailyBonus = async (userId: string | null, bonusId: number) => {
+    const endpoint = '/api/bonuses/daily/claim/' + userId + '';
+    const httpMethod = 'POST';
+    const parameters =  {
+        "daily_reward_id":bonusId
+    }
+    const response = await fetchApi(endpoint, parameters, httpMethod);
+    //console.log(response);
+    if (!(response && 'message' in response)) {
+        showFailedMessage(response.error);
+        return false;
+    } else {
+        //showSuccessMessage("Reward claimed successfully");
+        return true;
+    }
+}
+export const getClaimedDailyBonuses = async (userId: string | null, setClaimedDailyBonuses: Function) => {
+    const endpoint = '/api/bonuses/daily/claimed-rewards/' + userId + '';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response && !('message' in response))) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        
+        setClaimedDailyBonuses(response);
+    }
+}
 const sortUsersByRank = (userArray:Array<any>) => {
     return userArray.sort((a, b) => a.rank - b.rank);
 };

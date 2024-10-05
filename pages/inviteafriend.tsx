@@ -13,17 +13,60 @@ import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
 import FirstPlaceBadge from "../public/assets/FirstPlaceBadge.png";
 import Friend from "../public/assets/Friend.svg";
 import Copy from "../public/assets/Copy.svg";
+import { useAppContext } from "@/context";
+import { getInviteLink, getUserInvivites } from "@/scripts";
+import { useEffect } from "react";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
+import { showInfoMessage } from "@/scripts/utils";
 
 export default function InviteAFriend() {
+    const { userId, userInvites, setUserInvites, inviteLink, setInviteLink } = useAppContext();
+    console.log(userInvites);
+    
+    const load = async () => {
+        await getUserInvivites(userId, setUserInvites);
+        await getInviteLink(userId, setInviteLink);
+    }
+    useEffect(() => {
+        if(userId){
+            load();
+        }
+       
+    }, []);
 
+    const handleCopyInviteLink = async()=>{
+        try {
+            await navigator.clipboard.writeText(inviteLink);
+            showInfoMessage('Invite Link copied to clipboard!');
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+        }
+        
+    }
+
+    interface invite {
+        id: number,
+        coin_balance: number,
+        username: string,
+        user_id: number,
+        level: {
+            id: number,
+            level_name: string,
+            level_reward: number,
+            level_threshold: number,
+            image_url: string,
+            created_at: Date,
+            updated_at: Date
+        }
+    }
     return (
-       <>
+        <>
 
             <GameNavbar />
 
 
             <div>
-                <div className="relative h-[100vh + 200px] pb-20" style={{ background: 'linear-gradient(173.23deg, #000000 -5.41%, #171000 36.99%, #150E00 91.05%)' }}>
+                <div className="relative h-screen pb-20" style={{ background: 'linear-gradient(173.23deg, #000000 -5.41%, #171000 36.99%, #150E00 91.05%)' }}>
                     {/* Image Container */}
                     <div className="relative">
                         <Image src={CaptainDogs} alt="CaptainDogs" />
@@ -75,32 +118,40 @@ export default function InviteAFriend() {
                             </div>
                         </div>
                     </div>
-                    
+
 
                     <div className="pt-[16px]">
-                        <div>
-                            <h1 className="text-[12px] leading-[16px] tracking-[0.4px] font-bold text-white pl-[16px]">List of your friends (10)</h1>
+                        <div className="flex flex-col items-center mt-3">
+                            <h1 className="text-[12px] leading-[16px] tracking-[0.4px] font-bold text-white pl-[16px]">List of your friends ({userInvites ? userInvites.length : 0})</h1>
                         </div>
-
-                        <div className="pt-[9px]">
-                            <div className=" flex items-center justify-between w-[358px] h-[62px] py-[8px] px-[16px] mx-auto bg-[#080019] border-[1px] border-[#FFFFFF26] rounded-[8px]">
-                                <div className="flex items-center gap-[10px]">
-                                    <Image src={friend1} alt="friend1" />
-                                    <div>
-                                        <h1 className="text-[12px] leading-[24px] tracking-[0.15%] font-semibold text-white">Tarriq</h1>
-                                        <div className="flex items-center gap-[3px]">
-                                            <Image src={FirstPlaceBadge} alt="FirstPlaceBadge" />
-                                            <p className="text-[12px] leading-[16px] text-white">Rookie pirate</p>
+                        {
+                            userInvites ? (
+                                userInvites.map((invite: invite) => (
+                                    <div className="pt-[9px]">
+                                        <div className=" flex items-center justify-between w-[358px] h-[62px] py-[8px] px-[16px] mx-auto bg-[#080019] border-[1px] border-[#FFFFFF26] rounded-[8px]">
+                                            <div className="flex items-center gap-[10px]">
+                                                <Image src={invite.level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${invite.level.image_url}` : friend1} alt="friend1" width={30} height={30} className="mr-1 rounded-[16px]" />
+                                                <div>
+                                                    <h1 className="text-[12px] leading-[24px] tracking-[0.15%] font-semibold text-white">{invite.username ? invite.username : "Name"}</h1>
+                                                    <div className="flex items-center gap-[3px]">
+                                                        <Image src={FirstPlaceBadge} alt="FirstPlaceBadge" />
+                                                        <p className="text-[12px] leading-[16px] text-white">{invite.level.level_name ? invite.level.level_name : "Pirate"}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-[10px]">
+                                                <Image width={16} height={16} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                <p className="text-[12px] leading-[16px] text-white font-semibold">{invite.coin_balance ? invite.coin_balance : 0}</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="flex items-center gap-[10px]">
-                                    <Image width={16} height={16} src={standingdollarcoin} alt="standingdollarcoin" />
-                                    <p className="text-[12px] leading-[16px] text-white font-semibold">100k PRT</p>
-                                </div>
-                            </div>
-                        </div>
+                                ))
+                            )
+                                : (<LoadingSpinner />)
+                        }
 
+
+                        {/*
                         <div className="pt-[9px]">
                             <div className=" flex items-center justify-between w-[358px] h-[62px] py-[8px] px-[16px] mx-auto bg-[#080019] border-[1px] border-[#FFFFFF26] rounded-[8px]">
                                 <div className="flex items-center gap-[10px]">
@@ -119,7 +170,7 @@ export default function InviteAFriend() {
                                 </div>
                             </div>
                         </div>
-
+                        
                         <div className="pt-[9px]">
                             <div className=" flex items-center justify-between w-[358px] h-[62px] py-[8px] px-[16px] mx-auto bg-[#080019] border-[1px] border-[#FFFFFF26] rounded-[8px]">
                                 <div className="flex items-center gap-[10px]">
@@ -235,26 +286,27 @@ export default function InviteAFriend() {
                                     <p className="text-[12px] leading-[16px] text-white font-semibold">500k PRT</p>
                                 </div>
                             </div>
-                        </div>
+                        </div>*/}
                     </div>
 
                     <div className="pt-16 flex items-center gap-[10px] mx-auto w-[358px]">
-                        <button className="w-[315px] bg-[#FFC247] h-[44px] cusor-pointer rounded-[8px] px-[14px] py-[8px]">
+                        <button className="border-[#FFC247] border-[2.8px] cusor-pointer h-[44px] px-[14px] py-[8px] rounded-[8px] w-[315px]">
                             <div className="flex items-center justify-center gap-[5px] ">
-                                <h1 className="text-[12px] leading-[16px] text-white font-semibold">Invite a friend</h1>
                                 <Image src={Friend} alt="Friend" />
+                                <h1 className="text-[12px] leading-[16px] text-white font-semibold" style={{ textWrap: 'nowrap', overflow: 'hidden' }}>{inviteLink ? inviteLink : 'https://...'}</h1>
+
                             </div>
                         </button>
 
-                        <button className="bg-[#FFC247] w-[40px] rounded-[8px] h-[44px] px-[14px] py-[10px]">
-                            <Image src={Copy} alt="Copy" />
+                        <button className="bg-[#FFC247] h-full px-[14px] py-[12px] rounded-[8px]" onClick={handleCopyInviteLink}>
+                            <Image src={Copy} alt="Copy" width={30} height={30} style={{ maxWidth: "none !important" }} />
                         </button>
                     </div>
 
                 </div>
             </div>
-       
-       
-       </>
+
+
+        </>
     )
 }

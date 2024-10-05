@@ -19,17 +19,18 @@ import lightning from "../public/assets/lightning.svg";
 import treasureChest from "../public/assets/treasure chest.svg";
 import Cross from "../public/assets/Cross.svg";
 import GiftBox from "../public/assets/gift box.png";
-import BigGiftBox from "../public/assets/GiftBox.png";
+// import BigGiftBox from "../public/assets/GiftBox.png";
 import BigLightning from "../public/assets/BigLightning.svg";
-import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
+// import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
 import BigCoin from "../public/assets/BigCoin.svg";
 import BigDot from "../public/assets/BigDot.svg";
 import Coinfromtap from "../public/assets/Coinfromtap.svg";
 import { useEffect, useRef } from 'react';
 import { useAppContext } from '@/context';
 import { useState } from "react";
-import DayOneOverlay from "@/app/components/DayOneOverlay";
+// import DayOneOverlay from "@/app/components/DayOneOverlay";
 import { addTapTransaction } from "@/scripts";
+import DailyBonuses from "@/app/components/DailyBonuses";
 
 // import ProgressBar from "@/app/components/ProgressBar";
 
@@ -91,7 +92,7 @@ export default function GameHome() {
 
                 setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
             } else {
-                setTimeLeft('0s');
+                setTimeLeft('Claim now');
                 clearInterval(interval); // Stop the countdown when the target date is reached
             }
         }, 1000); // Update every second
@@ -185,18 +186,7 @@ export default function GameHome() {
         setIsDailyOverlayVisible(false);
     };
 
-    const [isDayOneOverlayVisible, setIsDayOneOverlayVisible] = useState(false);
-
-    const handleDayOneOverlay = () => {
-        setIsDayOneOverlayVisible(true);
-    };
-
-    const closeDayOneOverlay = () => {
-        setIsDayOneOverlayVisible(false);
-    };
-
-
-
+  
     return (
         <>
             <div>
@@ -213,7 +203,7 @@ export default function GameHome() {
                                                 height={35}
                                                 src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : ProfileSvg} // Properly handle fallback
                                                 alt="Profile Picture"
-                                                className="mr-1 rounded-[16px]"
+                                                className="rounded-[16px]"
                                             />
 
                                             <div className="flex flex-col justify-center px-[6px]">
@@ -321,99 +311,15 @@ export default function GameHome() {
                         </div>
 
                         <div>
-                            <div className="absolute top-[54px] left-[290px]" onClick={handleDailyBonusClick}>
-                                <div className="flex flex-col items-center justify-center bg-white w-[63.92px] h-[49.74px] border-[1px] border-[#B30202] p-[5.06px] gap-y-[0.63px] rounded-[7.59px] ">
+                            <div className="absolute top-[54px] left-[180px]" onClick={handleDailyBonusClick}>
+                                <div className="flex flex-col items-center justify-center bg-white border-[1px] border-[#B30202] p-[5.06px] gap-y-[0.63px] rounded-[7.59px] ">
                                     <Image src={GiftBox} alt="GiftBoxImg" />
                                     <h2 className="text-[7.59px] leading-[9.49px] text-[#1A314E] whitespace-nowrap">Daily Rewards</h2>
-                                    <p className="text-[7.65px] leading-[15.19px] tracking-[0.15%] font-medium  text-[#1A314EBF]">{userDailyRewardInfo ? timeLeft : "0s"}</p>
+                                    <p className="font-bold leading-[15.19px] text-[7.65px] tracking-[0.15%]">{userDailyRewardInfo ? timeLeft : "0s"}</p>
                                 </div>
                             </div>
-
-                            {isDailyOverlayVisible && (
-                                <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50" onClick={closeDailyOverlay}>
-                                    <div className="bg-[#000000] border-t-[4px]  border-t-[#FFFFFF40] rounded-lg w-full mt-60 h-[100%] my-[190px]  flex flex-col items-center justify-center p-4 relative slide-up" onClick={(e) => e.stopPropagation()}>
-                                        <Image src={BigGiftBox} alt="BigGiftBox" className="" />
-                                        <h2 className="text-[24px] leading-[32px] font-semibold text-white">Daily Reward</h2>
-                                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white">One of the ways to increase your coin daily</p>
-
-                                        <div className="pt-[20px] flex items-center justify-center">
-                                            <div className="grid grid-cols-4 gap-[15px]">
-                                                <div>
-                                                    <div className="flex flex-col w-[82.1px] border-[0.5px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center" onClick={handleDayOneOverlay}>
-                                                        <h1 className="text-white">Day 1</h1>
-                                                        <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                        <p className="text-white">500</p>
-                                                    </div>
-
-                                                    {/* Triggering the separate overlay component */}
-                                                    <DayOneOverlay isVisible={isDayOneOverlayVisible} closeOverlay={closeDayOneOverlay} />
-                                                </div>
-
-                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                    <h1 className="text-white">Day 2</h1>
-                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                    <p className="text-white">1k</p>
-                                                </div>
-
-                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                    <h1 className="text-white">Day 3</h1>
-                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                    <p className="text-white">2.5k</p>
-                                                </div>
-
-                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                    <h1 className="text-white">Day 4</h1>
-                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                    <p className="text-white">5k</p>
-                                                </div>
-
-                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                    <h1 className="text-white">Day 5</h1>
-                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                    <p className="text-white">15k</p>
-                                                </div>
-
-                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                    <h1 className="text-white">Day 6</h1>
-                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                    <p className="text-white">25k</p>
-                                                </div>
-
-                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                    <h1 className="text-white">Day 7</h1>
-                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                    <p className="text-white">50k</p>
-                                                </div>
-
-                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                    <h1 className="text-white">Day 8</h1>
-                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                    <p className="text-white">100k</p>
-                                                </div>
-
-                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                    <h1 className="text-white">Day 9</h1>
-                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                    <p className="text-white">250k</p>
-                                                </div>
-
-                                                <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
-                                                    <h1 className="text-white">Day 10</h1>
-                                                    <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                    <p className="text-white">500k</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <button onClick={closeDailyOverlay} className="absolute top-2 right-2">
-                                            <Image src={Cross} alt="CrossImg" />
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
+                            <DailyBonuses props={{ isDailyOverlayVisible, handleDailyBonusClick, closeDailyOverlay }} />
                         </div>
-
 
 
 

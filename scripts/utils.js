@@ -4,13 +4,13 @@ import "react-toastify/dist/ReactToastify.css";
 
 
 export const showSuccessMessage = (message) => {
-    toast.success(message, {
+    toast.info(message, {
         position: "top-center",
     });
 }
 
 export const showFailedMessage = (message) => {
-    toast.error(message, {
+    toast.warning(message, {
         position: "top-center",
     });
 }
