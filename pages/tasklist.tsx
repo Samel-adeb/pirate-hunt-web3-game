@@ -15,7 +15,7 @@ import Wallet from "../public/assets/Wallet.svg";
 import Cinema from "../public/assets/Cinema.svg";
 import GiftBox from "../public/assets/GiftBox.png";
 import BackButton from "../public/assets/backButton.svg";
-import  DayOneOverlay  from "@/app/components/DayOneOverlay";
+// import  DayOneOverlay  from "@/app/components/DayOneOverlay";
 
 
 
@@ -37,14 +37,14 @@ export default function TaskList() {
     };
 
     const [isDayOneOverlayVisible, setIsDayOneOverlayVisible] = useState(false);
-
+    isDayOneOverlayVisible;
     const handleDayOneOverlay = () => {
       setIsDayOneOverlayVisible(true);
     };
   
-    const closeDayOneOverlay = () => {
-      setIsDayOneOverlayVisible(false);
-    };
+    // const closeDayOneOverlay = () => {
+    //   setIsDayOneOverlayVisible(false);
+    // };
   
 
     return (
@@ -108,7 +108,7 @@ export default function TaskList() {
                                                 </div>
 
                                                  {/* Triggering the separate overlay component */}
-                                                <DayOneOverlay isVisible={isDayOneOverlayVisible} closeOverlay={closeDayOneOverlay} />
+                                                {/* <DayOneOverlay isVisible={isDayOneOverlayVisible} closeOverlay={closeDayOneOverlay} /> */}
                                             </div>
 
                                             <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">

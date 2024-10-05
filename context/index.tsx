@@ -11,10 +11,14 @@ export function AppWrapper({ children }: {
     const [username, setUsername] = useState(null);
     const [level, setLevel] = useState({});
     const [user_tap_rate_level, setUser_tap_rate_level] = useState(1);
-    const [userBalance, setUserBalance] = useState(0);
+    const [userBalance, setUserBalance] = useState<number>(0);
     const [userRank, setUserRank] = useState({})
     const [userDailyRewardInfo, setUserDailyRewardInfo] = useState({});
     const [allRanks, setAllRanks] = useState([])
+    const [userInvites, setUserInvites] = useState([]);
+    const [inviteLink, setInviteLink] = useState('');
+    const [allDailyBonues, setAllDailyBonues] = useState([]);
+    const [claimedDailyBonuses, setClaimedDailyBonuses] = useState([]);
 
 
     return (
@@ -35,6 +39,15 @@ export function AppWrapper({ children }: {
             setUserDailyRewardInfo,
             allRanks,
             setAllRanks,
+            userInvites,
+            setUserInvites,
+            inviteLink,
+            setInviteLink,
+            allDailyBonues,
+            setAllDailyBonues,
+            claimedDailyBonuses,
+            setClaimedDailyBonuses,
+
         }}>
             {children}
         </AppContext.Provider>

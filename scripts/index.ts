@@ -110,7 +110,7 @@ export const regusterUser = async (userId: string | null, username: string | nul
 }
 
 export const getUserInfo = async (userId: string | null, setUsername: Function, setLevel: Function, setUser_tap_rate_level: Function, setUserBalance: Function, setUserRank: Function, setUserDailyRewardInfo: Function) => {
-    const endpoint = '/api/users/user-info/' + userId + '/';
+    const endpoint = '/api/users/user-info/' + userId + '';
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     ////console.log(response);
@@ -130,7 +130,7 @@ export const getUserInfo = async (userId: string | null, setUsername: Function, 
 }
 
 export const getUserBalance = async (userId: string | null, setUserBalance: Function) => {
-    const endpoint = '/api/transactions/balance/' + userId + '/';
+    const endpoint = '/api/transactions/balance/' + userId + '';
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     ////console.log(response);
@@ -143,7 +143,7 @@ export const getUserBalance = async (userId: string | null, setUserBalance: Func
 }
 
 export const getUserRank = async (userId: string | null, setUserRank: Function) => {
-    const endpoint = '/api/ranks/user/' + userId + '/';
+    const endpoint = '/api/ranks/user/' + userId + '';
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     ////console.log(response);
@@ -157,7 +157,7 @@ export const getUserRank = async (userId: string | null, setUserRank: Function) 
 }
 
 export const getUserLevel = async (userId: string | null, setLevel: Function) => {
-    const endpoint = '/api/levels/level/' + userId + '/';
+    const endpoint = '/api/levels/level/' + userId + '';
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
@@ -170,7 +170,7 @@ export const getUserLevel = async (userId: string | null, setLevel: Function) =>
 }
 
 export const getDailyRewardInfo = async (userId: string | null, setUserDailyRewardInfo: Function) => {
-    const endpoint = '/api/bonuses/daily/next-claim-time/' + userId + '/';
+    const endpoint = '/api/bonuses/daily/next-claim-time/' + userId + '';
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
@@ -183,7 +183,7 @@ export const getDailyRewardInfo = async (userId: string | null, setUserDailyRewa
 }
 
 export const addTapTransaction = async (userId: string | null, amount: number) => {
-    const endpoint = '/api/transactions/add/' + userId + '/';
+    const endpoint = '/api/transactions/add/' + userId + '';
     const httpMethod = 'POST';
     const parameters = {
         "transaction_type":"credit",
@@ -214,6 +214,75 @@ export const getAllRankInfo = async (setAllRanks: Function) => {
         // console.log(response);
         
         
+    }
+}
+
+export const getUserInvivites = async (userId: string | null, setUserInvites: Function) => {
+    const endpoint = '/api/invitations/invites/' + userId + '';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response)) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        setUserInvites(response);
+    }
+}
+
+export const getInviteLink = async (userId: string | null, setInviteLink: Function) => {
+    const endpoint = '/api/invitations/invite-link/' + userId + '';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response && 'invite_link' in response)) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        setInviteLink(response.invite_link);
+    }
+}
+
+export const getAllDailyBounuses = async (setAllDailyBonues: Function) => {
+    const endpoint = '/api/bonuses/daily';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response)) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        setAllDailyBonues(response);
+    }
+}
+
+export const claimDailyBonus = async (userId: string | null, bonusId: number) => {
+    const endpoint = '/api/bonuses/daily/claim/' + userId + '';
+    const httpMethod = 'POST';
+    const parameters =  {
+        "daily_reward_id":bonusId
+    }
+    const response = await fetchApi(endpoint, parameters, httpMethod);
+    //console.log(response);
+    if (!(response && 'message' in response)) {
+        showFailedMessage(response.error);
+        return false;
+    } else {
+        //showSuccessMessage("Reward claimed successfully");
+        return true;
+    }
+}
+export const getClaimedDailyBonuses = async (userId: string | null, setClaimedDailyBonuses: Function) => {
+    const endpoint = '/api/bonuses/daily/claimed-rewards/' + userId + '';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response && !('message' in response))) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        
+        setClaimedDailyBonuses(response);
     }
 }
 const sortUsersByRank = (userArray:Array<any>) => {
