@@ -186,7 +186,7 @@ export default function GameHome() {
         setIsDailyOverlayVisible(false);
     };
 
-  
+
     return (
         <>
             <div>
@@ -318,7 +318,12 @@ export default function GameHome() {
                                     <p className="font-bold leading-[15.19px] text-[7.65px] tracking-[0.15%]">{userDailyRewardInfo ? timeLeft : "0s"}</p>
                                 </div>
                             </div>
-                            <DailyBonuses props={{ isDailyOverlayVisible, handleDailyBonusClick, closeDailyOverlay }} />
+                            <DailyBonuses
+                                isDailyOverlayVisible={isDailyOverlayVisible}
+                                // handleDailyBonusClick={handleDailyBonusClick}
+                                closeDailyOverlay={closeDailyOverlay}
+                            />
+
                         </div>
 
 
