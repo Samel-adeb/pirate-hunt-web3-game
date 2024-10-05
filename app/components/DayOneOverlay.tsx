@@ -3,8 +3,8 @@ import Cross from "/public/assets/Cross.svg";
 import GiftBox from "/public/assets/bluegiftboxb.png";
 import standingdollarcoin from "/public/assets/standingdollarcoin.svg";
 import Image from "next/image";
-import Link from 'next/link';
-import ClaimReward from './ClaimReward';
+//import Link from 'next/link';
+import ClaimReward from '@/app/components/ClaimReward';
 import { claimDailyBonus, getDailyRewardInfo } from '@/scripts';
 import { useAppContext } from '@/context';
 interface OverlayProps {
