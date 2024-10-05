@@ -16,9 +16,56 @@ import FirstPlaceBadge from "../public/assets/FirstPlaceBadge.png";
 import Friend from "../public/assets/Friend.svg";
 import Copy from "../public/assets/Copy.svg";
 import LoadingSpinner from '@/app/components/LoadingSpinner';
+import { useAppContext } from "@/context";
+import { getInviteLink, getUserInvivites } from "@/scripts";
+import { useEffect } from "react";
+import { showInfoMessage } from "@/scripts/utils";
+import BackButton from "../public/assets/backButton.svg";
 
 export default function InviteAFriend() {
+    const { userId, userInvites, setUserInvites, inviteLink, setInviteLink } = useAppContext();
+    console.log(userInvites);
+    
+    const load = async () => {
+        await getUserInvivites(userId, setUserInvites);
+        await getInviteLink(userId, setInviteLink);
+    }
+    useEffect(() => {
+        if(userId){
+            load();
+        }
+       
+    }, []);
 
+    const handleCopyInviteLink = async()=>{
+        try {
+            await navigator.clipboard.writeText(inviteLink);
+            showInfoMessage('Invite Link copied to clipboard!');
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+        }
+        
+    }
+
+    interface invite {
+        id: number,
+        coin_balance: number,
+        username: string,
+        user_id: number,
+        level: {
+            id: number,
+            level_name: string,
+            level_reward: number,
+            level_threshold: number,
+            image_url: string,
+            created_at: Date,
+            updated_at: Date
+        }
+    }
+    const router = useRouter();
+    const handleBackClick = () => {
+        router.back(); // Go back to the previous page
+    };
     return (
         <>
 
@@ -26,7 +73,7 @@ export default function InviteAFriend() {
 
 
             <div>
-                <div className="relative h-[100vh + 200px] pb-20" style={{ background: 'linear-gradient(173.23deg, #000000 -5.41%, #171000 36.99%, #150E00 91.05%)' }}>
+            <div className="relative h-screen pb-20" style={{ background: 'linear-gradient(173.23deg, #000000 -5.41%, #171000 36.99%, #150E00 91.05%)' }}>
                     {/* Image Container */}
                     <div className="relative">
                         <Image src={CaptainDogs} alt="CaptainDogs" />

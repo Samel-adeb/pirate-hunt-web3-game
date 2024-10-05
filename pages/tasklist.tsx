@@ -108,7 +108,7 @@ export default function TaskList() {
                                                 </div>
 
                                                  {/* Triggering the separate overlay component */}
-                                                <DayOneOverlay isVisible={isDayOneOverlayVisible} closeOverlay={closeDayOneOverlay} />
+                                                {/* <DayOneOverlay isVisible={isDayOneOverlayVisible} closeOverlay={closeDayOneOverlay} /> */}
                                             </div>
 
                                             <div className="flex flex-col border-[0.5px] w-[82.1px] border-[#00A6DE] p-[9.8px] rounded-[9.8px] items-center justify-center">
