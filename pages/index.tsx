@@ -25,6 +25,7 @@ export default function GameLoad() {
         }
     };
 
+    
     const getId = async () => {
         //alert('getId loading...');
         const muserId = await getUserId();
