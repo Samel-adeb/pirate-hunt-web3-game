@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from "next/image";
 import standingdollarcoin from "/public/assets/standingdollarcoin.svg";
 import { useAppContext } from '@/context';
+import { claimLevelUpReward, getNextClaimableReward } from '@/scripts';
 
 // Define the prop types for ProgressBar
 interface ProgressBarProps {
@@ -9,43 +10,63 @@ interface ProgressBarProps {
 }
 
 const ProileProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
-  const { level, userBalance } = useAppContext();
+  const { userId, userBalance,setUserBalance, nextClaimableReward, setNextClaimableReward } = useAppContext();
+  const load = async () => {
+    await getNextClaimableReward(userId, setNextClaimableReward);
+  }
+
+  useEffect(() => {
+    if (userId) {
+      load();
+    }
+
+  }, [])
+  const claimReward = async (id:number) => {
+    const isSuccessful = await claimLevelUpReward(userId, id);
+
+    load();
+    if (isSuccessful) {
+      setUserBalance(parseInt(userBalance) + parseInt(nextClaimableReward.reward_amount));
+    }
+  }
   return (
     <>
       {/* Coin Balance and Image */}
       <div className="flex items-center justify-between mb-2"> {/* Added mb-2 for spacing */}
         <div className="flex items-center gap-[2px]">
 
-          <p className="text-white text-lg font-semibold">Level Up</p>
+          <p className="text-white font-semibold">{nextClaimableReward.next_level_name ?? "Level"}</p>
         </div>
         <p className="text-[12px] leading-[16px] font-normal text-[#FFFFFF73] tracking-[0.4px]">
-          <span className="font-extrabold text-white">{userBalance ? userBalance : 0}</span> / {level.next_level_threshold ? level.next_level_threshold : 0}
+          <span className="font-extrabold text-white">{userBalance ? userBalance : 0}</span> / {nextClaimableReward.level_threshold ? nextClaimableReward.level_threshold : 0}
         </p>
       </div>
 
       {/* Progress Bar Container */}
       <div className="">
         <div
-          className="relative  h-2 rounded-full overflow-hidden"
+          className="relative p-1 rounded-full overflow-hidden"
           style={{
-            border: '14px solid transparent',
-            borderImageSource: 'linear-gradient(90deg, #C10000 66.5%, rgba(0, 0, 0, 0.35) 100%)',
-            borderImageSlice: 1,
+            backgroundColor: 'white',
             borderRadius: '50px',
-            width: `${progress}%`, // Control the width based on progress
+            
             transition: 'width 0.3s ease-in-out',
           }}
         >
           {/* Inner Progress */}
           <div
-            className="h-full bg-[#C10000] rounded-full"
+            className="h-full w-full rounded-full"
             style={{
-
+              height: '20px',
+              backgroundColor: 'red',
+              transition: 'width 0.3s ease-in-out',
+              borderRadius: '50px',
+              width: `${(parseInt(userBalance) > parseInt(nextClaimableReward.level_threshold)) ? 100 : (parseInt(userBalance) *100 / parseInt(nextClaimableReward.level_threshold))}%`, // Control the width based on progress
             }}
           />
         </div>
       </div>
-      {/* <div className='text-white flex justify-between'>
+      <div className='text-white flex justify-between'>
         <div className='flex items-center justify-center mx-1'>Reward:</div>
         <div className='flex items-center justify-center mx-1'>
 
@@ -56,10 +77,17 @@ const ProileProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
             alt="standingdollarcoin"
             className='mx-1'
           />
-          <p className='text-lg font-semibold'>{level.reward_amount ? level.reward_amount : 0}</p>
+          <p className='text-lg font-semibold'>{nextClaimableReward.reward_amount ? nextClaimableReward.reward_amount : 0}</p>
         </div>
-        <button className='p-1 bg-black/50 p-2 rounded-full'>CLAIM</button>
-      </div > */}
+        {
+          nextClaimableReward.claimable ? (
+            <button onClick={()=>claimReward(nextClaimableReward.next_level_id)} className='p-1 bg-black p-2 rounded-full text-[12px] mt-3'>CLAIM</button>
+          ) : (
+            <button className='p-1 bg-black/50 p-2 rounded-full mt-3' style={{ opacity: "0.5" }}>CLAIM</button>
+          )
+        }
+
+      </div >
     </>
   );
 };

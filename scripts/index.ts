@@ -352,6 +352,35 @@ export const claimTaskDoneReward = async (userId: string | null, taskId: number)
         return response;
     }
 }
+export const getNextClaimableReward = async (userId: string | null, setNextClaimableReward: Function) => {
+    const endpoint = '/api/levels/next-claimable-reward/' + userId + '';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response)) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        
+        setNextClaimableReward(response);
+    }
+}
+export const claimLevelUpReward = async (userId: string | null, levelId: number) => {
+    const endpoint = '/api/levels/claim-reward/' + userId
+    const httpMethod = 'POST';
+    const parameters ={ 
+        "level_id":levelId
+    }
+    const response = await fetchApi(endpoint, parameters, httpMethod);
+    //console.log(response);
+    if (!(response && 'message' in response)) {
+        showFailedMessage(response.error);
+        return false;
+    } else {
+        showSuccessMessage("Reward claimed successfully");
+        return response;
+    }
+}
 const sortUsersByRank = (userArray:Array<any>) => {
     return userArray.sort((a, b) => a.rank - b.rank);
 };

@@ -32,7 +32,7 @@ export default function Profile() {
 
     const getAllRank = async () => {
         await getAllRankInfo(setAllRanks);
-        console.log(allRanks);
+        //console.log(allRanks);
     }
 
     useEffect(() => {

@@ -22,6 +22,7 @@ export function AppWrapper({ children }: {
     const [claimedInvites, setClaimedInvites] = useState([]);
     const [task, setTask]= useState([]);
     const [doneTasks, setDoneTasks] = useState([]);
+    const [nextClaimableReward, setNextClaimableReward] = useState({});
 
 
     return (
@@ -56,6 +57,8 @@ export function AppWrapper({ children }: {
             setTask,
             doneTasks,
             setDoneTasks,
+            nextClaimableReward,
+            setNextClaimableReward,
 
         }}>
             {children}
