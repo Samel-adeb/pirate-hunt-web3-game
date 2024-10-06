@@ -203,7 +203,7 @@ export default function GameHome() {
                                                 height={35}
                                                 src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : ProfileSvg} // Properly handle fallback
                                                 alt="Profile Picture"
-                                                className="rounded-[16px]"
+                                                className="rounded-full"
                                             />
 
                                             <div className="flex flex-col justify-center px-[6px]">
@@ -337,7 +337,7 @@ export default function GameHome() {
                                 <Link href="/inviteafriend">
                                     <div className="absolute top-[0px] left-[70px] ">
                                         <div className="bg-[#1A314E] flex flex-col items-center justify-center border-[4px] border-[#FFFFFF0D] w-[40.19px] h-[40.19px] rounded-[30px]">
-                                            <Image src={Users} alt="Users" />
+                                            <Image src={Users} alt="Users" width={25} height={25} />
                                         </div>
                                         <h1 className="text-[12.47px] leading-[18.7px] font-bold text-white text-center">Invite</h1>
                                     </div>
@@ -395,15 +395,17 @@ export default function GameHome() {
                                 </div>
                             ))}
                         </div>
-                        <div className="absolute" style={{ bottom: '5%', left: '10%' }}>
-                            <div className="flex items-center  p-[10.38px] bg-[#1A314E] border-[3.24px] border-white max-w-[165.97px] h-[51.9px] rounded-[20.76px] gap-[2px]">
-                                <div>
-                                    <Image width={35.68} height={51.9} src={Prize} alt="PrizeSvg" />
-                                </div>
+                        <Link href="/profile">
+                            <div className="absolute" style={{ bottom: '5%', left: '10%' }}>
+                                <div className="flex items-center  p-[10.38px] bg-[#1A314E] border-[3.24px] border-white max-w-[165.97px] h-[51.9px] rounded-[20.76px] gap-[2px]">
+                                    <div>
+                                        <Image width={35.68} height={51.9} src={Prize} alt="PrizeSvg" />
+                                    </div>
 
-                                <h1 className="text-[10.76px] leading-[31.14px] font-semibold text-white">{userRank.rank}<span className="text-[8.57px] leading-[23.36px] font-semibold text-[#FFFFFFA6]"> / {userRank.total_users}</span></h1>
+                                    <h1 className="text-[10.76px] leading-[31.14px] font-semibold text-white">{userRank.rank}<span className="text-[8.57px] leading-[23.36px] font-semibold text-[#FFFFFFA6]"> / {userRank.total_users}</span></h1>
+                                </div>
                             </div>
-                        </div>
+                        </Link>
                         {/* <div className="w-[200.31px] h-[5.57px] absolute top-[675px] left-[105.6px]">
                             <ProgressBar  progress={60} />
                         </div> */}

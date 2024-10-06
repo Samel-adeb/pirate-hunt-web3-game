@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GameNavbar } from "@/app/components/GameNavbar";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,18 +14,31 @@ import brownCross from "../public/assets/brownCross.svg";
 import Insta from "../public/assets/Insta.svg";
 import Telegrame from "../public/assets/Telegrame.svg";
 import Tweet from "../public/assets/Tweet.svg";
+import { useAppContext } from '@/context';
+import { getUserInvivites } from '@/scripts';
 
 
 export default function ProfileShare() {
-
+    const { userId, username, level, userBalance, userInvites, setUserInvites} = useAppContext();
     const [isOverlayVisible, setOverlayVisible] = useState(false);
 
+
+    const load = async () => {
+        await getUserInvivites(userId, setUserInvites);
+
+    }
+    useEffect(() => {
+        if (userId) {
+            load();
+        }
+
+    }, []);
     const handleShareClick = () => {
-      setOverlayVisible(true);
+        setOverlayVisible(true);
     };
-  
+
     const closeOverlay = () => {
-      setOverlayVisible(false);
+        setOverlayVisible(false);
     };
 
     return (
@@ -39,33 +52,37 @@ export default function ProfileShare() {
                 }}>
                 <div className="px-[16px] flex items-center gap-[50px]">
                     <Link href="/profile">
-                        <div className="border border-white/40 rounded-md w-[100px] h-[37.13px] flex items-center justify-start p-2">
+                        <div className="border border-white/40 rounded-md flex items-center justify-start p-1">
                             <Image
-                                width={25.24}
-                                height={25.24}
-                                src={ProfileSvg}
+                                width={35}
+                                height={35}
+                                src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : ProfileSvg} // Properly handle fallback
                                 alt="Profile Picture"
-                                className="mr-1"
+                                className="rounded-full"
                             />
-                            <div className="flex flex-col justify-center">
-                                <h1 className="text-[8.64px] text-white font-semibold leading-tight">BRYAN</h1>
-                                <div className="flex items-center  whitespace-nowrap">
-                                <Image
-                                    width={10}
-                                    height={10}
-                                    src={Prize}
-                                    alt="Prize Icon"
-                                />
-                                <p className="text-[6px] font-semibold text-white leading-tight max-w-[36.95px]">
-                                    Rank 1<span className="text-white/70"> / 13</span>
-                                </p>
+
+                            <div className="flex flex-col justify-center px-[6px]">
+                                <h1 className="text-[10px] text-white font-semibold leading-tight">{username ? username.toUpperCase() : "Name"}</h1>
+                                <div className="items-center  whitespace-nowrap">
+                                    <div className="flex items-center">
+                                        <Image
+                                            width={15}
+                                            height={15}
+                                            src={Prize}
+                                            alt="Prize Icon"
+                                        />
+                                        <p className="text-[8px] font-semibold text-white leading-tight max-w-">
+                                            Level <span className="text-white/70">{level.level}</span>
+                                        </p>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
                     </Link>
 
                     <div className="flex flex-col items-left">
-                        <h1 className="text-[12px] leading-[32px] text-[#FFFFFF8C]">Coin</h1>
+                        {/* <h1 className="text-[12px] leading-[32px] text-[#FFFFFF]">Coin</h1> */}
                         <div className="flex gap-[2px] items-center -mt-[7px]">
                             <Image
                                 width={20}
@@ -74,30 +91,22 @@ export default function ProfileShare() {
                                 alt="Gold Dollar Coin"
                                 className="flex-shrink-0"
                             />
-                            <h1 className="text-[16px]  leading-[32px] font-bold text-white">10000</h1>
+                            <h1 className="text-[16px]  leading-[32px] font-bold text-white">{userBalance ? userBalance : 0}</h1>
                         </div>
                     </div>
 
-                    <div className="flex flex-col items-left gap-y-0 whitespace-nowrap">
-                        <h1 className="text-[12px] leading-[32px] text-[#FFFFFF8C]">Pirate Token</h1>
-                        <div className="flex gap-[2px] items-center -mt-[7px]">
-                            <Image
-                                width={20}
-                                height={20}
-                                src={golddollarcoin}
-                                alt="Gold Dollar Coin"
-                                className="flex-shrink-0"
-                            />
-                            <h1 className="text-[16px] leading-[32px] font-bold text-white">10000</h1>
-                        </div>
-                    </div>
+
                 </div>
 
                 <div>
                     <div className="pl-[16px] pt-[15px]" onClick={handleShareClick}>
                         <div className="flex flex-col items-left">
-                            <div  className="pl-[10px]">
-                                <Image src={ShareButton} alt="ShareButton" />
+                            <div className="pl-[10px]">
+                                <Image
+                                    width={50}
+                                    height={50}
+                                    src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : ShareButton} alt="ShareButton"
+                                    className="rounded-full" />
                             </div>
                             <p className="text-[16px] leading-[32px] font-bold text-white">Share story</p>
                         </div>
@@ -105,87 +114,87 @@ export default function ProfileShare() {
 
                     {isOverlayVisible && (
                         <div
-                        className="fixed inset-0 z-50 flex flex-col justify-end "
-                        style={{ backdropFilter: 'blur(15px)' }} // Blur effect for the entire page
-                        onClick={closeOverlay} // Clicking the overlay outside the bottom content will close it
+                            className="fixed inset-0 z-50 flex flex-col justify-end "
+                            style={{ backdropFilter: 'blur(15px)' }} // Blur effect for the entire page
+                            onClick={closeOverlay} // Clicking the overlay outside the bottom content will close it
                         >
-                        {/* Bottom Content with Background */}
-                        <div
-                            className="bg-[#1C1208] relative h-[370px] text-white w-full py-8 px-6 rounded-t-lg"
-                            onClick={(e) => e.stopPropagation()} // Prevent overlay close when clicking inside
-                        >
-                            <h1 className="text-center text-[16px] leading-[16px] font-medium tracking-[0.4px]">Share On</h1>
-
-                            <p className="text-center pt-2 text-[12px] leading-[16px] text-[#FFFFFF8C]  font-medium tracking-[0.4px]">
-                                You can share to multiply social medials 
-                            </p>
-
-                            <div>
-                                <div className="pt-[20px]">
-                                    <div className=' px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247]   border-[1px] border-[#FFC247]'>
-                                        <div className="flex items-center gap-[8px]">
-                                            <Image src={Telegrame} alt="Telegrame" />
-                                            <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Telegram story</h1>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="pt-[5px]">
-                                    <div className=' px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247]   border-[1px] border-[#FFC247]'>
-                                        <div className="flex items-center gap-[8px]">
-                                            <Image src={Insta} alt="Insta" />
-                                            <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Instagram story</h1>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="pt-[5px]">
-                                    <div className=' px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247]   border-[1px] border-[#FFC247]'>
-                                        <div className="flex items-center gap-[8px]">
-                                            <Image src={Tweet} alt="Tweet" />
-                                            <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Twitter story</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <Link href="/sharecard">
-                                <div className="pt-[10px]">
-                                    <div className="bg-[#FFC247] p-[10px] rounded-[25px] h-[51px] flex flex-col items-center justify-center">
-                                        <button className="text-[16px] leading-[16px] tracking-[0.4px] text-center  text-white font-medium">
-                                            Share
-                                        </button>
-                                    </div>
-                                </div>
-                            </Link>
-
-                            <button
-                            onClick={closeOverlay}
-                            className="absolute top-4 right-4 text-white font-bold text-xl"
+                            {/* Bottom Content with Background */}
+                            <div
+                                className="bg-[#1C1208] relative h-[370px] text-white w-full py-8 px-6 rounded-t-lg"
+                                onClick={(e) => e.stopPropagation()} // Prevent overlay close when clicking inside
                             >
-                                <Image src={brownCross} alt="brownCross" />
-                            </button>
-                        </div>
+                                <h1 className="text-center text-[16px] leading-[16px] font-medium tracking-[0.4px]">Share On</h1>
+
+                                <p className="text-center pt-2 text-[12px] leading-[16px] text-[#FFFFFF8C]  font-medium tracking-[0.4px]">
+                                    You can share to multiply social medials
+                                </p>
+
+                                <div>
+                                    <div className="pt-[20px]">
+                                        <div className=' px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247]   border-[1px] border-[#FFC247]'>
+                                            <div className="flex items-center gap-[8px]">
+                                                <Image src={Telegrame} alt="Telegrame" />
+                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Telegram story</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-[5px]">
+                                        <div className=' px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247]   border-[1px] border-[#FFC247]'>
+                                            <div className="flex items-center gap-[8px]">
+                                                <Image src={Insta} alt="Insta" />
+                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Instagram story</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-[5px]">
+                                        <div className=' px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247]   border-[1px] border-[#FFC247]'>
+                                            <div className="flex items-center gap-[8px]">
+                                                <Image src={Tweet} alt="Tweet" />
+                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Twitter story</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <Link href="/sharecard">
+                                    <div className="pt-[10px]">
+                                        <div className="bg-[#FFC247] p-[10px] rounded-[25px] h-[51px] flex flex-col items-center justify-center">
+                                            <button className="text-[16px] leading-[16px] tracking-[0.4px] text-center  text-white font-medium">
+                                                Share
+                                            </button>
+                                        </div>
+                                    </div>
+                                </Link>
+
+                                <button
+                                    onClick={closeOverlay}
+                                    className="absolute top-4 right-4 text-white font-bold text-xl"
+                                >
+                                    <Image src={brownCross} alt="brownCross" />
+                                </button>
+                            </div>
                         </div>
                     )}
                 </div>
 
                 <div className="pt-10 flex flex-col items-center justify-center">
                     <div>
-                        <Image width={360}  height={237} src={baby} alt="baby" />
+                        <Image width={360} height={237} src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : baby} alt="baby" className='w-full ' />
                     </div>
 
                     <div className="pt-[20px]">
                         <div className=" w-[115px] h-[42px] rounded-[50px] p-[10px] flex flex-col items-center justify-center" style={{
                             background: 'linear-gradient(180deg, rgba(255, 194, 71, 0.09) 0%, rgba(153, 116, 43, 0.09) 100%)',
                         }}>
-                            <h1 className="text-[16px] leading-[32px] font-bold text-white">Bryan</h1>
+                            <h1 className="text-[16px] leading-[32px] font-bold text-white">{username ?? "Name"}</h1>
                         </div>
                     </div>
 
 
                     <div className="pt-4">
-                        <div className="flex items-center justify-between mb-2"> 
+                        <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-[2px]">
                                 <Image
                                     src={standingdollarcoin} // Replace with the actual image path
@@ -194,22 +203,22 @@ export default function ProfileShare() {
                                     alt="standingdollarcoin"
                                 />
                                 <p className="text-white text-[12px] leading-[16px] tracking-[0.4px] font-semibold">Coin Balance:</p>
-                                </div>
-                                <p className="text-[12px] leading-[16px] font-normal text-[#FFFFFF73] tracking-[0.4px]">
-                                <span className="font-extrabold text-white">12000</span>/15000
-                                </p>
                             </div>
-                            <div className="w-[280.32px] h-[0.38px] rounded-full">
-                                <ProgressBar  progress={60} /> {/* Change the progress value as needed */}
-                            </div>
+                            <p className="text-[12px] leading-[16px] font-normal text-[#FFFFFF73] tracking-[0.4px]">
+                                <span className="font-extrabold text-white">{userBalance ? userBalance : 0}</span> / {level.next_level_threshold ? level.next_level_threshold : 0}
+                            </p>
+                        </div>
+                        <div className="w-[280.32px] h-[0.38px] rounded-full">
+                            <ProgressBar progress={userBalance * 100 / level.next_level_threshold} /> {/* Change the progress value as needed */}
+                        </div>
 
-                            
-                            
+
+
                     </div>
 
                     <div className="pt-[30px] text-center">
-                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-[#FFFFFF73]">Coin increases when you engaged in the game by tapping<br />
-                            You can as well level up your Pirate Token by unlocking the<br /> boost from the Treasure Hunt 
+                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-[#FFFFFF73] mt-3 mx-1">Coin increases when you engaged in the game by tapping<br />
+                            You can as well level up your Pirate Token by unlocking the<br /> boost from the Treasure Hunt
                         </p>
                     </div>
                 </div>
@@ -217,27 +226,28 @@ export default function ProfileShare() {
                 <div className="pt-10 pb-10 flex flex-col justify-center gap-y-[3px] items-center just">
                     <div className="w-[361px] h-[48px] py-[16px] px-[8px] rounded-[8px] border-[1px] border-[#FFFFFF26]  mx-auto flex items-center justify-between">
                         <h1 className="text-[16px] leading-[16px] text-white">Days in game</h1>
-                        <p className="text-[12px] leading-[16px] text-white">32</p>
+                        <p className="text-[12px] leading-[16px] text-white">_</p>
                     </div>
 
                     <div className="w-[361px] h-[48px] py-[16px] px-[8px] rounded-[8px] border-[1px] border-[#FFFFFF26]  mx-auto flex items-center justify-between">
-                        <h1 className="text-[16px] leading-[16px] text-white">Pirate Token</h1>
-                        <p className="text-[12px] leading-[16px] text-white">1.17M</p>
+                        <h1 className="text-[16px] leading-[16px] text-white">Coin Balance</h1>
+                       
+                        <p className="text-[12px] leading-[16px] text-white">{userBalance}</p>
                     </div>
 
                     <div className="w-[361px] h-[48px] py-[16px] px-[8px] rounded-[8px] border-[1px] border-[#FFFFFF26]  mx-auto flex items-center justify-between">
                         <h1 className="text-[16px] leading-[16px] text-white">Invited Friends</h1>
-                        <p className="text-[12px] leading-[16px] text-white">12</p>
+                        <p className="text-[12px] leading-[16px] text-white">{userInvites.length ?? 0}</p>
                     </div>
 
                     <div className="w-[361px] h-[48px] py-[16px] rounded-[8px] px-[8px] border-[1px] border-[#FFFFFF26]  mx-auto flex items-center justify-between">
-                        <h1 className="text-[16px] leading-[16px] text-white">Treasures</h1>
-                        <p className="text-[12px] leading-[16px] text-white">4</p>
+                        <h1 className="text-[16px] leading-[16px] text-white">Treasures Purchased</h1>
+                        <p className="text-[12px] leading-[16px] text-white">_</p>
                     </div>
 
                     <div className="w-[361px] h-[48px] py-[16px] rounded-[8px] px-[8px] border-[1px] border-[#FFFFFF26]  mx-auto flex items-center justify-between">
                         <h1 className="text-[16px] leading-[16px] text-white">Telegram user name</h1>
-                        <p className="text-[12px] leading-[16px] text-white">Success123</p>
+                        <p className="text-[12px] leading-[16px] text-white">{username}</p>
                     </div>
                 </div>
             </div>

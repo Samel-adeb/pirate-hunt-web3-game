@@ -285,6 +285,102 @@ export const getClaimedDailyBonuses = async (userId: string | null, setClaimedDa
         setClaimedDailyBonuses(response);
     }
 }
+export const getInviteClaimed = async (userId: string | null, setClaimedInvites: Function) => {
+    const endpoint = '/api/invitations/claimed-rewards/' + userId + '';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response && !('message' in response))) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        
+        setClaimedInvites(response);
+    }
+}
+export const claimInviteReward = async (userId: string | null, invitation_id: number) => {
+    const endpoint = '/api/invitations/claim/' + userId + '';
+    const httpMethod = 'POST';
+    const parameters =  {
+        "invitation_id":invitation_id
+    }
+    const response = await fetchApi(endpoint, parameters, httpMethod);
+    //console.log(response);
+    if (!(response && 'message' in response)) {
+        showFailedMessage(response.error);
+        return false;
+    } else {
+        showSuccessMessage("Reward claimed successfully");
+        return response;
+    }
+}
+export const getAllTasks = async (setTask: Function) => {
+    const endpoint = '/api/tasks/all';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response)) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        setTask(response);
+    }
+}
+export const getDoneTasks = async (userId: string | null, setDoneTasks: Function) => {
+    const endpoint = '/api/tasks/done/' + userId + '';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response && !('message' in response))) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        
+        setDoneTasks(response);
+    }
+}
+export const claimTaskDoneReward = async (userId: string | null, taskId: number) => {
+    const endpoint = '/api/tasks/mark-done/' + userId + '/'+ taskId;
+    const httpMethod = 'PUT';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response && 'message' in response)) {
+        showFailedMessage(response.error);
+        return false;
+    } else {
+        showSuccessMessage("Reward claimed successfully");
+        return response;
+    }
+}
+export const getNextClaimableReward = async (userId: string | null, setNextClaimableReward: Function) => {
+    const endpoint = '/api/levels/next-claimable-reward/' + userId + '';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response)) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        
+        setNextClaimableReward(response);
+    }
+}
+export const claimLevelUpReward = async (userId: string | null, levelId: number) => {
+    const endpoint = '/api/levels/claim-reward/' + userId
+    const httpMethod = 'POST';
+    const parameters ={ 
+        "level_id":levelId
+    }
+    const response = await fetchApi(endpoint, parameters, httpMethod);
+    //console.log(response);
+    if (!(response && 'message' in response)) {
+        showFailedMessage(response.error);
+        return false;
+    } else {
+        showSuccessMessage("Reward claimed successfully");
+        return response;
+    }
+}
 const sortUsersByRank = (userArray:Array<any>) => {
     return userArray.sort((a, b) => a.rank - b.rank);
 };

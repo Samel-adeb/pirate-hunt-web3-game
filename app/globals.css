@@ -166,6 +166,9 @@ a {
   position: absolute;
   z-index: 2;
 }
+.bg-grey-light{
+  background-color: #999999;
+}
 
 /* Popup container styling */
 .reward-popup {
