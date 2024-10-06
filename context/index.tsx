@@ -9,6 +9,7 @@ export function AppWrapper({ children }: {
 
     const [userId, setUserid] = useState(null);
     const [username, setUsername] = useState(null);
+    const [userInfo, setUserInfo] = useState({});
     const [level, setLevel] = useState({});
     const [user_tap_rate_level, setUser_tap_rate_level] = useState(1);
     const [userBalance, setUserBalance] = useState<number>(0);
@@ -31,6 +32,8 @@ export function AppWrapper({ children }: {
             setUserid,
             username,
             setUsername,
+            userInfo,
+            setUserInfo,
             level,
             setLevel,
             user_tap_rate_level,
