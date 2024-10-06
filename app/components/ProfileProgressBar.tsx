@@ -14,7 +14,7 @@ const ProileProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
   const load = async () => {
     await getNextClaimableReward(userId, setNextClaimableReward);
   }
-
+  progress;
   useEffect(() => {
     if (userId) {
       load();
