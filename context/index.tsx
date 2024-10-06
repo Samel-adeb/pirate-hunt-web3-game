@@ -19,6 +19,9 @@ export function AppWrapper({ children }: {
     const [inviteLink, setInviteLink] = useState('');
     const [allDailyBonues, setAllDailyBonues] = useState([]);
     const [claimedDailyBonuses, setClaimedDailyBonuses] = useState([]);
+    const [claimedInvites, setClaimedInvites] = useState([]);
+    const [task, setTask]= useState([]);
+    const [doneTasks, setDoneTasks] = useState([]);
 
 
     return (
@@ -47,6 +50,12 @@ export function AppWrapper({ children }: {
             setAllDailyBonues,
             claimedDailyBonuses,
             setClaimedDailyBonuses,
+            claimedInvites,
+            setClaimedInvites,
+            task,
+            setTask,
+            doneTasks,
+            setDoneTasks,
 
         }}>
             {children}

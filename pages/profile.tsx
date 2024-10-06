@@ -62,7 +62,7 @@ export default function Profile() {
                     {/* Overlay */}
                     <div className="absolute inset-0 bg-[#000000B2]">
                         <div className="flex flex-col items-center justify-center pt-16 gap-y-[8px]">
-                            <h6 className="text-[12px] leading-[16px] tracking-[0.4px] font-medium text-white">Your Rank</h6>
+                            <h6 className="text-[12px] leading-[16px] tracking-[0.4px] font-medium text-white">Your Level: {level ? level.level : "1"}</h6>
 
                             <div className="flex items-center gap-[10px]">
                                 <Image width={35} height={35} src={FirstBadge} alt="FirstBadge" />
@@ -71,20 +71,22 @@ export default function Profile() {
                             </div>
 
                             <div className="w-[205px] flex flex-col items-center justify-center">
-                                <button className="bg-white text-center  p-[10px] rounded-[16px]">
+                                <button className="bg-grey-light text-center  p-[10px] rounded-[8px]">
                                     How it works?
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <div className="absolute top-[5px] left-[16px]">
-                        <div className="flex gap-[5px] items-center bg-white p-[6.27px] rounded-[6.27px]">
-                            <Image width={27.19} height={27.19} src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : userProfile} alt="userProfile" className="rounded-[16px]" />
+                    <Link href="/profileshare">
+                        <div className="absolute top-[5px] left-[16px]">
+                            <div className="flex gap-[5px] items-center bg-white p-[6.27px] rounded-[6.27px]">
+                                <Image width={27.19} height={27.19} src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : userProfile} alt="userProfile" className="rounded-[16px]" />
 
-                            <h1 className="text-[9.31px] text-[#000000] leading-[13.96px] font-semibold">{username ? username : "User"}</h1>
+                                <h1 className="text-[9.31px] text-[#000000] leading-[13.96px] font-semibold">{username ? username : "User"}</h1>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
 
 
 
@@ -102,13 +104,13 @@ export default function Profile() {
 
 
                     <div className="absolute inset-0 bg-[#000000B2] h-[1000px]">
-                        <Link href="/profileshare">
-                            <div className="absolute -top-[50px] left-[35px] border-[1px] rounded-[16px] border-[#FFFFFF40] p-[16px]" style={{ left: "20%", right: "20%" }}>
 
-                                <ProfileProgressBar progress={userBalance * 100 / level.next_level_threshold} /> {/* Change the progress value as needed */}
+                        <div className="absolute -top-[50px] left-[35px] border-[1px] rounded-[16px] border-[#FFFFFF40] p-3" style={{ left: "10%", right: "10%", width: '80%',top: "-10%" }}>
 
-                            </div>
-                        </Link>
+                            <ProfileProgressBar progress={userBalance * 100 / level.next_level_threshold} /> {/* Change the progress value as needed */}
+
+                        </div>
+
 
                         <div className="flex flex-col items-center pt-16">
                             <div className="mb-4">
