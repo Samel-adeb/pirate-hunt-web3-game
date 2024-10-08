@@ -43,7 +43,7 @@ export default function GameHome() {
     const ENERGY_CAPACITY_VALUE = 1000; // Maximum energy capacity
     const [timeLeft, setTimeLeft] = useState<string>('');
     const targetDate = userDailyRewardInfo ? new Date(userDailyRewardInfo.next_claim_time).getTime() : new Date();
-    const [coins, setCoins] = useState<number[]>([]);
+    const [coins, setCoins] = useState<{ id: number; top: number; left: number }[]>([]);
     const [tempbal, setTempbal] = useState<number>(0);
 
 

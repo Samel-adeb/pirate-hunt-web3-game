@@ -1,12 +1,13 @@
 import { GameNavbar } from "@/app/components/GameNavbar";
 import Image from "next/image";
-
+import { useRouter } from 'next/navigation';
 import "../app/globals.css";
 import ProfileProgressBar from '@/app/components/ProfileProgressBar';
 import HandonChest from "../public/assets/HandonChest.png";
 import FirstBadge from "../public/assets/FirstBadge.png";
 import userProfile from "../public/assets/userProfile.png";
 import GoldCup from "../public/assets/GoldCup.png";
+import Cross from "../public/assets/Cross.svg";
 // import SilverCup from "../public/assets/SilverCup.png";
 // import greenCup from "../public/assets/greenCup.png";
 // import ThickGoldCup from "../public/assets/ThickGold.png";
@@ -29,6 +30,10 @@ import { getAllRankInfo } from "@/scripts";
 
 export default function Profile() {
     const { username, level, userBalance, userRank, allRanks, setAllRanks } = useAppContext();
+    const router = useRouter();
+
+    
+
 
     const getAllRank = async () => {
         await getAllRankInfo(setAllRanks);
@@ -48,6 +53,7 @@ export default function Profile() {
         coin_balance: string;
     }
 
+  
     return (
         <>
 
@@ -58,6 +64,10 @@ export default function Profile() {
                     {/* Image */}
                     <Image src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : HandonChest} width={100} height={100}
                         alt="HandonChest" className="w-full h-full object-cover" />
+
+                    <div className="absolute top-[15px] left-[350px] z-10" style={{ cursor: 'pointer' }} onClick={() => router.back()}>
+                        <Image src={Cross} alt="Cross" />
+                    </div>
 
                     {/* Overlay */}
                     <div className="absolute inset-0 bg-[#000000B2]">
