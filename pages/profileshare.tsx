@@ -58,7 +58,7 @@ export default function ProfileShare() {
         setIsSharing(true); // Set sharing to true when sharing starts
       
         try {
-          let shareData = {
+          const shareData = {
             title: 'Pirate Hunt',
             text: 'Check out my achievements in Pirate Hunt! Ive earned 100,000,000 coins!',
             url:  `${window.location.origin}/sharecard`, // Replace this with your /sharecard URL or specific page URL if needed
