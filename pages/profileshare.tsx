@@ -43,6 +43,18 @@ export default function ProfileShare() {
     const closeOverlay = () => {
         setOverlayVisible(false);
     };
+    const convertToDays = (dateString: string) => {
+        const givenDate = new Date(dateString); // Convert string to Date object
+        const currentDate = new Date(); // Get the current date
+
+        // Calculate the difference in milliseconds
+        const differenceInMs = currentDate.getTime() - givenDate.getTime();
+
+        // Convert milliseconds to days
+        const daysDifference = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
+
+        return daysDifference;
+    }
 
     const handleShare = async () => {
         if (!navigator.share) {
