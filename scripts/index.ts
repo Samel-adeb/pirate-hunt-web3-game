@@ -292,7 +292,7 @@ export const getInviteClaimed = async (userId: string | null, setClaimedInvites:
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
     if (!(response && !('message' in response))) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
 
@@ -379,6 +379,68 @@ export const claimLevelUpReward = async (userId: string | null, levelId: number)
         return false;
     } else {
         showSuccessMessage("Reward claimed successfully");
+        return response;
+    }
+}
+export const getAllTapTreausres = async (setTapTreasures: Function) => {
+    const endpoint = '/api/tap-rate/all';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response && !('message' in response))) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        setTapTreasures(response);
+        // console.log(response);
+
+    }
+}
+export const getAllCoinTreausres = async (setCoinTreasures: Function) => {
+    const endpoint = '/api/treasure/all';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response && !('message' in response))) {
+        showFailedMessage(response.message);
+        return;
+    } else {
+        setCoinTreasures(response.treasures);
+        // console.log(response);
+
+
+    }
+}
+export const AwardTreasurePurchse = async (userId: string | null, tresureId: number, info: { treasure_id: number, amount: number, name: string }) => {
+    const endpoint = '/api/treasure/award-purchase/' + userId + '';
+    const httpMethod = 'POST';
+    const parameters = {
+        "treasure_id": tresureId,
+        "purchase_info": JSON.stringify(info),
+    }
+    const response = await fetchApi(endpoint, parameters, httpMethod);
+    //console.log(response);
+    if (!(response && 'message' in response)) {
+        showFailedMessage(response.error);
+        return false;
+    } else {
+        //showSuccessMessage("Reward claimed successfully");
+        return response;
+    }
+}
+export const AwardTapboostPurchse = async (userId: string | null, boostId: number) => {
+    const endpoint = '/api/tap-rate/boost/' + userId + '';
+    const httpMethod = 'POST';
+    const parameters = {
+        "boost_id": boostId
+    }
+    const response = await fetchApi(endpoint, parameters, httpMethod);
+    //console.log(response);
+    if (!(response && 'message' in response)) {
+        showFailedMessage(response.error);
+        return false;
+    } else {
+        //showSuccessMessage("Reward claimed successfully");
         return response;
     }
 }

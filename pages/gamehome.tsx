@@ -22,8 +22,6 @@ import GiftBox from "../public/assets/gift box.png";
 // import BigGiftBox from "../public/assets/GiftBox.png";
 import BigLightning from "../public/assets/BigLightning.svg";
 // import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
-import BigCoin from "../public/assets/BigCoin.svg";
-import BigDot from "../public/assets/BigDot.svg";
 import Coinfromtap from "../public/assets/Coinfromtap.svg";
 import { useEffect, useRef } from 'react';
 import { useAppContext } from '@/context';
@@ -43,7 +41,7 @@ export default function GameHome() {
     const ENERGY_CAPACITY_VALUE = 1000; // Maximum energy capacity
     const [timeLeft, setTimeLeft] = useState<string>('');
     const targetDate = userDailyRewardInfo ? new Date(userDailyRewardInfo.next_claim_time).getTime() : new Date();
-    const [coins, setCoins] = useState<number[]>([]);
+    const [coins, setCoins] = useState<{ id: number; x: number; y: number }[]>([]);
     const [tempbal, setTempbal] = useState<number>(0);
 
 
@@ -131,35 +129,73 @@ export default function GameHome() {
         return () => clearInterval(energyInterval);
     }, [energyLevel]); // This effect runs whenever energyLevel changes
 
+    function abbreviateNumber(number: number): string {
+        const abbrev = ["", "K", "M", "B", "T"]; // Array of suffixes
+        let i = 0;
 
-
-
-    const handleTap = () => {
-
-        if (navigator.vibrate) {
-            navigator.vibrate(200);  // 200ms vibration
+        // Loop to divide the number and move to higher suffixes
+        while (number >= 1000 && i < abbrev.length - 1) {
+            number /= 1000;
+            i++;
         }
-        // Create a new coin element by pushing a unique ID
-        const newCoinId = Date.now(); // Use timestamp as a unique ID
-        setCoins((prevCoins) => [...prevCoins, newCoinId]);
 
-        // Remove the coin after 2 seconds (or any duration you prefer)
-        setTimeout(() => {
-            setCoins((prevCoins) => prevCoins.filter((id) => id !== newCoinId));
-        }, 2000);
+        // Round to one decimal place and add the suffix
+        return number.toFixed(1).replace(/\.0$/, '') + abbrev[i];
+    }
 
-        if (energyLevel > user_tap_rate_level) {
+
+
+    const handleTap = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+        if (navigator.vibrate) {
+            navigator.vibrate(100);  // 200ms vibration
+        }
+
+        // Get the click position relative to the page
+        const x = e.clientX;
+        const y = e.clientY;
+
+
+        if (energyLevel > user_tap_rate_level && !(user_tap_rate_level > 1)) {
+            // Create a new coin element by pushing a unique ID and the position
+            const newCoinId = Date.now();
+            setCoins((prevCoins) => [...prevCoins, { id: newCoinId, x, y }]);
+
+            // Remove the coin after 2 seconds
+            setTimeout(() => {
+                setCoins((prevCoins) => prevCoins.filter((coin) => coin.id !== newCoinId));
+            }, 2000);
+
+            console.log(user_tap_rate_level);
+
             setUserBalance(parseInt(userBalance) + parseInt(user_tap_rate_level));
             setTempbal(tempbal + parseInt(user_tap_rate_level));
             localStorage.setItem('tempbal', (tempbal + parseInt(user_tap_rate_level)).toString());
             setEnergyLevel(energyLevel - parseInt(user_tap_rate_level));
+
+        } else if (user_tap_rate_level > 1) {
+            // Create a new coin element by pushing a unique ID and the position
+            const newCoinId = Date.now();
+            setCoins((prevCoins) => [...prevCoins, { id: newCoinId, x, y }]);
+
+            // Remove the coin after 2 seconds
+            setTimeout(() => {
+                setCoins((prevCoins) => prevCoins.filter((coin) => coin.id !== newCoinId));
+            }, 2000);
+
+            console.log(user_tap_rate_level);
+
+            setUserBalance(parseInt(userBalance) + parseInt(user_tap_rate_level));
+            setTempbal(tempbal + parseInt(user_tap_rate_level));
+            localStorage.setItem('tempbal', (tempbal + parseInt(user_tap_rate_level)).toString());
         }
     };
 
     const [isOverlayVisible, setOverlayVisible] = useState(false);
     const [isEnergyOverlayVisible, setIsEnergyOverlayVisible] = useState(false);
 
-    const handleEnergyBoostClick = () => {
+    const handleEnergyBoostClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
         setIsEnergyOverlayVisible(true);
     };
 
@@ -168,7 +204,8 @@ export default function GameHome() {
     };
 
 
-    const handleBoostClick = () => {
+    const handleBoostClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
         setOverlayVisible(true);
     };
 
@@ -178,7 +215,8 @@ export default function GameHome() {
 
     const [isDailyOverlayVisible, setIsDailyOverlayVisible] = useState(false);
 
-    const handleDailyBonusClick = () => {
+    const handleDailyBonusClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
         setIsDailyOverlayVisible(true);
     };
 
@@ -239,7 +277,7 @@ export default function GameHome() {
                                     </Link>
                                     <div className="bg-[#1A314E] rounded-[25.71px] px-[6px] py-[4px] flex items-center">
 
-                                        <Link href="">
+                                        <Link href="/tasklist">
                                             <div className="mr-[5px]">
                                                 <Image src={XAS} alt="XAS Icon" className="flex-shrink-0" />
                                             </div>
@@ -251,10 +289,10 @@ export default function GameHome() {
                                             {/* <p className="text-[8px] leading-[12px] font-medium text-[#FFFFFFBF] text-center whitespace-nowrap">Pirate Token</p> */}
                                             <div className="flex items-center">
                                                 <Image width={12.34} height={12.34} src={golddollarcoin} alt="Gold Dollar Coin" />
-                                                <h1 className="text-[8.34px] p-2 font-bold leading-[16.46px] text-white">+1.17M</h1>
+                                                <h1 className="text-[8.34px] p-2 font-bold leading-[16.46px] text-white">+{abbreviateNumber(userBalance)}</h1>
 
                                                 <div>
-                                                    <div onClick={handleBoostClick}>
+                                                    <div >
                                                         <Image width={20} height={20} src={Info} alt="Info Icon" />
                                                     </div>
 
@@ -262,14 +300,14 @@ export default function GameHome() {
                                                         <div className="fixed bg-[#000000A6] inset-0 flex items-center justify-center z-50" onClick={closeOverlay}>
                                                             <div className="bg-gradient-to-b from-black  to-brown-dark  border-t-[4px] border-t-[#6B4C2D] rounded-lg w-full mt-60 h-[80%] flex flex-col items-center justify-center p-4 relative" onClick={(e) => e.stopPropagation()}>
                                                                 <Image src={treasureChest} alt="treasureChest" className="-mt-24" />
-                                                                <h2 className="text-[24px] leading-[32px] font-semibold text-white">Boost your Pirate Token</h2>
-                                                                <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white">Tap the treasure hunt menu to buy upgrades for your exchange</p>
-                                                                <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal">Earn even when offline</p>
+                                                                <h2 className="text-[24px] leading-[32px] font-semibold text-white">TREASURE CHEST</h2>
+                                                                <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white mt-3">Purchase Chest to get random amount of coins</p>
+                                                                <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal">From <strong>10k</strong> to <strong>10M</strong> coins!</p>
 
                                                                 <Link href="/boosttreasurechest">
                                                                     <div className="pt-10">
                                                                         <button className="w-[365px] h-[48px] rounded-[16px] bg-[#00A6DE] text-center text-white text-[16px] leading-[16px] font-semibold">
-                                                                            Upgrade
+                                                                            PURCHASE
                                                                         </button>
                                                                     </div>
                                                                 </Link>
@@ -307,6 +345,7 @@ export default function GameHome() {
                                 // height={754}
                                 src={piratehomeBg}
                                 alt="piratehomeBg"
+                                onClick={handleTap}
                             />
                         </div>
 
@@ -373,24 +412,28 @@ export default function GameHome() {
                             <Image src={boatHome} alt="boatHome" />
                         </div>
 
-                        <Link href="/tasklist">
-                            <div className="absolute top-[240px] left-[25px] animate-bounce-up">
-                                <Image src={TaskForHunt} alt="TaskForHunt" />
-                            </div>
-                        </Link>
-                        <div>
-                            <div className="absolute top-[380px] left-[180px]" onClick={handleTap}>
 
+                        <div onClick={handleBoostClick} className="absolute top-[240px] left-[25px] animate-bounce-up">
+                            <Image src={TaskForHunt} alt="TaskForHunt" />
+                        </div>
+
+                        <div>
+                            <div className="absolute top-[380px] left-[180px]" onClick={handleEnergyBoostClick}>
                                 <div className="tapcoin-animation">
                                     <Image src={TapCoin} alt="TapCoin" className="gap-[50px]" />
                                 </div>
                             </div>
-                            {coins.map((coinId) => (
+                            {coins.map((coin) => (
                                 <div
-                                    key={coinId}
-                                    className="absolute top-[380px] left-[180px] coin-animation"
-                                    style={{ animationDuration: '2s' }} // Set the animation duration
+                                    key={coin.id}
+                                    className="absolute coin-animation text-white flex"
+                                    style={{
+                                        animationDuration: '2s',
+                                        top: `${coin.y}px`,
+                                        left: `${coin.x}px`,
+                                    }} // Position the coin at the click position
                                 >
+                                    +{user_tap_rate_level}
                                     <Image src={Coinfromtap} alt="Coinfromtap" />
                                 </div>
                             ))}
@@ -410,7 +453,7 @@ export default function GameHome() {
                             <ProgressBar  progress={60} />
                         </div> */}
                         {/* Boost */}
-                        <div className="absolute" style={{ bottom: '5%', right: '10%' }} onClick={handleEnergyBoostClick}>
+                        <div className="absolute" style={{ bottom: '5%', right: '10%' }} >
                             <div className="bg-[#1A314E] px-[7.75px] max-w-[133.47px] h-[51px] flex items-center gap-[5px] border-[2.8px] border-[#FFFFFF] rounded-[20.87px] ">
                                 <div>
                                     <Image src={lightning} alt="lightning" />
@@ -421,24 +464,15 @@ export default function GameHome() {
                                 <div className="fixed inset-0 bg-[#000000A6]  flex items-center justify-center z-50" onClick={closeEnergyBoostOverlay}>
                                     <div className="bg-gradient-to-b from-black  to-brown-dark  border-t-[4px] border-t-[#6B4C2D] rounded-lg w-full mt-60 h-[570px] flex flex-col items-center justify-center p-4 relative" onClick={(e) => e.stopPropagation()}>
                                         <Image width={100} height={100} src={BigLightning} alt=" BigLightning" className="-mt-52" />
-                                        <h2 className="pt-10 text-[24px] leading-[32px] font-semibold text-white">Energy Limit</h2>
-                                        <p className="pt-[2px] text-[12px] leading-[16px] tracking-[0.4px] text-center text-white">Increase the amount of energy you can earn per tap</p>
-                                        <div className="pt-[20px] flex items-center gap-[15px]">
-                                            <div className="flex items-center gap-[10px]">
-                                                <Image width={43} height={43} src={BigCoin} alt="BigCoin" />
-                                                <h1 className="text-[32.25px] leading-[43px] tracking-[1.08px] font-semibold text-white">5000</h1>
-                                            </div>
-                                            <div className="flex items-center gap-[10px]">
-                                                <Image width={10.75} height={10.75} src={BigDot} alt="BigDot" />
-                                                <h1 className="text-[#FFFFFFBF] text-[32.25px] leading-[43px] font-normal tracking-[1.08px]">Level 1</h1>
-                                            </div>
-                                        </div>
+                                        <h2 className="pt-10 text-[24px] leading-[32px] font-semibold text-white">BOOST TAP RATE</h2>
+                                        <p className="pt-[2px] text-[12px] leading-[16px] tracking-[0.4px] text-center text-white mt-3">Purchase treasure to get random tap rate</p>
+                                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal">From <strong>10</strong> to <strong>3k</strong> coins per tap!</p>
 
 
-                                        <Link href="/boosttreasurechest">
+                                        <Link href="/boosttaprate">
                                             <div className="pt-10 -mb-[25px]">
                                                 <button className="w-[365px] h-[48px] rounded-[16px] bg-[#00A6DE] text-center text-white text-[16px] leading-[16px] font-semibold">
-                                                    Upgrade
+                                                    PURCHASE
                                                 </button>
                                             </div>
                                         </Link>

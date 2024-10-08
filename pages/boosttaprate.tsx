@@ -4,14 +4,14 @@ import Image from "next/image";
 import { useEffect, useState } from 'react';
 import "../app/globals.css";
 
-import MoneyBagChest from "../public/assets/MoneyBagChest.png";
 
+import Lightning from "../public/assets/lightning.svg";
 import Boost2 from "../public/assets/Boost2.png";
 import Coin from "../public/assets/standingdollarcoin.svg";
 import BackButton from "../public/assets/backButton.svg";
 
 import { useAppContext } from '@/context';
-import { getAllCoinTreausres } from '@/scripts';
+import { getAllTapTreausres } from '@/scripts';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
 import PurchaseTreasureOverlay from '@/app/components/PurchaseTreasureOverlay';
 
@@ -28,13 +28,13 @@ interface treasure {
 }
 
 
-export default function BoostTreasureChest() {
+export default function BoostTapRateChest() {
     const router = useRouter(); // Initialize the router
-    const { userId, coinTreasures, setCoinTreasures } = useAppContext();
+    const { userId, tapTreasures, setTapTreasures } = useAppContext();
     const [currentTreasue, setCurrentTreasure] = useState<treasure>();
     const load = async () => {
         //await getDoneTasks(userId, setDoneTasks);
-        await getAllCoinTreausres(setCoinTreasures);
+        await getAllTapTreausres(setTapTreasures);
 
     }
 
@@ -86,12 +86,12 @@ export default function BoostTreasureChest() {
         <>
             <GameNavbar />
             {
-                isPaymentOverlayVisible && (<PurchaseTreasureOverlay setIsPaymentOverlayVisible={setIsPaymentOverlayVisible} treasure={currentTreasue}  isTapboost={false} />)
+                isPaymentOverlayVisible && (<PurchaseTreasureOverlay setIsPaymentOverlayVisible={setIsPaymentOverlayVisible} treasure={currentTreasue} isTapboost={true}/>)
             }
             <div className="relative bg-[#000000] h-[100vh + 100px]" style={{ minHeight: '100vh' }}>
 
-                <div className="flex flex-col items-center justify-center text-center">
-                    <Image src={MoneyBagChest} alt="MoneyBagChest" width={250} height={250} />
+                <div className="flex flex-col items-center justify-center pt-5 text-center">
+                    <Image src={Lightning} alt="MoneyBagChest" width={150} height={150} />
 
                     <h1 className="font-semibold text-white text-[24px] leading-[32px]">Boosts Treasure Chests</h1>
                     <p className="pt-[10px] text-[12px] max-w-[352px] text-[#FFFFFFA6] font-normal">Without the treasure hunt, winning gets tougher! Buy now to discover treasures and keep your edge in the game!</p>
@@ -105,8 +105,8 @@ export default function BoostTreasureChest() {
 
 
                     {
-                        coinTreasures ? (
-                            coinTreasures.map((treasure: treasure) => (
+                        tapTreasures ? (
+                            tapTreasures.map((treasure: treasure) => (
                                 <div key={treasure.id} className="pt-[5px] my-2" onClick={() => handlePayNowClick(treasure)}>
                                     <div className="flex items-center mx-auto rounded-[8px] px-[16px] py-[8px] border-[1px] border-[#FFC247A6] w-[361px] hover:bg-[#FFC247]">
                                         <div className='mx-1'>
