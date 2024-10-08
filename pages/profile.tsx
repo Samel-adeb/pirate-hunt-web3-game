@@ -65,8 +65,8 @@ export default function Profile() {
                     <Image src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : HandonChest} width={100} height={100}
                         alt="HandonChest" className="w-full h-full object-cover" />
 
-                    <div className="absolute top-[15px] left-[350px] z-10" style={{ cursor: 'pointer' }} onClick={() => router.back()}>
-                        <Image src={Cross} alt="Cross" />
+                    <div className="absolute top-[15px] left-[320px] z-50" style={{ cursor: 'pointer' }} onClick={() => router.back()}>
+                        <Image width={35} height={35} src={Cross} alt="Cross" />
                     </div>
 
                     {/* Overlay */}
