@@ -14,17 +14,18 @@ import { getUserInfo, regusterUser, getUserId, getUsername } from '@/scripts';
 
 export default function GameLoad() {
     const audioRef = useRef<HTMLAudioElement | null>(null);
-    const { userId, setUserid, username, setUsername, setLevel, setUser_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
+    const { userId, setUserid, username, setUsername, setUserInfo, setLevel, setUser_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
 
     const load = async () => {
         if (userId && username) {
             // Only run if both userId and username are set
             //alert('userId: ' + userId + ' username: ' + username);
             await regusterUser(userId, username);
-            await getUserInfo(userId, setUsername, setLevel, setUser_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo);
+            await getUserInfo(userId, setUsername, setUserInfo, setLevel, setUser_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo);
         }
     };
 
+    
     const getId = async () => {
         //alert('getId loading...');
         const muserId = await getUserId();
@@ -112,7 +113,7 @@ export default function GameLoad() {
                                 Loading<span className="dot-anim"></span>
                             </p>
                         ) :
-                            (<div className='bg-[#000000A6] m-5 p-2 px-6 rounded-[20.76px] text-[24px] text-white cursor-pointer' onClick={changePage}>Play</div>)
+                            (<div className='bg-[#000000A6] m-5 p-2 px-6 rounded-[20.76px] text-[24px] text-white cursor-pointer' style={{marginTop: "25px"}} onClick={changePage}>Start Mining!</div>)
                     }
                     <style jsx>{`
                     .dot-anim {

@@ -96,7 +96,7 @@ export default function InviteAFriend() {
 
 
             <div>
-                <div className="relative h-screen pb-20" style={{ background: 'linear-gradient(173.23deg, #000000 -5.41%, #171000 36.99%, #150E00 91.05%)' }}>
+                <div className="relative pb-20" style={{ background: 'linear-gradient(173.23deg, #000000 -5.41%, #171000 36.99%, #150E00 91.05%)', minHeight:'100vh' }}>
                     {/* Image Container */}
                     <div className="relative">
                         <Image src={CaptainDogs} alt="CaptainDogs" />

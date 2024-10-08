@@ -3,7 +3,7 @@ import "../globals.css";
 import { useEffect } from "react";
 import 'aos/dist/aos.css'; // Import AOS styles
 import AOS from 'aos'; // Import AOS library
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+// import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import standingdollarcoin from '../../public/assets/standingdollarcoinb.png'
 import EnlargedBoost from '../../public/assets/EnlargedBoost1.png'
 import Image from 'next/image';
