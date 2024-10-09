@@ -73,19 +73,25 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible, isTapbo
             // You can add more options here
         });
     }, []);
-    function abbreviateNumber(number: number): string {
+    function abbreviateNumber(nnumber: number): string {
+        // Ensure the input is a valid number
+        let number = nnumber;
+        if (typeof nnumber !== 'number' || isNaN(nnumber)) {
+            number = parseInt(nnumber.toString());
+        }
+    
         const abbrev = ["", "K", "M", "B", "T"]; // Array of suffixes
         let i = 0;
-
+    
         // Loop to divide the number and move to higher suffixes
         while (number >= 1000 && i < abbrev.length - 1) {
             number /= 1000;
             i++;
         }
-
-        // Round to one decimal place and add the suffix
-        return number.toFixed(1).replace(/\.0$/, '') + abbrev[i];
-    }
+    
+        // Ensure small numbers are handled and round to one decimal place
+        return number < 1000 ? number.toFixed(1).replace(/\.0$/, '') + abbrev[i] : number.toString();
+    }    
     return (
         treasure && (
             <div data-aos='slide-up' className='w-full bg-black flex flex-col p-3 items-center h-[100%] absolute z-50 text-center rounded-[30px]' style={{ top: '10%', color: '#000321' }}>
