@@ -69,19 +69,19 @@ export default function BoostTapRateChest() {
         setIsPaymentOverlayVisible(true);
     };
 
-    function abbreviateNumber(number: number): string {
-        const abbrev = ["", "K", "M", "B", "T"]; // Array of suffixes
-        let i = 0;
+    // function abbreviateNumber(number: number): string {
+    //     const abbrev = ["", "K", "M", "B", "T"]; // Array of suffixes
+    //     let i = 0;
 
-        // Loop to divide the number and move to higher suffixes
-        while (number >= 1000 && i < abbrev.length - 1) {
-            number /= 1000;
-            i++;
-        }
-
-        // Round to one decimal place and add the suffix
-        return number.toFixed(1).replace(/\.0$/, '') + abbrev[i];
-    }
+    //     // Loop to divide the number and move to higher suffixes
+    //     while (number >= 1000 && i < abbrev.length - 1) {
+    //         number /= 1000;
+    //         i++;
+    //     }
+    //     alert(number);
+    //     // Round to one decimal place and add the suffix
+    //     return number.toFixed(1).replace(/\.0$/, '') + abbrev[i];
+    // }
     return (
         <>
             <GameNavbar />
@@ -115,7 +115,7 @@ export default function BoostTapRateChest() {
                                         <div className="flex flex-col w-full items-right gap-y-[10px]">
                                             <h2 className="text-[16px] text-white font-bold">{treasure.name ?? 'Chest'}</h2>
                                             <div className='flex items-center'>
-                                                <h2 className="text-[10px] text-white font-bold mx-1">{abbreviateNumber(treasure.start_reward) ?? '0'} to {abbreviateNumber(treasure.end_reward) ?? '0'} </h2>
+                                                <h2 className="text-[10px] text-white font-bold mx-1">{treasure.start_reward ?? '0'} to {treasure.end_reward ?? '0'} </h2>
                                                 <Image src={Coin} width={20} height={20} alt="Coin" />
                                                 <p className="text-[16px] text-white font-semibold text-right" style={{ marginLeft: 'auto' }}>{treasure.price ?? 0} TON</p>
                                             </div>
