@@ -29,6 +29,7 @@ import { useState } from "react";
 // import DayOneOverlay from "@/app/components/DayOneOverlay";
 import { addTapTransaction } from "@/scripts";
 import DailyBonuses from "@/app/components/DailyBonuses";
+import { useRouter } from "next/router";
 
 // import ProgressBar from "@/app/components/ProgressBar";
 
@@ -43,7 +44,7 @@ export default function GameHome() {
     const targetDate = userDailyRewardInfo ? new Date(userDailyRewardInfo.next_claim_time).getTime() : new Date();
     const [coins, setCoins] = useState<{ id: number; x: number; y: number }[]>([]);
     const [tempbal, setTempbal] = useState<number>(0);
-
+    const router = useRouter();
 
 
     useEffect(() => {
@@ -105,7 +106,7 @@ export default function GameHome() {
         const currentTime = Date.now();
         const lastUpdateTime = parseInt(localStorage.getItem('lastUpdateTime') || '') || currentTime;
         const elapsedTime = (currentTime - lastUpdateTime) / 1000; // Convert milliseconds to seconds
-
+        
         // If energy level is below maximum, increase it
         if (energyLevel < ENERGY_CAPACITY_VALUE) {
             const energyIncrease = RECHARGE_SPEED * elapsedTime;
@@ -164,9 +165,9 @@ export default function GameHome() {
             // Remove the coin after 2 seconds
             setTimeout(() => {
                 setCoins((prevCoins) => prevCoins.filter((coin) => coin.id !== newCoinId));
-            }, 2000);
+            }, 700);
 
-            console.log(user_tap_rate_level);
+            // console.log(user_tap_rate_level);
 
             setUserBalance(parseInt(userBalance) + parseInt(user_tap_rate_level));
             setTempbal(tempbal + parseInt(user_tap_rate_level));
@@ -223,6 +224,12 @@ export default function GameHome() {
     const closeDailyOverlay = () => {
         setIsDailyOverlayVisible(false);
     };
+
+    const handlegoToInvite = (e: React.MouseEvent) =>{
+        e.stopPropagation();
+        
+        router.push('/inviteafriend');
+    }
 
 
     return (
@@ -368,19 +375,19 @@ export default function GameHome() {
 
 
 
-                        <div className="absolute top-28 -right-40 ">
+                        <div className="absolute top-28 -right-40 " onClick={handleTap}>
                             <div className="relative">
                                 <div className="fadeImageContainer">
                                     <Image width={289} height={273} src={Island} alt="Island" />
                                 </div>
-                                <Link href="/inviteafriend">
-                                    <div className="absolute top-[0px] left-[70px] ">
+                                {/* <Link href="/inviteafriend"> */}
+                                    <div className="absolute top-[0px] left-[70px] " onClick={handlegoToInvite}>
                                         <div className="bg-[#1A314E] flex flex-col items-center justify-center border-[4px] border-[#FFFFFF0D] w-[40.19px] h-[40.19px] rounded-[30px]">
                                             <Image src={Users} alt="Users" width={25} height={25} />
                                         </div>
                                         <h1 className="text-[12.47px] leading-[18.7px] font-bold text-white text-center">Invite</h1>
                                     </div>
-                                </Link>
+                                {/* </Link> */}
 
                             </div>
                             <style jsx>{`
@@ -408,17 +415,17 @@ export default function GameHome() {
                             `}</style>
 
                         </div>
-                        <div className="absolute top-36 -left-10">
+                        <div className="absolute top-36 -left-10" onClick={handleTap}>
                             <Image src={boatHome} alt="boatHome" />
                         </div>
 
 
-                        <div onClick={handleBoostClick} className="absolute top-[240px] left-[25px] animate-bounce-up">
+                        <div onClick={handleBoostClick} className="absolute animate-bounce-up" style={{top:'25%', left:'20%'}}>
                             <Image src={TaskForHunt} alt="TaskForHunt" />
                         </div>
 
                         <div>
-                            <div className="absolute top-[380px] left-[180px]" onClick={handleEnergyBoostClick}>
+                            <div className="absolute animate-bounce-up" style={{top:'30%', left:'7%'}} onClick={handleEnergyBoostClick}>
                                 <div className="tapcoin-animation">
                                     <Image src={TapCoin} alt="TapCoin" className="gap-[50px]" />
                                 </div>
