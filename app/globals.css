@@ -5,6 +5,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Blackpearl';
+  src: url('/fonts/Blackpearl.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 
 
