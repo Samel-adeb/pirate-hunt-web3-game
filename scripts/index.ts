@@ -103,7 +103,7 @@ export const regusterUser = async (userId: string | null, username: string | nul
     const response = await fetchApi(endpoint, parameters, httpMethod);
     ////console.log(response);
     if (!(response && 'message' in response) && !('errors' in response)) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     }
 
@@ -115,7 +115,7 @@ export const getUserInfo = async (userId: string | null, setUsername: Function, 
     const response = await fetchApi(endpoint, null, httpMethod);
     ////console.log(response);
     if (!(response && 'user_id' in response)) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
         setUsername(response.username);
@@ -136,7 +136,7 @@ export const getUserBalance = async (userId: string | null, setUserBalance: Func
     const response = await fetchApi(endpoint, null, httpMethod);
     ////console.log(response);
     if (!(response && 'coin_balance' in response)) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
         setUserBalance(response.coin_balance);
@@ -149,7 +149,7 @@ export const getUserRank = async (userId: string | null, setUserRank: Function) 
     const response = await fetchApi(endpoint, null, httpMethod);
     ////console.log(response);
     if (!(response && 'user_id' in response)) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
         setUserRank(response);
@@ -163,7 +163,7 @@ export const getUserLevel = async (userId: string | null, setLevel: Function) =>
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
     if (!(response && 'current_level' in response)) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
         setLevel(response);
@@ -176,7 +176,7 @@ export const getDailyRewardInfo = async (userId: string | null, setUserDailyRewa
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
     if (!(response && 'next_claim_time' in response)) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
         setUserDailyRewardInfo(response);
@@ -195,7 +195,7 @@ export const addTapTransaction = async (userId: string | null, amount: number) =
     const response = await fetchApi(endpoint, parameters, httpMethod);
     //console.log(response);
     if (!(response && 'message' in response)) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
         //showSuccessMessage("Tap transaction added successfully!");
@@ -208,7 +208,7 @@ export const getAllRankInfo = async (setAllRanks: Function) => {
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
     if (!(response && 'username' in response[0])) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
         setAllRanks(sortUsersByRank(response));
@@ -224,7 +224,7 @@ export const getUserInvivites = async (userId: string | null, setUserInvites: Fu
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
     if (!(response)) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
         setUserInvites(response);
@@ -237,7 +237,7 @@ export const getInviteLink = async (userId: string | null, setInviteLink: Functi
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
     if (!(response && 'invite_link' in response)) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
         setInviteLink(response.invite_link);
@@ -250,7 +250,7 @@ export const getAllDailyBounuses = async (setAllDailyBonues: Function) => {
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
     if (!(response)) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
         setAllDailyBonues(response);
@@ -269,7 +269,7 @@ export const claimDailyBonus = async (userId: string | null, bonusId: number) =>
         showFailedMessage(response.error);
         return false;
     } else {
-        //showSuccessMessage("Reward claimed successfully");
+        showSuccessMessage("Daily bonus Reward claimed successfully");
         return true;
     }
 }
@@ -279,7 +279,7 @@ export const getClaimedDailyBonuses = async (userId: string | null, setClaimedDa
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
     if (!(response && !('message' in response))) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
 
@@ -292,7 +292,7 @@ export const getInviteClaimed = async (userId: string | null, setClaimedInvites:
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
     if (!(response && !('message' in response))) {
-        //showFailedMessage(response.message);
+        ////showFailedMessage(response.message);
         return;
     } else {
 
@@ -311,7 +311,7 @@ export const claimInviteReward = async (userId: string | null, invitation_id: nu
         showFailedMessage(response.error);
         return false;
     } else {
-        showSuccessMessage("Reward claimed successfully");
+        showSuccessMessage("Invite Reward claimed successfully");
         return response;
     }
 }
@@ -321,7 +321,7 @@ export const getAllTasks = async (setTask: Function) => {
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
     if (!(response)) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
         setTask(response);
@@ -333,7 +333,7 @@ export const getDoneTasks = async (userId: string | null, setDoneTasks: Function
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
     if (!(response && !('message' in response))) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
 
@@ -349,7 +349,7 @@ export const claimTaskDoneReward = async (userId: string | null, taskId: number)
         showFailedMessage(response.error);
         return false;
     } else {
-        showSuccessMessage("Reward claimed successfully");
+        showSuccessMessage("Task Reward claimed successfully");
         return response;
     }
 }
@@ -359,7 +359,7 @@ export const getNextClaimableReward = async (userId: string | null, setNextClaim
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
     if (!(response)) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
 
@@ -378,7 +378,7 @@ export const claimLevelUpReward = async (userId: string | null, levelId: number)
         showFailedMessage(response.error);
         return false;
     } else {
-        showSuccessMessage("Reward claimed successfully");
+        showSuccessMessage("Level Up Reward claimed successfully");
         return response;
     }
 }
@@ -388,7 +388,7 @@ export const getAllTapTreausres = async (setTapTreasures: Function) => {
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
     if (!(response && !('message' in response))) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
         setTapTreasures(response);
@@ -402,7 +402,7 @@ export const getAllCoinTreausres = async (setCoinTreasures: Function) => {
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
     if (!(response && !('message' in response))) {
-        showFailedMessage(response.message);
+        //showFailedMessage(response.message);
         return;
     } else {
         setCoinTreasures(response.treasures);
@@ -424,7 +424,7 @@ export const AwardTreasurePurchse = async (userId: string | null, tresureId: num
         showFailedMessage(response.error);
         return false;
     } else {
-        //showSuccessMessage("Reward claimed successfully");
+        showSuccessMessage("Reward claimed successfully");
         return response;
     }
 }
@@ -440,8 +440,21 @@ export const AwardTapboostPurchse = async (userId: string | null, boostId: numbe
         showFailedMessage(response.error);
         return false;
     } else {
-        //showSuccessMessage("Reward claimed successfully");
+        showSuccessMessage("Reward claimed successfully");
         return response;
+    }
+}
+export const getTreasurePurchaseHistory = async (userId: string | null, setTreasurePurchaseHistory: Function) => {
+    const endpoint = '/api/treasure/history/' + userId + '';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response)) {
+        //showFailedMessage(response.message);
+        return;
+    } else {
+
+        setTreasurePurchaseHistory(response.purchase_history);
     }
 }
 const sortUsersByRank = (userArray: Array<any>) => {

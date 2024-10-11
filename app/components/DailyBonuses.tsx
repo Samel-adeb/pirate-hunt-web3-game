@@ -104,7 +104,7 @@ function DailyBonuses({ isDailyOverlayVisible, closeDailyOverlay }: { isDailyOve
                                                 </h1>
                                                 {
                                                     isBonusAlreadyClaimed(dailyBonus.id) ? (
-                                                        <div className="flex items-center bg-main justify-center p-3 rounded shadow text-white w-full">
+                                                        <div className="flex items-center bg-main justify-center p-3 rounded shadow text-white w-full" style={{opacity:0.5}}>
                                                             <p className="text-white font-bold mx-1">CLAIMED</p>
 
                                                         </div>
