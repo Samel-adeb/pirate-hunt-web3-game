@@ -21,8 +21,12 @@ import { getUserInvivites } from '@/scripts';
 
 
 export default function ProfileShare() {
+
     const router = useRouter();
-    const { userId, username, level, userBalance, userInvites, setUserInvites} = useAppContext();
+    // const { userId, username, level, userBalance, userInvites, setUserInvites} = useAppContext();
+
+    const { userId, username, userInfo, level, userBalance, userInvites, setUserInvites } = useAppContext();
+ 
     const [isOverlayVisible, setOverlayVisible] = useState(false);
     const [platform, setPlatform] = useState(''); 
     const [isSharing, setIsSharing] = useState(false); // State to track if sharing is in progress
@@ -46,6 +50,18 @@ export default function ProfileShare() {
     const closeOverlay = () => {
         setOverlayVisible(false);
     };
+    const convertToDays = (dateString: string) => {
+        const givenDate = new Date(dateString); // Convert string to Date object
+        const currentDate = new Date(); // Get the current date
+
+        // Calculate the difference in milliseconds
+        const differenceInMs = currentDate.getTime() - givenDate.getTime();
+
+        // Convert milliseconds to days
+        const daysDifference = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
+
+        return daysDifference;
+    }
 
     const handleShare = async () => {
         if (platform === 'telegram') {
@@ -300,12 +316,12 @@ export default function ProfileShare() {
                 <div className="pt-10 pb-10 flex flex-col justify-center gap-y-[3px] items-center just">
                     <div className="w-[361px] h-[48px] py-[16px] px-[8px] rounded-[8px] border-[1px] border-[#FFFFFF26]  mx-auto flex items-center justify-between">
                         <h1 className="text-[16px] leading-[16px] text-white">Days in game</h1>
-                        <p className="text-[12px] leading-[16px] text-white">_</p>
+                        <p className="text-[12px] leading-[16px] text-white">{convertToDays(userInfo.created_at) ?? 0} days</p>
                     </div>
 
                     <div className="w-[361px] h-[48px] py-[16px] px-[8px] rounded-[8px] border-[1px] border-[#FFFFFF26]  mx-auto flex items-center justify-between">
                         <h1 className="text-[16px] leading-[16px] text-white">Coin Balance</h1>
-                       
+
                         <p className="text-[12px] leading-[16px] text-white">{userBalance}</p>
                     </div>
 

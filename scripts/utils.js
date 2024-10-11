@@ -10,9 +10,11 @@ export const showSuccessMessage = (message) => {
 }
 
 export const showFailedMessage = (message) => {
-    toast.warning(message, {
-        position: "top-center",
-    });
+    // toast.warning(message, {
+    //     position: "top-center",
+    // });
+    console.log(message);
+    
 }
 
 export const showWariningMessage = (message) => {

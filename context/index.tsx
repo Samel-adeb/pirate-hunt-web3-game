@@ -9,6 +9,7 @@ export function AppWrapper({ children }: {
 
     const [userId, setUserid] = useState(null);
     const [username, setUsername] = useState(null);
+    const [userInfo, setUserInfo] = useState({});
     const [level, setLevel] = useState({});
     const [user_tap_rate_level, setUser_tap_rate_level] = useState(1);
     const [userBalance, setUserBalance] = useState<number>(0);
@@ -23,6 +24,14 @@ export function AppWrapper({ children }: {
     const [task, setTask]= useState([]);
     const [doneTasks, setDoneTasks] = useState([]);
     const [nextClaimableReward, setNextClaimableReward] = useState({});
+    const [tapTreasures, setTapTreasures] = useState([]);
+    const [coinTreasures, setCoinTreasures] = useState([]);
+
+    const countdownResetTapRate =(time:string) => {
+        setTimeout(() => {
+            setUser_tap_rate_level(1);
+        }, parseInt(time)*1000);
+    }
 
 
     return (
@@ -31,6 +40,8 @@ export function AppWrapper({ children }: {
             setUserid,
             username,
             setUsername,
+            userInfo,
+            setUserInfo,
             level,
             setLevel,
             user_tap_rate_level,
@@ -59,7 +70,11 @@ export function AppWrapper({ children }: {
             setDoneTasks,
             nextClaimableReward,
             setNextClaimableReward,
-
+            tapTreasures,
+            setTapTreasures,
+            coinTreasures,
+            setCoinTreasures,
+            countdownResetTapRate,
         }}>
             {children}
         </AppContext.Provider>

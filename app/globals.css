@@ -1,10 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Playwrite+DE+Grund:wght@100..400&display=swap');
-
+@import url(https://db.onlinewebfonts.com/c/22a5b3babe827131647f03ce2a436bed?family=DDT+W00+Extended);
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Blackpearl';
+  src: url('/fonts/Blackpearl.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 
 
@@ -14,6 +20,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Playwrite DE Grund", cursive !important;
+  /* font-family: "DDT W00 Extended" !important; */
   font-optical-sizing: auto;
 
   font-style: normal;
@@ -259,4 +266,23 @@ a {
   .claim-btn {
     width: 90%;
   }
+}
+
+
+.text-warning {
+  --bs-text-opacity: 1;
+  color: rgba(var(--bs-warning-rgb), var(--bs-text-opacity)) !important;
+}
+.btn-warning {
+
+  background-color: #ffc107!important;
+
+}
+
+  
+.w-75 {
+  width: 75% !important;
+}
+.align-self-end {
+  align-self: flex-end !important;
 }
