@@ -25,7 +25,7 @@ export default function ProfileShare() {
     const [isOverlayVisible, setOverlayVisible] = useState(false);
     const [platform, setPlatform] = useState('');
     const [isSharing, setIsSharing] = useState(false); // State to track if sharing is in progress
-
+    const router = useRouter();
 
 
     const load = async () => {
@@ -99,52 +99,52 @@ export default function ProfileShare() {
         } finally {
             setIsSharing(false); // Set sharing back to false when sharing ends
         }
-    };
+
         if (platform === 'telegram') {
-          handleShareToTelegram();
+            handleShareToTelegram();
         } else {
-          try {
-            if (!navigator.share) {
-              alert('Sharing is not supported in your browser.');
-              return;
+            try {
+                if (!navigator.share) {
+                    alert('Sharing is not supported in your browser.');
+                    return;
+                }
+
+                if (isSharing) {
+                    alert('Sharing is already in progress.');
+                    return;
+                }
+
+                setIsSharing(true);
+
+                const shareData = {
+                    title: 'Pirate Hunt',
+                    text: 'Check out my achievements in Pirate Hunt! Ive earned 100,000,000 coins!',
+                    url: `${window.location.origin}/sharecard`,
+                };
+
+                if (platform === 'instagram') {
+                    shareData.title = 'Pirate Hunt - Instagram Story';
+                    shareData.text = 'Check out my achievements in Pirate Hunt on Instagram!';
+                } else if (platform === 'twitter') {
+                    shareData.title = 'Pirate Hunt - Twitter Story';
+                    shareData.text = 'Check out my achievements in Pirate Hunt on Twitter!';
+                }
+
+                // Call Web Share API
+                await navigator.share(shareData);
+                console.log('Content shared successfully');
+            } catch (error) {
+                console.error('Error sharing:', error);
+            } finally {
+                setIsSharing(false);
             }
-      
-            if (isSharing) {
-              alert('Sharing is already in progress.');
-              return;
-            }
-      
-            setIsSharing(true);
-      
-            const shareData = {
-              title: 'Pirate Hunt',
-              text: 'Check out my achievements in Pirate Hunt! Ive earned 100,000,000 coins!',
-              url: `${window.location.origin}/sharecard`,
-            };
-      
-            if (platform === 'instagram') {
-              shareData.title = 'Pirate Hunt - Instagram Story';
-              shareData.text = 'Check out my achievements in Pirate Hunt on Instagram!';
-            } else if (platform === 'twitter') {
-              shareData.title = 'Pirate Hunt - Twitter Story';
-              shareData.text = 'Check out my achievements in Pirate Hunt on Twitter!';
-            }
-      
-            // Call Web Share API
-            await navigator.share(shareData);
-            console.log('Content shared successfully');
-          } catch (error) {
-            console.error('Error sharing:', error);
-          } finally {
-            setIsSharing(false);
-          }
         }
-      };
-      
-      const handleShareToTelegram = () => {
+    };
+
+    const handleShareToTelegram = () => {
         const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.origin + '/sharecard')}&text=${encodeURIComponent('Check out my achievements in Pirate Hunt!')}`;
         window.open(shareUrl, '_blank');
-      };
+    };
 
     return (
         <>
@@ -203,7 +203,7 @@ export default function ProfileShare() {
 
                 </div>
 
-                
+
                 <div className="absolute top-[13px] left-[320px] z-50" style={{ cursor: 'pointer' }} onClick={() => router.back()}>
                     <Image width={35} height={35} src={Cross} alt="Cross" />
                 </div>
