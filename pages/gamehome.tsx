@@ -6,6 +6,7 @@ import "../app/globals.css";
 import piratehomeBg from "../public/assets/piratehomeBg.png";
 import Island from "../public/assets/Island.svg";
 import boatHome from "../public/assets/boatHome.svg";
+import flyingchest from "../public/assets/flyingchest.webp";
 import Users from "../public/assets/Users.png";
 import TaskForHunt from "../public/assets/Task for hunt.svg";
 import TapCoin from "../public/assets/TapCoin.svg";
@@ -42,6 +43,9 @@ export default function GameHome() {
     const ENERGY_CAPACITY_VALUE = 1000; // Maximum energy capacity
     const [timeLeft, setTimeLeft] = useState<string>('');
     const targetDate = userDailyRewardInfo ? new Date(userDailyRewardInfo.next_claim_time).getTime() : new Date();
+    const [tapCount, setTapCount] = useState(0);
+    const [chestMoving, setChestMoving] = useState(false); 
+    const [showChest, setShowChest] = useState(false);
     const [coins, setCoins] = useState<{ id: number; x: number; y: number }[]>([]);
     const [tempbal, setTempbal] = useState<number>(0);
     const router = useRouter();
@@ -155,6 +159,17 @@ export default function GameHome() {
         // Get the click position relative to the page
         const x = e.clientX;
         const y = e.clientY;
+
+        setTapCount((prevCount) => {
+            const newCount = prevCount + 1;
+      
+            if (newCount >= 50) {
+              setShowChest(true);
+            }
+      
+            return newCount;
+        });
+        
 
 
         if (energyLevel > user_tap_rate_level && !(user_tap_rate_level > 1)) {
@@ -346,14 +361,52 @@ export default function GameHome() {
                                     </div>
                                 </div>
                             </div>
+                        <div className=" w-full h-screen">
+                            {/* Full-screen image to tap on */}
                             <Image
                                 className="w-full h-screen object-cover overflow-hidden"
-                                // width={393}
-                                // height={754}
                                 src={piratehomeBg}
                                 alt="piratehomeBg"
                                 onClick={handleTap}
                             />
+
+                            {/* Flying chest appears and moves after 50 taps */}
+                            {showChest && (
+                                <div className="fixed top-32 left-0 flying-chest-animation">
+                                <Image
+                                    className="rounded-[8px]"
+                                    width={65}
+                                    height={65}
+                                    src={flyingchest}
+                                    alt="flying chest"
+                                />
+                                </div>
+                            )}
+
+                            <style jsx>{`
+                                .flying-chest-animation {
+                                animation: moveAroundScreen 5s infinite linear;
+                                }
+
+                                @keyframes moveAroundScreen {
+                                0% {
+                                    transform: translate(0, 0);
+                                }
+                                25% {
+                                    transform: translate(300px, -100px);
+                                }
+                                50% {
+                                    transform: translate(600px, 200px);
+                                }
+                                75% {
+                                    transform: translate(900px, -50px);
+                                }
+                                100% {
+                                    transform: translate(1200px, 0);
+                                }
+                                }
+                            `}</style>
+                            </div>
                         </div>
 
                         <div>
@@ -372,7 +425,7 @@ export default function GameHome() {
 
                         </div>
 
-
+                                
 
 
                         <div className="absolute top-28 -right-40 " onClick={handleTap}>
@@ -418,6 +471,10 @@ export default function GameHome() {
                         <div className="absolute top-36 -left-10" onClick={handleTap}>
                             <Image src={boatHome} alt="boatHome" />
                         </div>
+
+                        {/* <div className="absolute top-32 left-36">
+                            <Image className="rounded-[8px]" width={65} height={65} src={flyingchest} alt="flyingchest" />
+                        </div> */}
 
 
                         <div onClick={handleBoostClick} className="absolute animate-bounce-up" style={{top:'25%', left:'20%'}}>
