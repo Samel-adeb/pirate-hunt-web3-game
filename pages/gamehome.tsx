@@ -45,6 +45,9 @@ export default function GameHome() {
     const targetDate = userDailyRewardInfo ? new Date(userDailyRewardInfo.next_claim_time).getTime() : new Date();
     const [tapCount, setTapCount] = useState(0);
     const [chestMoving, setChestMoving] = useState(false); 
+    tapCount;
+    chestMoving;
+    setChestMoving(false);
     const [showChest, setShowChest] = useState(false);
     const [coins, setCoins] = useState<{ id: number; x: number; y: number }[]>([]);
     const [tempbal, setTempbal] = useState<number>(0);
