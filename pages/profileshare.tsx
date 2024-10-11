@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { GameNavbar } from "@/app/components/GameNavbar";
+import { useRouter } from 'next/navigation';
 import Link from "next/link";
 import Image from "next/image";
 import "../app/globals.css";
@@ -13,6 +14,7 @@ import ShareButton from "../public/assets/ShareButton.svg";
 import brownCross from "../public/assets/brownCross.svg";
 import Insta from "../public/assets/Insta.svg";
 import Telegrame from "../public/assets/Telegrame.svg";
+import Cross from "../public/assets/Cross.svg";
 import Tweet from "../public/assets/Tweet.svg";
 import { useAppContext } from '@/context';
 import { getTreasurePurchaseHistory, getUserInvivites } from '@/scripts';
@@ -98,13 +100,58 @@ export default function ProfileShare() {
             setIsSharing(false); // Set sharing back to false when sharing ends
         }
     };
+        if (platform === 'telegram') {
+          handleShareToTelegram();
+        } else {
+          try {
+            if (!navigator.share) {
+              alert('Sharing is not supported in your browser.');
+              return;
+            }
+      
+            if (isSharing) {
+              alert('Sharing is already in progress.');
+              return;
+            }
+      
+            setIsSharing(true);
+      
+            const shareData = {
+              title: 'Pirate Hunt',
+              text: 'Check out my achievements in Pirate Hunt! Ive earned 100,000,000 coins!',
+              url: `${window.location.origin}/sharecard`,
+            };
+      
+            if (platform === 'instagram') {
+              shareData.title = 'Pirate Hunt - Instagram Story';
+              shareData.text = 'Check out my achievements in Pirate Hunt on Instagram!';
+            } else if (platform === 'twitter') {
+              shareData.title = 'Pirate Hunt - Twitter Story';
+              shareData.text = 'Check out my achievements in Pirate Hunt on Twitter!';
+            }
+      
+            // Call Web Share API
+            await navigator.share(shareData);
+            console.log('Content shared successfully');
+          } catch (error) {
+            console.error('Error sharing:', error);
+          } finally {
+            setIsSharing(false);
+          }
+        }
+      };
+      
+      const handleShareToTelegram = () => {
+        const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.origin + '/sharecard')}&text=${encodeURIComponent('Check out my achievements in Pirate Hunt!')}`;
+        window.open(shareUrl, '_blank');
+      };
 
     return (
         <>
 
             <GameNavbar />
 
-            <div className="h-[100vh + 200px]"
+            <div className="relative h-[100vh + 200px]"
                 style={{
                     background: 'linear-gradient(180deg, #201101 0%, #472402 100%)',
                 }}>
@@ -154,6 +201,11 @@ export default function ProfileShare() {
                     </div>
 
 
+                </div>
+
+                
+                <div className="absolute top-[13px] left-[320px] z-50" style={{ cursor: 'pointer' }} onClick={() => router.back()}>
+                    <Image width={35} height={35} src={Cross} alt="Cross" />
                 </div>
 
                 <div>
