@@ -28,7 +28,7 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible, isTapbo
         connect,
         disconnect,
         connected,
-        walletAddress,
+        
         sendTransaction,
     } = useTonConnect();
     const { userId, userBalance, setUserBalance, setUser_tap_rate_level, countdownResetTapRate } = useAppContext();
@@ -38,6 +38,7 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible, isTapbo
             await connect();
         }
         try {
+            alert( `${process.env.NEXT_RECEIVER_WALLET_ADDRESS}`);
             const result = await sendTransaction([{
                 address: `${process.env.NEXT_RECEIVER_WALLET_ADDRESS}`,
                 amount: (amountn * 1000000000).toString()  // in nanoTON
@@ -124,7 +125,7 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible, isTapbo
 
                         {/* <button onClick={() => handleTransaction(treasure.price, treasure.id, { treasure_id: treasure.id, amount: treasure.price, name: treasure.name })} className='btn btn-warning w-75 font-bold text-white p-3'>PURCHASE ({treasure.price ?? 0} TON)</button> */}
 
-                        {connected && <p>Connected Wallet: {walletAddress}</p>}
+                        {/* {connected && <p>Connected Wallet: {walletAddress}</p>} */}
 
 
                     </div>
