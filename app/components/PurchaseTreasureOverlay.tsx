@@ -38,7 +38,7 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible, isTapbo
             await connect();
         }
         try {
-            alert( `${process.env.NEXT_RECEIVER_WALLET_ADDRESS}`);
+            // alert( process.env.NEXT_PUBLIC_RECIEVER_ADDRESS);
             const result = await sendTransaction([{
                 address: `${process.env.NEXT_RECEIVER_WALLET_ADDRESS}`,
                 amount: (amountn * 1000000000).toString()  // in nanoTON

@@ -15,7 +15,7 @@ export const PurchaceTreasure = () => {
             await connect();
         }
         await sendTransaction([{
-            address: "receiver-wallet-address",
+            address: `${process.env.NEXT_RECEIVER_WALLET_ADDRESS}`,
             amount: "1000000"  // in nanoTON
         }]);
     };

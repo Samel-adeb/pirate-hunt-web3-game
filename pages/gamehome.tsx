@@ -45,10 +45,8 @@ export default function GameHome() {
     const [timeLeft, setTimeLeft] = useState<string>('');
     const targetDate = userDailyRewardInfo ? new Date(userDailyRewardInfo.next_claim_time).getTime() : new Date();
     const [tapCount, setTapCount] = useState(0);
-    const [chestMoving, setChestMoving] = useState(false); 
-    tapCount;
-    chestMoving;
-    setChestMoving(false);
+    // const [chestMoving, setChestMoving] = useState(false); 
+    tapCount
     const [showChest, setShowChest] = useState(false);
     const [showOverlay, setShowOverlay] = useState(false);
     const [hasClaimed, setHasClaimed] = useState(false); // state to track if the reward is claimed
