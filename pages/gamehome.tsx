@@ -4,6 +4,7 @@ import Link from 'next/link';
 import "../app/globals.css";
 // import  ProgressBar  from '@/app/components/ProgressBar';
 import piratehomeBg from "../public/assets/piratehomeBg.png";
+
 import Island from "../public/assets/Island.svg";
 import boatHome from "../public/assets/boatHome.svg";
 import flyingchest from "../public/assets/flyingchest.webp";
@@ -49,6 +50,8 @@ export default function GameHome() {
     chestMoving;
     setChestMoving(false);
     const [showChest, setShowChest] = useState(false);
+    const [showOverlay, setShowOverlay] = useState(false);
+    const [hasClaimed, setHasClaimed] = useState(false); // state to track if the reward is claimed
     const [coins, setCoins] = useState<{ id: number; x: number; y: number }[]>([]);
     const [tempbal, setTempbal] = useState<number>(0);
     const router = useRouter();
@@ -163,15 +166,17 @@ export default function GameHome() {
         const x = e.clientX;
         const y = e.clientY;
 
-        setTapCount((prevCount) => {
-            const newCount = prevCount + 1;
-      
-            if (newCount >= 50) {
-              setShowChest(true);
-            }
-      
-            return newCount;
-        });
+        if (!hasClaimed) {  // Only allow taps to show the chest if the reward hasn't been claimed
+            setTapCount((prevCount) => {
+              const newCount = prevCount + 1;
+        
+              if (newCount >= 50) {
+                setShowChest(true);
+              }
+        
+              return newCount;
+            });
+        }
         
 
 
@@ -208,6 +213,12 @@ export default function GameHome() {
             setTempbal(tempbal + parseInt(user_tap_rate_level));
             localStorage.setItem('tempbal', (tempbal + parseInt(user_tap_rate_level)).toString());
         }
+    };
+
+    const handleCloseOverlay = () => {
+        setShowOverlay(false);
+        setShowChest(false); // Optional: Hide the chest once the overlay is closed
+        setHasClaimed(true); // Set hasClaimed to true, so the chest won't show again
     };
 
     const [isOverlayVisible, setOverlayVisible] = useState(false);
@@ -364,51 +375,106 @@ export default function GameHome() {
                                     </div>
                                 </div>
                             </div>
-                        <div className=" w-full h-screen">
-                            {/* Full-screen image to tap on */}
-                            <Image
+                            <div className="w-full h-screen">
+                                {/* Full-screen image to tap on */}
+                                <Image
                                 className="w-full h-screen object-cover overflow-hidden"
                                 src={piratehomeBg}
                                 alt="piratehomeBg"
                                 onClick={handleTap}
-                            />
+                                />
 
-                            {/* Flying chest appears and moves after 50 taps */}
-                            {showChest && (
-                                <div className="fixed top-32 left-0 flying-chest-animation">
-                                <Image
+                                {/* Flying chest appears and moves after 50 taps */}
+                                {showChest && (
+                                <div
+                                    className="fixed top-32 left-0 flying-chest-animation"
+                                    onClick={() => setShowOverlay(true)}
+                                >
+                                    <Image
                                     className="rounded-[8px]"
                                     width={65}
                                     height={65}
                                     src={flyingchest}
                                     alt="flying chest"
-                                />
+                                    />
                                 </div>
-                            )}
+                                )}
 
-                            <style jsx>{`
+                                {/* Overlay for congratulatory message */}
+                                {showOverlay && (
+                                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                                    <div className="bg-white p-8 rounded-md text-center relative w-[90%] max-w-lg">
+                                    {/* Close button */}
+                                    <button
+                                        className="absolute top-4 right-4 text-black"
+                                        onClick={handleCloseOverlay}
+                                    >
+                                        <Image src={Cross} alt="Cross" />
+                                    </button>
+
+                                    {/* Chest image */}
+                                    <Image
+                                        className="mx-auto rounded-[20px]"
+                                        width={130}
+                                        height={130}
+                                        src={flyingchest}
+                                        alt="Chest"
+                                    />
+
+                                    {/* Congratulations message */}
+                                    <h2 className="text-xl font-bold mt-4">Congratulations Mate!</h2>
+                                    <p className="text-lg mt-2">You won</p>
+
+                                    {/* Coins image */}
+                                    <div className="flex items-center justify-center mx-auto pt-[8px] gap-[3px]">
+
+                                        
+
+                                        <Image
+                                           
+                                            width={20}
+                                            height={20}
+                                            src={golddollarcoin} // Replace this with the coins image source
+                                            alt="Coins"
+                                        />
+
+                                        <p className="text-[16px] font-semibold">2000</p>
+                                    </div>
+
+                                    {/* Claim button */}
+                                    <button
+                                        className="mt-6 px-10 py-2 font-semibold  bg-green-500 text-white rounded"
+                                        onClick={handleCloseOverlay}
+                                    >
+                                        Claim
+                                    </button>
+                                    </div>
+                                </div>
+                                )}
+
+                                <style jsx>{`
                                 .flying-chest-animation {
-                                animation: moveAroundScreen 5s infinite linear;
+                                    animation: moveAroundScreen 5s infinite linear;
                                 }
 
                                 @keyframes moveAroundScreen {
-                                0% {
+                                    0% {
                                     transform: translate(0, 0);
-                                }
-                                25% {
+                                    }
+                                    25% {
                                     transform: translate(300px, -100px);
-                                }
-                                50% {
+                                    }
+                                    50% {
                                     transform: translate(600px, 200px);
-                                }
-                                75% {
+                                    }
+                                    75% {
                                     transform: translate(900px, -50px);
-                                }
-                                100% {
+                                    }
+                                    100% {
                                     transform: translate(1200px, 0);
+                                    }
                                 }
-                                }
-                            `}</style>
+                                `}</style>
                             </div>
                         </div>
 
