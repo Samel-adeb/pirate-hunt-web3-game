@@ -1,4 +1,4 @@
-import Link from 'next/link';
+//import Link from 'next/link';
 import "../app/globals.css";
 import Image from "next/image";
 import { useEffect, useRef } from 'react';
