@@ -1,11 +1,11 @@
-import Link from 'next/link';
+//import Link from 'next/link';
 import "../app/globals.css";
 import Image from "next/image";
 import { useEffect, useRef } from 'react';
 import BlueSail from "../public/assets/BlueSail.png";
 import Cap from "../public/assets/Cap.png";
-import telegramSvg from "../public/assets/telegramSvg.svg";
-import TwitterSvg from "../public/assets/TwitterSvg.svg";
+// import telegramSvg from "../public/assets/telegramSvg.svg";
+// import TwitterSvg from "../public/assets/TwitterSvg.svg";
 import { useState } from "react";
 import { useRouter } from 'next/navigation'; // Using App Router's useRouter
 import { GameNavbar } from '@/app/components/GameNavbar';
@@ -86,10 +86,10 @@ export default function GameLoad() {
                             <h1 className="text-[32px] leading-[32px] font-medium text-white">Pirate hunt</h1>
                             <p className="pt-[20px] font-medium text-white text-[12px] leading-[16px] max-w-[344px]">Ahoy, matey! Welcome to Pirate Hunt, a Telegram clicker mini-game that&apos;s a treasure trove of fun and excitement on<br /> the Ton Network</p>
                         </div>
-                        <div className="flex flex-col items-center justify-center">
+                        {/* <div className="flex flex-col items-center justify-center">
                             <h2 className="pt-16 text-center text-white text-[14px] leading-[24px] font-bold tracking-[0.15%]">Connect with us</h2>
 
-                            <div className="flex items-center gap-[10px]">
+                            {/* <div className="flex items-center gap-[10px]">
                                 <div className="flex items-center gap-[2px] text-white text-[8.78px] leading-[13.9px] font-medium">
                                     <Image src={telegramSvg} alt="telegramSvg" />
                                     Telegram:<Link href="/" className="underline">t.me/piratequest</Link>
@@ -99,7 +99,7 @@ export default function GameLoad() {
                                     Twitter:<Link href="/" className="underline">x.com/piratequest</Link>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 {/* Loader overlay */}

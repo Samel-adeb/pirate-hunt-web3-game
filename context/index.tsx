@@ -26,6 +26,7 @@ export function AppWrapper({ children }: {
     const [nextClaimableReward, setNextClaimableReward] = useState({});
     const [tapTreasures, setTapTreasures] = useState([]);
     const [coinTreasures, setCoinTreasures] = useState([]);
+    const [treasurePurchaseHistory, setTreasurePurchaseHistory] = useState([]);
 
     const countdownResetTapRate =(time:string) => {
         setTimeout(() => {
@@ -75,6 +76,8 @@ export function AppWrapper({ children }: {
             coinTreasures,
             setCoinTreasures,
             countdownResetTapRate,
+            treasurePurchaseHistory,
+            setTreasurePurchaseHistory,
         }}>
             {children}
         </AppContext.Provider>

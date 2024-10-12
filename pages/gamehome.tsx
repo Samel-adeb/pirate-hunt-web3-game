@@ -44,9 +44,9 @@ export default function GameHome() {
     const ENERGY_CAPACITY_VALUE = 1000; // Maximum energy capacity
     const [timeLeft, setTimeLeft] = useState<string>('');
     const targetDate = userDailyRewardInfo ? new Date(userDailyRewardInfo.next_claim_time).getTime() : new Date();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [tapCount, setTapCount] = useState(0);  // tapCount is not used, but we still need setTapCount
-    // const [chestMoving, setChestMoving] = useState(false);
+    const [tapCount, setTapCount] = useState(0);
+    // const [chestMoving, setChestMoving] = useState(false); 
+    tapCount
     const [showChest, setShowChest] = useState(false);
     const [showOverlay, setShowOverlay] = useState(false);
     const [hasClaimed, setHasClaimed] = useState(false); // state to track if the reward is claimed
