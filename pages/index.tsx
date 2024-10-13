@@ -25,7 +25,7 @@ export default function GameLoad() {
         }
     };
 
-    
+
     const getId = async () => {
         //alert('getId loading...');
         const muserId = await getUserId();
@@ -75,13 +75,13 @@ export default function GameLoad() {
     return (
 
         <div>
-            <div className="relative h-screen">
+            <div className="bg-[#000000] relative h-screen" style={{ maxHeight: '100vh', minHeight: '100vh' }}>
                 <GameNavbar />
                 <div className="flex flex-col items-center justify-center">
                     <div className="w-full bg-cover">
                         <Image className='w-full' src={BlueSail} alt="BlueSail" />
                     </div>
-                    <div className="bg-[#000000] h-[400px] pb-[10px] w-full flex flex-col items-center justify-center">
+                    <div className="mt-6 pb-[10px] w-full flex flex-col items-center justify-center">
                         <div className="flex flex-col items justify-center text-center">
                             <h1 className="text-[32px] leading-[32px] font-medium text-white">Pirate hunt</h1>
                             <p className="pt-[20px] font-medium text-white text-[12px] leading-[16px] max-w-[344px]">Ahoy, matey! Welcome to Pirate Hunt, a Telegram clicker mini-game that&apos;s a treasure trove of fun and excitement on<br /> the Ton Network</p>
@@ -113,7 +113,7 @@ export default function GameLoad() {
                                 Loading<span className="dot-anim"></span>
                             </p>
                         ) :
-                            (<div className='bg-[#000000A6] m-5 p-2 px-6 rounded-[20.76px] text-[24px] text-white cursor-pointer' style={{marginTop: "25px"}} onClick={changePage}>Start Mining!</div>)
+                            (<div className='bg-[#000000A6] m-5 p-2 px-6 rounded-[20.76px] text-[24px] text-white cursor-pointer' style={{ marginTop: "25px" }} onClick={changePage}>Start Mining!</div>)
                     }
                     <style jsx>{`
                     .dot-anim {

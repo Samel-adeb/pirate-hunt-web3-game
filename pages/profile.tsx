@@ -80,11 +80,11 @@ export default function Profile() {
                                 <h1 className="text-[32.59px] leading-[48.88px] font-semibold text-[#FFFFFF]">{level ? level.current_level : "Pirate"}</h1>
                             </div>
 
-                            <div className="w-[205px] flex flex-col items-center justify-center">
+                            {/* <div className="w-[205px] flex flex-col items-center justify-center">
                                 <button className="bg-grey-light text-center  p-[10px] rounded-[8px]">
                                     How it works?
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 
@@ -101,7 +101,7 @@ export default function Profile() {
 
 
                 </div>
-                <div className="relative h-[1000px]" style={{
+                <div className="relative" style={{ minHeight:'150vh',
                     background: `linear-gradient(180deg, #A16D45 85%, #3B2819 100%),
                         linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2))`
                 }}>
@@ -113,16 +113,16 @@ export default function Profile() {
                     {/* Overlay */}
 
 
-                    <div className="absolute inset-0 bg-[#000000B2] h-[1000px]">
+                    <div className="absolute inset-0 bg-[#000000B2]" style={{ minHeight:'150vh'}}>
 
-                        <div className="absolute -top-[50px] left-[35px] border-[1px] rounded-[16px] border-[#FFFFFF40] p-3" style={{ left: "10%", right: "10%", width: '80%',top: "-10%" }}>
+                        <div className="absolute -top-[50px] left-[35px] border-[1px] rounded-[16px] border-[#FFFFFF40] p-3" style={{ left: "10%", right: "10%", width: '80%',top: "-14%" }}>
 
                             <ProfileProgressBar progress={userBalance * 100 / level.next_level_threshold} /> {/* Change the progress value as needed */}
 
                         </div>
 
 
-                        <div className="flex flex-col items-center pt-16">
+                        <div className="flex flex-col items-center pt-6">
                             <div className="mb-4">
                                 <h1 className="text-[16px] leading-[24px] tracking-[0.15%] font-semibold text-white pl-[16px]">Top Users</h1>
                             </div>
