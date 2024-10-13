@@ -18,9 +18,9 @@ interface dailyBonus {
 function DailyBonuses({ isDailyOverlayVisible, closeDailyOverlay }: { isDailyOverlayVisible: boolean; closeDailyOverlay: () => void }) {
     // const { isDailyOverlayVisible, closeDailyOverlay } = props;
     const [isDayOneOverlayVisible, setIsDayOneOverlayVisible] = useState(false);
-    const { userId, allDailyBonues, setAllDailyBonues, claimedDailyBonuses, setClaimedDailyBonuses } = useAppContext();
+    const { userId, userDailyRewardInfo, allDailyBonues, setAllDailyBonues, claimedDailyBonuses, setClaimedDailyBonuses } = useAppContext();
     const [currentDayBonus, setCurrentDayBonus] = useState<dailyBonus>();
-
+    const [next_claim_id, set_next_claim_id] = useState(0);
     const load = async () => {
         await getClaimedDailyBonuses(userId, setClaimedDailyBonuses);
         await getAllDailyBounuses(setAllDailyBonues);
@@ -56,11 +56,20 @@ function DailyBonuses({ isDailyOverlayVisible, closeDailyOverlay }: { isDailyOve
         if (claimedDailyBonuses) {
             // Find the bonus in the claimedDailyBonuses array
             const result = claimedDailyBonuses.find((bonus: Bonus) => bonus.daily_bonus_id == bonusId);
-            // Return true if result exists (bonus is already claimed), otherwise false
-            return !!result;
-        } else {
-            return false;
+
+            // Check if the result exists
+            if (result) {
+                // Set the next_claim_id if the found bonus's ID is greater than next_claim_id
+                if (parseInt(result.next_bonus_id) > next_claim_id) {
+                    //alert(parseInt(result.next_bonus_id));
+                    set_next_claim_id(parseInt(result.next_bonus_id));
+                }
+                // Return true since the bonus was found
+                return true;
+            }
         }
+        // Return false if the bonus wasn't found or claimedDailyBonuses is undefined
+        return false;
     };
 
 
@@ -96,7 +105,7 @@ function DailyBonuses({ isDailyOverlayVisible, closeDailyOverlay }: { isDailyOve
                                         <div key={dailyBonus.id} className="p-2">
                                             <div
                                                 className="flex flex-col border border-[#00A6DE] p-2 rounded-lg items-center justify-center cursor-pointer"
-                                                onClick={() => handleDayOneOverlay(dailyBonus)}
+
                                                 style={{ width: index === 6 ? '218%' : '' }}
                                             >
                                                 <h1 className="text-white text-lg">
@@ -104,12 +113,12 @@ function DailyBonuses({ isDailyOverlayVisible, closeDailyOverlay }: { isDailyOve
                                                 </h1>
                                                 {
                                                     isBonusAlreadyClaimed(dailyBonus.id) ? (
-                                                        <div className="flex items-center bg-main justify-center p-3 rounded shadow text-white w-full" style={{opacity:0.5}}>
+                                                        <div className="flex items-center bg-main justify-center p-3 rounded shadow text-white w-full" onClick={() => handleDayOneOverlay(dailyBonus)}>
                                                             <p className="text-white font-bold mx-1">CLAIMED</p>
 
                                                         </div>
                                                     ) : (
-                                                        <div className="flex items-center bg-main justify-center p-3 rounded shadow text-white w-full">
+                                                        <div className="flex items-center bg-main justify-center p-3 rounded shadow text-white w-full" style={{ opacity: dailyBonus.id == next_claim_id ? 1 :  0.5 }} onClick={() => dailyBonus.id == next_claim_id ? handleDayOneOverlay(dailyBonus) : 0}>
                                                             <p className="text-white font-bold mx-1">{dailyBonus.amount ? dailyBonus.amount : "0"}</p>
                                                             <Image width={25} height={25} src={standingdollarcoin} alt="standingdollarcoin" />
                                                         </div>

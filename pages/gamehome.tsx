@@ -5,6 +5,7 @@ import "../app/globals.css";
 // import  ProgressBar  from '@/app/components/ProgressBar';
 import piratehomeBg from "../public/assets/piratehomeBg.png";
 
+import TapHere from "../public/assets/touch.png";
 import Island from "../public/assets/Island.svg";
 import boatHome from "../public/assets/boatHome.svg";
 import flyingchest from "../public/assets/flyingchest.webp";
@@ -25,7 +26,7 @@ import GiftBox from "../public/assets/gift box.png";
 import BigLightning from "../public/assets/BigLightning.svg";
 // import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
 import Coinfromtap from "../public/assets/Coinfromtap.svg";
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useAppContext } from '@/context';
 import { useState } from "react";
 // import DayOneOverlay from "@/app/components/DayOneOverlay";
@@ -38,9 +39,9 @@ import { useRouter } from "next/router";
 
 export default function GameHome() {
 
-    const { userId, username, level, userBalance, setUserBalance, userRank, userDailyRewardInfo, user_tap_rate_level } = useAppContext();
+    const { userId, username, level, userBalance, setUserBalance, userRank, userDailyRewardInfo, user_tap_rate_level, isMusicOn, setIsMusicOn } = useAppContext();
     const [energyLevel, setEnergyLevel] = useState<number>(0);
-    const audioRef = useRef<HTMLAudioElement | null>(null);
+
     const ENERGY_CAPACITY_VALUE = 1000; // Maximum energy capacity
     const [timeLeft, setTimeLeft] = useState<string>('');
     const targetDate = userDailyRewardInfo ? new Date(userDailyRewardInfo.next_claim_time).getTime() : new Date();
@@ -55,7 +56,9 @@ export default function GameHome() {
     const router = useRouter();
 
 
+
     useEffect(() => {
+
         if (localStorage.tempbal) {
             const bal = parseInt(localStorage.tempbal);
             if (bal > 0 && userId) {
@@ -69,17 +72,19 @@ export default function GameHome() {
 
 
     }, []);
+    // Automatically start playing the background music based on local storage
+    useEffect(() => {
 
+        const musicSetting = localStorage.getItem('musicOn') !== 'false'; // Default to true if not set
+        setIsMusicOn(!musicSetting);
+        setIsMusicOn(musicSetting);
+
+    }, []);
 
     // Automatically start playing the background music
     useEffect(() => {
-        // Play background music automatically when the component mounts
-        if (audioRef.current) {
-            audioRef.current.volume = 0.5; // Adjust volume (0.0 to 1.0)
-            audioRef.current.play().catch((err) => {
-                console.error('Failed to play audio:', err);
-            });
-        }
+
+
 
         // Retrieve energy level from local storage or set it to maximum
         const storedEnergy = parseInt(localStorage.getItem('energy') || '') || ENERGY_CAPACITY_VALUE;
@@ -87,8 +92,10 @@ export default function GameHome() {
 
         // Countdown logic
         const interval = setInterval(() => {
-            const now = new Date().getTime(); // Current time
-            const difference = targetDate.valueOf() - now; // Difference in milliseconds
+            const now = new Date().getTime(); // Get current time in milliseconds
+            const nowUTC = now + (new Date().getTimezoneOffset() * 60000); // Convert 'now' to UTC time by accounting for the timezone offset
+
+            const difference = targetDate.valueOf() - nowUTC; // Difference in milliseconds
 
             if (difference > 0) {
                 // Calculate remaining time in days, hours, minutes, and seconds
@@ -104,6 +111,7 @@ export default function GameHome() {
             }
         }, 1000); // Update every second
 
+
         // Cleanup interval on component unmount
         return () => clearInterval(interval);
     }, [targetDate]);
@@ -114,7 +122,7 @@ export default function GameHome() {
         const currentTime = Date.now();
         const lastUpdateTime = parseInt(localStorage.getItem('lastUpdateTime') || '') || currentTime;
         const elapsedTime = (currentTime - lastUpdateTime) / 1000; // Convert milliseconds to seconds
-        
+
         // If energy level is below maximum, increase it
         if (energyLevel < ENERGY_CAPACITY_VALUE) {
             const energyIncrease = RECHARGE_SPEED * elapsedTime;
@@ -166,16 +174,16 @@ export default function GameHome() {
 
         if (!hasClaimed) {  // Only allow taps to show the chest if the reward hasn't been claimed
             setTapCount((prevCount) => {
-              const newCount = prevCount + 1;
-        
-              if (newCount >= 50) {
-                setShowChest(true);
-              }
-        
-              return newCount;
+                const newCount = prevCount + 1;
+
+                if (newCount >= 50) {
+                    setShowChest(true);
+                }
+
+                return newCount;
             });
         }
-        
+
 
 
         if (energyLevel > user_tap_rate_level && !(user_tap_rate_level > 1)) {
@@ -252,9 +260,9 @@ export default function GameHome() {
         setIsDailyOverlayVisible(false);
     };
 
-    const handlegoToInvite = (e: React.MouseEvent) =>{
+    const handlegoToInvite = (e: React.MouseEvent) => {
         e.stopPropagation();
-        
+
         router.push('/inviteafriend');
     }
 
@@ -264,6 +272,14 @@ export default function GameHome() {
             <div>
                 <div className="h-screen">
                     <GameNavbar />
+                    {
+                        tapCount == 0 && (
+                            <div className="absolute z-50 text-sec" style={{ top: '52%', left: '45%' }} >
+                                <Image alt='taphere' src={TapHere} width={40} height={40} className=" animate-bounce-up" />
+                                Tap here
+                            </div>
+                        )
+                    }
                     <div className="relative overflow-hidden">
                         <div className=" relative w-full bg-cover bg-center overflow-hidden h-screen">
                             <div className="absolute px-[14px] py-[6px] bg-[#854C348C] w-full ">
@@ -376,78 +392,78 @@ export default function GameHome() {
                             <div className="w-full h-screen">
                                 {/* Full-screen image to tap on */}
                                 <Image
-                                className="w-full h-screen object-cover overflow-hidden"
-                                src={piratehomeBg}
-                                alt="piratehomeBg"
-                                onClick={handleTap}
+                                    className="w-full h-screen object-cover overflow-hidden"
+                                    src={piratehomeBg}
+                                    alt="piratehomeBg"
+                                    onClick={handleTap}
                                 />
 
                                 {/* Flying chest appears and moves after 50 taps */}
                                 {showChest && (
-                                <div
-                                    className="fixed top-32 left-0 flying-chest-animation"
-                                    onClick={() => setShowOverlay(true)}
-                                >
-                                    <Image
-                                    className="rounded-[8px]"
-                                    width={65}
-                                    height={65}
-                                    src={flyingchest}
-                                    alt="flying chest"
-                                    />
-                                </div>
+                                    <div
+                                        className="fixed top-32 left-0 flying-chest-animation"
+                                        onClick={() => setShowOverlay(true)}
+                                    >
+                                        <Image
+                                            className="rounded-[8px]"
+                                            width={65}
+                                            height={65}
+                                            src={flyingchest}
+                                            alt="flying chest"
+                                        />
+                                    </div>
                                 )}
 
                                 {/* Overlay for congratulatory message */}
                                 {showOverlay && (
-                                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                                    <div className="bg-white p-8 rounded-md text-center relative w-[90%] max-w-lg">
-                                    {/* Close button */}
-                                    <button
-                                        className="absolute top-4 right-4 text-black"
-                                        onClick={handleCloseOverlay}
-                                    >
-                                        <Image src={Cross} alt="Cross" />
-                                    </button>
+                                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                                        <div className="bg-white p-8 rounded-md text-center relative w-[90%] max-w-lg">
+                                            {/* Close button */}
+                                            <button
+                                                className="absolute top-4 right-4 text-black"
+                                                onClick={handleCloseOverlay}
+                                            >
+                                                <Image src={Cross} alt="Cross" />
+                                            </button>
 
-                                    {/* Chest image */}
-                                    <Image
-                                        className="mx-auto rounded-[20px]"
-                                        width={130}
-                                        height={130}
-                                        src={flyingchest}
-                                        alt="Chest"
-                                    />
+                                            {/* Chest image */}
+                                            <Image
+                                                className="mx-auto rounded-[20px]"
+                                                width={130}
+                                                height={130}
+                                                src={flyingchest}
+                                                alt="Chest"
+                                            />
 
-                                    {/* Congratulations message */}
-                                    <h2 className="text-xl font-bold mt-4">Congratulations Mate!</h2>
-                                    <p className="text-lg mt-2">You won</p>
+                                            {/* Congratulations message */}
+                                            <h2 className="text-xl font-bold mt-4">Congratulations Mate!</h2>
+                                            <p className="text-lg mt-2">You won</p>
 
-                                    {/* Coins image */}
-                                    <div className="flex items-center justify-center mx-auto pt-[8px] gap-[3px]">
+                                            {/* Coins image */}
+                                            <div className="flex items-center justify-center mx-auto pt-[8px] gap-[3px]">
 
-                                        
 
-                                        <Image
-                                           
-                                            width={20}
-                                            height={20}
-                                            src={golddollarcoin} // Replace this with the coins image source
-                                            alt="Coins"
-                                        />
 
-                                        <p className="text-[16px] font-semibold">2000</p>
+                                                <Image
+
+                                                    width={20}
+                                                    height={20}
+                                                    src={golddollarcoin} // Replace this with the coins image source
+                                                    alt="Coins"
+                                                />
+
+                                                <p className="text-[16px] font-semibold">2000</p>
+                                            </div>
+
+                                            {/* Claim button */}
+                                            <button
+                                                className="mt-6 px-10 py-2 font-semibold  bg-green-500 text-white rounded"
+                                                onClick={handleCloseOverlay}
+                                            >
+                                                Claim
+                                            </button>
+                                        </div>
                                     </div>
-
-                                    {/* Claim button */}
-                                    <button
-                                        className="mt-6 px-10 py-2 font-semibold  bg-green-500 text-white rounded"
-                                        onClick={handleCloseOverlay}
-                                    >
-                                        Claim
-                                    </button>
-                                    </div>
-                                </div>
                                 )}
 
                                 <style jsx>{`
@@ -492,7 +508,7 @@ export default function GameHome() {
 
                         </div>
 
-                                
+
 
 
                         <div className="absolute top-28 -right-40 " onClick={handleTap}>
@@ -501,12 +517,12 @@ export default function GameHome() {
                                     <Image width={289} height={273} src={Island} alt="Island" />
                                 </div>
                                 {/* <Link href="/inviteafriend"> */}
-                                    <div className="absolute top-[0px] left-[70px] " onClick={handlegoToInvite}>
-                                        <div className="bg-[#1A314E] flex flex-col items-center justify-center border-[4px] border-[#FFFFFF0D] w-[40.19px] h-[40.19px] rounded-[30px]">
-                                            <Image src={Users} alt="Users" width={25} height={25} />
-                                        </div>
-                                        <h1 className="text-[12.47px] leading-[18.7px] font-bold text-white text-center">Invite</h1>
+                                <div className="absolute top-[0px] left-[70px] " onClick={handlegoToInvite}>
+                                    <div className="bg-[#1A314E] flex flex-col items-center justify-center border-[4px] border-[#FFFFFF0D] w-[40.19px] h-[40.19px] rounded-[30px]">
+                                        <Image src={Users} alt="Users" width={25} height={25} />
                                     </div>
+                                    <h1 className="text-[12.47px] leading-[18.7px] font-bold text-white text-center">Invite</h1>
+                                </div>
                                 {/* </Link> */}
 
                             </div>
@@ -544,12 +560,12 @@ export default function GameHome() {
                         </div> */}
 
 
-                        <div onClick={handleBoostClick} className="absolute animate-bounce-up" style={{top:'25%', left:'20%'}}>
+                        <div onClick={handleBoostClick} className="absolute animate-bounce-up" style={{ top: '25%', left: '20%' }}>
                             <Image src={TaskForHunt} alt="TaskForHunt" />
                         </div>
 
                         <div>
-                            <div className="absolute animate-bounce-up" style={{top:'30%', left:'7%'}} onClick={handleEnergyBoostClick}>
+                            <div className="absolute animate-bounce-up" style={{ top: '30%', left: '7%' }} onClick={handleEnergyBoostClick}>
                                 <div className="tapcoin-animation">
                                     <Image src={TapCoin} alt="TapCoin" className="gap-[50px]" />
                                 </div>
@@ -622,10 +638,10 @@ export default function GameHome() {
 
 
                 {/* Hidden Audio Element */}
-                <audio ref={audioRef} loop hidden>
+                {/* <audio ref={audioRef} loop hidden>
                     <source src="/Wave%20Crashing%20On%20Rocks,%20Swirl,%20Distant,%20Continuous%20Roar.mp3" type="audio/mp3" />
                     Your browser does not support the audio element.
-                </audio>
+                </audio> */}
             </div>
 
 
