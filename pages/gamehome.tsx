@@ -31,6 +31,7 @@ import { useAppContext } from '@/context';
 import { useState } from "react";
 // import DayOneOverlay from "@/app/components/DayOneOverlay";
 import { addTapTransaction } from "@/scripts";
+import { addClaimRandomTransaction } from "@/scripts";
 import DailyBonuses from "@/app/components/DailyBonuses";
 import { useRouter } from "next/router";
 
@@ -39,7 +40,7 @@ import { useRouter } from "next/router";
 
 export default function GameHome() {
 
-    const { userId, username, level, userBalance, setUserBalance, userRank, userDailyRewardInfo, user_tap_rate_level, setIsMusicOn } = useAppContext();
+    const { userId, username, level, userBalance, setUserBalance, userRank, userDailyRewardInfo, user_tap_rate_level , setIsMusicOn} = useAppContext();
     const [energyLevel, setEnergyLevel] = useState<number>(0);
 
     const ENERGY_CAPACITY_VALUE = 1000; // Maximum energy capacity
@@ -47,10 +48,23 @@ export default function GameHome() {
     const targetDate = userDailyRewardInfo ? new Date(userDailyRewardInfo.next_claim_time).getTime() : new Date();
     const [tapCount, setTapCount] = useState(0);
     // const [chestMoving, setChestMoving] = useState(false); 
-    tapCount
+  
     const [showChest, setShowChest] = useState(false);
     const [showOverlay, setShowOverlay] = useState(false);
+    const [claimed, setClaimed] = useState(false); // Track if the chest has been claimed
+    const randomCoinAmount = 2000; // Amount to be credited to the user
     const [hasClaimed, setHasClaimed] = useState(false); // state to track if the reward is claimed
+    const [chestPosition, setChestPosition] = useState<{
+        top: string;
+        left: string;
+        direction: string; // Keep this as a string
+    }>({
+        top: '0px',
+        left: '0px',
+        direction: "0" // Initialize with a string value, e.g., '0'
+    });
+    const [canShowChest, setCanShowChest] = useState(true);
+   
     const [coins, setCoins] = useState<{ id: number; x: number; y: number }[]>([]);
     const [tempbal, setTempbal] = useState<number>(0);
     const router = useRouter();
@@ -176,7 +190,7 @@ export default function GameHome() {
             setTapCount((prevCount) => {
                 const newCount = prevCount + 1;
 
-                if (newCount >= 50) {
+                if (newCount >= 50 && canShowChest) {
                     setShowChest(true);
                 }
 
@@ -221,11 +235,79 @@ export default function GameHome() {
         }
     };
 
-    const handleCloseOverlay = () => {
-        setShowOverlay(false);
-        setShowChest(false); // Optional: Hide the chest once the overlay is closed
-        setHasClaimed(true); // Set hasClaimed to true, so the chest won't show again
+    const moveChestRandomly = () => {
+        const direction = Math.floor(Math.random() * 4); // 0: left, 1: right, 2: top, 3: bottom
+        let newTop = '0px';
+        let newLeft = '0px';
+
+        switch (direction) {
+            case 0: // From left
+                newTop = Math.floor(Math.random() * window.innerHeight) + 'px';
+                newLeft = '-100px';
+                break;
+            case 1: // From right
+                newTop = Math.floor(Math.random() * window.innerHeight) + 'px';
+                newLeft = window.innerWidth + 'px';
+                break;
+            case 2: // From top
+                newTop = '-100px';
+                newLeft = Math.floor(Math.random() * window.innerWidth) + 'px';
+                break;
+            case 3: // From bottom
+                newTop = window.innerHeight + 'px';
+                newLeft = Math.floor(Math.random() * window.innerWidth) + 'px';
+                break;
+            default:
+                break;
+        }
+
+        setChestPosition({ top: newTop, left: newLeft, direction: direction.toString() });
+        setShowChest(true);
+
+        // Set a timer to disable the chest after 5 seconds
+        setTimeout(() => {
+            setShowChest(false);
+            setCanShowChest(false); 
+         
+        }, 15000);
     };
+    
+      // Move chest at random positions every 2 seconds
+      useEffect(() => {
+        if (showChest) {
+          const intervalId = setInterval(moveChestRandomly, 1000); // Moves every 2 seconds
+          return () => clearInterval(intervalId); // Cleanup on unmount
+        }
+      }, [showChest]);
+    
+
+    const handleCloseOverlay = async () => {
+        setShowOverlay(false);
+        setShowChest(false); 
+        // Optional: Hide the chest once the overlay is closed
+        setHasClaimed(true); 
+        // Set hasClaimed to true, so the chest won't show again
+        if (!claimed) {
+            if (!userId) {
+                console.error("User ID is null. Transaction cannot be processed.");
+                return; 
+            }
+
+            try {
+                // Attempt to add the claim transaction
+                const response = await addClaimRandomTransaction(userId, randomCoinAmount);
+                console.log("Transaction Response:", response); // Log response for debugging
+                
+                // Update the user's balance if the transaction was successful
+                setUserBalance((prevBalance: number) => prevBalance + randomCoinAmount);
+                setClaimed(true); // Mark the chest as claimed
+            } catch (error) {
+                console.error("Error adding random claim transactions:", error); // Log any error
+            }
+        }
+
+    };
+    
 
     const [isOverlayVisible, setOverlayVisible] = useState(false);
     const [isEnergyOverlayVisible, setIsEnergyOverlayVisible] = useState(false);
@@ -390,105 +472,93 @@ export default function GameHome() {
                                 </div>
                             </div>
                             <div className="w-full h-screen">
-                                {/* Full-screen image to tap on */}
+                            {/* Full-screen image to tap on */}
+                            <Image
+                                className="w-full h-screen object-cover overflow-hidden"
+                                src={piratehomeBg}
+                                alt="piratehomeBg"
+                                onClick={handleTap}
+                            />
+
+                            {/* Flying chest appears and moves after 50 taps */}
+                            {showChest && (
+                                <div
+                                className={`fixed flying-chest-animation ${chestPosition.direction === "0" || chestPosition.direction === "1" ? 'horizontal' : 'vertical'}`}
+                                style={{ top: chestPosition.top, left: chestPosition.left }} // Dynamic position
+                                onClick={() => setShowOverlay(true)}
+                                >
                                 <Image
-                                    className="w-full h-screen object-cover overflow-hidden"
-                                    src={piratehomeBg}
-                                    alt="piratehomeBg"
-                                    onClick={handleTap}
+                                    className="rounded-[8px]"
+                                    width={65}
+                                    height={65}
+                                    src={flyingchest}
+                                    alt="flying chest"
                                 />
+                                </div>
+                            )}
 
-                                {/* Flying chest appears and moves after 50 taps */}
-                                {showChest && (
-                                    <div
-                                        className="fixed top-32 left-0 flying-chest-animation"
-                                        onClick={() => setShowOverlay(true)}
-                                    >
-                                        <Image
-                                            className="rounded-[8px]"
-                                            width={65}
-                                            height={65}
-                                            src={flyingchest}
-                                            alt="flying chest"
-                                        />
+                            {/* Overlay for congratulatory message */}
+                            {showOverlay && (
+                                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                                <div className="bg-white p-8 rounded-md text-center relative w-[90%] max-w-lg">
+                                    {/* Close button */}
+                                    <button className="absolute top-4 right-4 text-black" onClick={handleCloseOverlay}>
+                                    <Image src={Cross} alt="Cross" />
+                                    </button>
+
+                                    {/* Chest image */}
+                                    <Image className="mx-auto rounded-[20px]" width={130} height={130} src={flyingchest} alt="Chest" />
+
+                                    {/* Congratulations message */}
+                                    <h2 className="text-xl font-bold mt-4">Congratulations Mate!</h2>
+                                    <p className="text-lg mt-2">You won</p>
+
+                                    {/* Coins image */}
+                                    <div className="flex items-center justify-center mx-auto pt-[8px] gap-[3px]">
+                                    <Image width={20} height={20} src={golddollarcoin} alt="Coins" />
+                                    <p className="text-[16px] font-semibold">{randomCoinAmount}</p>
                                     </div>
-                                )}
 
-                                {/* Overlay for congratulatory message */}
-                                {showOverlay && (
-                                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                                        <div className="bg-white p-8 rounded-md text-center relative w-[90%] max-w-lg">
-                                            {/* Close button */}
-                                            <button
-                                                className="absolute top-4 right-4 text-black"
-                                                onClick={handleCloseOverlay}
-                                            >
-                                                <Image src={Cross} alt="Cross" />
-                                            </button>
+                                    {/* Claim button */}
+                                    <button className="mt-6 px-10 py-2 font-semibold bg-green-500 text-white rounded" onClick={handleCloseOverlay}>
+                                    Claim
+                                    </button>
+                                </div>
+                                </div>
+                            )}
 
-                                            {/* Chest image */}
-                                            <Image
-                                                className="mx-auto rounded-[20px]"
-                                                width={130}
-                                                height={130}
-                                                src={flyingchest}
-                                                alt="Chest"
-                                            />
-
-                                            {/* Congratulations message */}
-                                            <h2 className="text-xl font-bold mt-4">Congratulations Mate!</h2>
-                                            <p className="text-lg mt-2">You won</p>
-
-                                            {/* Coins image */}
-                                            <div className="flex items-center justify-center mx-auto pt-[8px] gap-[3px]">
-
-
-
-                                                <Image
-
-                                                    width={20}
-                                                    height={20}
-                                                    src={golddollarcoin} // Replace this with the coins image source
-                                                    alt="Coins"
-                                                />
-
-                                                <p className="text-[16px] font-semibold">2000</p>
-                                            </div>
-
-                                            {/* Claim button */}
-                                            <button
-                                                className="mt-6 px-10 py-2 font-semibold  bg-green-500 text-white rounded"
-                                                onClick={handleCloseOverlay}
-                                            >
-                                                Claim
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
-
-                                <style jsx>{`
+                            <style jsx>{`
                                 .flying-chest-animation {
-                                    animation: moveAroundScreen 5s infinite linear;
+                                position: fixed;
+                                transition: transform 2s ease-in-out, top 2s ease-in-out, left 2s ease-in-out;
                                 }
 
-                                @keyframes moveAroundScreen {
-                                    0% {
-                                    transform: translate(0, 0);
-                                    }
-                                    25% {
-                                    transform: translate(300px, -100px);
-                                    }
-                                    50% {
-                                    transform: translate(600px, 200px);
-                                    }
-                                    75% {
-                                    transform: translate(900px, -50px);
-                                    }
-                                    100% {
-                                    transform: translate(1200px, 0);
-                                    }
+                                .horizontal {
+                                animation: moveHorizontally 5s linear infinite;
                                 }
-                                `}</style>
+
+                                .vertical {
+                                animation: moveVertically 5s linear infinite;
+                                }
+
+                                @keyframes moveHorizontally {
+                                0% {
+                                    transform: translateX(0);
+                                }
+                                100% {
+                                    transform: translateX(-100vw);
+                                }
+                                }
+
+                                @keyframes moveVertically {
+                                0% {
+                                    transform: translateY(0);
+                                }
+                                100% {
+                                    transform: translateY(-100vh);
+                                }
+                                }
+                            `}</style>
                             </div>
                         </div>
 
@@ -649,5 +719,9 @@ export default function GameHome() {
 
         </>
     )
+}
+
+function setIsMusicOn(arg0: boolean) {
+    throw new Error("Function not implemented.");
 }
 
