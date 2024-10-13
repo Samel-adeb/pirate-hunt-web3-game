@@ -18,7 +18,7 @@ interface dailyBonus {
 function DailyBonuses({ isDailyOverlayVisible, closeDailyOverlay }: { isDailyOverlayVisible: boolean; closeDailyOverlay: () => void }) {
     // const { isDailyOverlayVisible, closeDailyOverlay } = props;
     const [isDayOneOverlayVisible, setIsDayOneOverlayVisible] = useState(false);
-    const { userId, userDailyRewardInfo, allDailyBonues, setAllDailyBonues, claimedDailyBonuses, setClaimedDailyBonuses } = useAppContext();
+    const { userId, allDailyBonues, setAllDailyBonues, claimedDailyBonuses, setClaimedDailyBonuses } = useAppContext();
     const [currentDayBonus, setCurrentDayBonus] = useState<dailyBonus>();
     const [next_claim_id, set_next_claim_id] = useState(0);
     const load = async () => {

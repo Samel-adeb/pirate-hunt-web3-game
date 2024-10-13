@@ -1,10 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { useRouter } from 'next/router';
 import { useAppContext } from '@/context'; // Adjust the path according to your context structure
 
 function Sound() {
-    const { isMusicOn, setIsMusicOn } = useAppContext(); // Access userId from context
-    const router = useRouter();
+    const { isMusicOn} = useAppContext(); // Access userId from context
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
 

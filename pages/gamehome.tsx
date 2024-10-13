@@ -39,7 +39,7 @@ import { useRouter } from "next/router";
 
 export default function GameHome() {
 
-    const { userId, username, level, userBalance, setUserBalance, userRank, userDailyRewardInfo, user_tap_rate_level, isMusicOn, setIsMusicOn } = useAppContext();
+    const { userId, username, level, userBalance, setUserBalance, userRank, userDailyRewardInfo, user_tap_rate_level, setIsMusicOn } = useAppContext();
     const [energyLevel, setEnergyLevel] = useState<number>(0);
 
     const ENERGY_CAPACITY_VALUE = 1000; // Maximum energy capacity

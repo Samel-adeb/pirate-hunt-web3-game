@@ -4,9 +4,8 @@ import { GameNavbar } from "@/app/components/GameNavbar";
 import "../app/globals.css";
 import Image from "next/image";
 
-import CaretRight from '../public/assets/Caret right.svg'
 import BackButton from "../public/assets/backButton.svg";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAppContext } from '@/context';
 
 
