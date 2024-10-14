@@ -408,7 +408,7 @@ export default function GameHome() {
                     <div className="relative overflow-hidden">
                         <div className=" relative w-full bg-cover bg-center overflow-hidden h-screen">
                             <div className="absolute px-[14px] py-[6px] bg-[#854C348C] w-full ">
-                                <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-[5px]">
                                     <Link href="/profile">
                                         <div className="border border-white/40 rounded-md flex items-center justify-start p-1">
                                             <Image
@@ -420,7 +420,7 @@ export default function GameHome() {
                                             />
 
                                             <div className="flex flex-col justify-center px-[6px]">
-                                                <h1 className="text-[10px] text-white font-semibold leading-tight">{username ? username.toUpperCase() : "Name"}</h1>
+                                                <h1 className="text-[10px] w-full break-all text-white font-semibold leading-tight">{username ? username.toUpperCase() : "Name"}</h1>
                                                 <div className="items-center  whitespace-nowrap">
                                                     <div className="flex items-center">
                                                         <Image
