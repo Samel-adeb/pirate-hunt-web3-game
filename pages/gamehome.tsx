@@ -52,9 +52,12 @@ export default function GameHome() {
     const [showChest, setShowChest] = useState(false);
     const [showOverlay, setShowOverlay] = useState(false);
     const [claimed, setClaimed] = useState(false); // Track if the chest has been claimed
-    const minAmount = 1000;   // Minimum coin amount
-    const maxAmount = 50000;  // Maximum coin amount
-    const randomCoinAmount = Math.floor(Math.random() * (maxAmount - minAmount + 1)) + minAmount;
+    
+    const getRandomCoinAmount = (min: number, max: number): number => {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+
+    const [randomCoinAmount, setRandomCoinAmount] = useState<number | null>(null);
     const [hasClaimed, setHasClaimed] = useState(false); // state to track if the reward is claimed
     const [chestPosition, setChestPosition] = useState<{
         top: string;
@@ -304,6 +307,12 @@ export default function GameHome() {
             return; // Exit if the user has already claimed today
         }
 
+        const minAmount = 1000;   // Minimum coin amount
+        const maxAmount = 50000;  // Maximum coin amount
+        const generatedCoinAmount = getRandomCoinAmount(minAmount, maxAmount); // 
+        setRandomCoinAmount(generatedCoinAmount); // Set the random coin amount to state
+
+
         setShowOverlay(false);
         setShowChest(false); 
         // Optional: Hide the chest once the overlay is closed
@@ -317,11 +326,11 @@ export default function GameHome() {
 
             try {
                 // Attempt to add the claim transaction
-                const response = await addClaimRandomTransaction(userId, randomCoinAmount);
+                const response = await addClaimRandomTransaction(userId, generatedCoinAmount);
                 console.log("Transaction Response:", response); // Log response for debugging
                 
                 // Update the user's balance if the transaction was successful
-                setUserBalance((prevBalance: number) => prevBalance + randomCoinAmount);
+                setUserBalance((prevBalance: number) => prevBalance + generatedCoinAmount);
                 setClaimed(true); // Mark the chest as claimed
 
 
@@ -550,7 +559,7 @@ export default function GameHome() {
                                     {/* Coins image */}
                                     <div className="flex items-center justify-center mx-auto pt-[8px] gap-[3px]">
                                     <Image width={20} height={20} src={golddollarcoin} alt="Coins" />
-                                    <p className="text-[16px] font-semibold">{randomCoinAmount}</p>
+                                    <p className="text-[16px] font-semibold">{randomCoinAmount !== null ? randomCoinAmount : 0}</p>
                                     </div>
 
                                     {/* Claim button */}
