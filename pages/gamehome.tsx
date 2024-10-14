@@ -52,7 +52,9 @@ export default function GameHome() {
     const [showChest, setShowChest] = useState(false);
     const [showOverlay, setShowOverlay] = useState(false);
     const [claimed, setClaimed] = useState(false); // Track if the chest has been claimed
-    const randomCoinAmount = 2000; // Amount to be credited to the user
+    const minAmount = 1000;   // Minimum coin amount
+    const maxAmount = 50000;  // Maximum coin amount
+    const randomCoinAmount = Math.floor(Math.random() * (maxAmount - minAmount + 1)) + minAmount;
     const [hasClaimed, setHasClaimed] = useState(false); // state to track if the reward is claimed
     const [chestPosition, setChestPosition] = useState<{
         top: string;
@@ -174,6 +176,12 @@ export default function GameHome() {
         return number.toFixed(1).replace(/\.0$/, '') + abbrev[i];
     }
 
+    const hasClaimedToday = () => {
+        const today = new Date().toISOString().split('T')[0];
+        const lastClaimDate = localStorage.getItem('lastClaimDate');
+        return lastClaimDate === today;
+    };
+
 
 
     const handleTap = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -197,6 +205,11 @@ export default function GameHome() {
                 return newCount;
             });
         }
+
+        // if (hasClaimedToday()) {
+        //     // If the user has already claimed today, don't increment the tap count
+        //     return;
+        // }
 
 
 
@@ -282,6 +295,15 @@ export default function GameHome() {
     
 
     const handleCloseOverlay = async () => {
+        const today = new Date().toISOString().split('T')[0];
+        const lastClaimDate = localStorage.getItem('lastClaimDate');
+
+        // Check if the user has already claimed today
+        if (lastClaimDate === today) {
+            alert("You have already claimed the chest today.");
+            return; // Exit if the user has already claimed today
+        }
+
         setShowOverlay(false);
         setShowChest(false); 
         // Optional: Hide the chest once the overlay is closed
@@ -301,12 +323,24 @@ export default function GameHome() {
                 // Update the user's balance if the transaction was successful
                 setUserBalance((prevBalance: number) => prevBalance + randomCoinAmount);
                 setClaimed(true); // Mark the chest as claimed
+
+
+                localStorage.setItem('lastClaimDate', today);
             } catch (error) {
                 console.error("Error adding random claim transactions:", error); // Log any error
             }
         }
 
     };
+
+    // Check whether the chest should be displayed at any point (for example, when loading the page)
+        useEffect(() => {
+        if (hasClaimedToday()) {
+            // If the user has claimed today, prevent the chest from showing
+            setShowChest(false);
+            setHasClaimed(true);
+        }
+    }, []);
     
 
     const [isOverlayVisible, setOverlayVisible] = useState(false);
