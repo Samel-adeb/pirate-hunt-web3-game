@@ -12,7 +12,7 @@ export function AppWrapper({ children }: {
     const [isMusicOn, setIsMusicOn] = useState();
     const [userInfo, setUserInfo] = useState({});
     const [level, setLevel] = useState({});
-    const [user_tap_rate_level, setUser_tap_rate_level] = useState(1);
+    const [user_tap_rate_level, setUser_tap_rate_level] = useState<number>(1);
     const [userBalance, setUserBalance] = useState<number>(0);
     const [userRank, setUserRank] = useState({})
     const [userDailyRewardInfo, setUserDailyRewardInfo] = useState({});
