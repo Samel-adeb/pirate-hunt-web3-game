@@ -243,7 +243,7 @@ export const getDailyRewardInfo = async (userId: string | null, setUserDailyRewa
         setUserDailyRewardInfo(response);
     }
 }
-
+// copy this and change
 export const addTapTransaction = async (userId: string | null, amount: number) => {
     const endpoint = '/api/transactions/add/' + userId + '';
     const httpMethod = 'POST';
@@ -252,6 +252,25 @@ export const addTapTransaction = async (userId: string | null, amount: number) =
         "transaction_description": "User earned from tap",
         "transaction_amount": amount,
         "transaction_name": "tap"
+    }
+    const response = await fetchApi(endpoint, parameters, httpMethod);
+    //console.log(response);
+    if (!(response && 'message' in response)) {
+        //showFailedMessage(response.message);
+        return;
+    } else {
+        //showSuccessMessage("Tap transaction added successfully!");
+    }
+}
+
+export const addClaimRandomTransaction = async (userId: string | null, amount: number) => {
+    const endpoint = '/api/transactions/add/' + userId + '';
+    const httpMethod = 'POST';
+    const parameters = {
+        "transaction_type": "credit",
+        "transaction_description": "User earned from claiming random chest",
+        "transaction_amount": amount,
+        "transaction_name": "claim"
     }
     const response = await fetchApi(endpoint, parameters, httpMethod);
     //console.log(response);
