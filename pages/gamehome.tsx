@@ -10,7 +10,7 @@ import Island from "../public/assets/Island.svg";
 import boatHome from "../public/assets/boatHome.svg";
 import flyingchest from "../public/assets/flyingchest.webp";
 import Users from "../public/assets/Users.png";
-import TaskForHunt from "../public/assets/Task for hunt.svg";
+import ShiningCoin from "../public/assets/standingdollarcoinb.png";
 import TapCoin from "../public/assets/TapCoin.svg";
 import ProfileSvg from "../public/assets/ProfileSvg.svg";
 import Prize from "../public/assets/Prize.svg";
@@ -40,10 +40,10 @@ import { useRouter } from "next/router";
 
 export default function GameHome() {
 
-    const { userId, username, level, userBalance, setUserBalance, userRank, userDailyRewardInfo, user_tap_rate_level , setIsMusicOn} = useAppContext();
+    const { userId, username, userInfo, level, userBalance, setUserBalance, userRank, userDailyRewardInfo, user_tap_rate_level, setIsMusicOn } = useAppContext();
     const [energyLevel, setEnergyLevel] = useState<number>(0);
 
-    const ENERGY_CAPACITY_VALUE = 1000; // Maximum energy capacity
+    const ENERGY_CAPACITY_VALUE:number = userInfo['energy_capacity']; // Maximum energy capacity
     const [timeLeft, setTimeLeft] = useState<string>('');
     const targetDate = userDailyRewardInfo ? new Date(userDailyRewardInfo.next_claim_time).getTime() : new Date();
     const [tapCount, setTapCount] = useState(0);
@@ -365,10 +365,10 @@ export default function GameHome() {
     };
 
 
-    const handleBoostClick = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        setOverlayVisible(true);
-    };
+    // const handleBoostClick = (e: React.MouseEvent) => {
+    //     e.stopPropagation();
+    //     setOverlayVisible(true);
+    // };
 
     const closeOverlay = () => {
         setOverlayVisible(false);
@@ -392,6 +392,28 @@ export default function GameHome() {
     }
 
 
+
+
+
+
+
+
+
+
+
+    const [isTapRateOverlayVisible, setIsTapRateOverlayVisible] = useState(false);
+
+    const handleTapRateClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setIsTapRateOverlayVisible(true);
+    };
+
+    const closeTapRateOverlay = () => {
+        setIsTapRateOverlayVisible(false);
+    };
+
+
+
     return (
         <>
             <div>
@@ -399,7 +421,7 @@ export default function GameHome() {
                     <GameNavbar />
                     {
                         tapCount == 0 && (
-                            <div className="absolute z-50 text-sec" style={{ top: '52%', left: '45%' }} >
+                            <div className="absolute z-50 text-sec" style={{ top: '80%', left: '38%', pointerEvents: 'none' }} >
                                 <Image alt='taphere' src={TapHere} width={40} height={40} className=" animate-bounce-up" />
                                 Tap here
                             </div>
@@ -438,7 +460,7 @@ export default function GameHome() {
                                             </div>
                                         </div>
                                     </Link>
-                                    <Link href="/boosttreasurechest">
+                                    <Link href="/boosttapratewithcoin">
                                         <div className="flex items-center justify-center max-w-[116px] border-[1px] px-[16px] rounded-[8px]  border-[#00A6DE7A]">
                                             <Image
                                                 width={20}
@@ -673,12 +695,12 @@ export default function GameHome() {
                         </div> */}
 
 
-                        <div onClick={handleBoostClick} className="absolute animate-bounce-up" style={{ top: '25%', left: '20%' }}>
+                        {/* <div onClick={handleBoostClick} className="absolute animate-bounce-up" style={{ top: '25%', left: '20%' }}>
                             <Image src={TaskForHunt} alt="TaskForHunt" />
-                        </div>
+                        </div> */}
 
                         <div>
-                            <div className="absolute animate-bounce-up" style={{ top: '30%', left: '7%' }} onClick={handleEnergyBoostClick}>
+                            <div className="absolute animate-bounce-up" style={{ top: '30%', left: '7%' }} onClick={handleTapRateClick}>
                                 <div className="tapcoin-animation">
                                     <Image src={TapCoin} alt="TapCoin" className="gap-[50px]" />
                                 </div>
@@ -713,7 +735,7 @@ export default function GameHome() {
                             <ProgressBar  progress={60} />
                         </div> */}
                         {/* Boost */}
-                        <div className="absolute" style={{ bottom: '5%', right: '10%' }} >
+                        <div className="absolute" style={{ bottom: '5%', right: '10%' }} onClick={handleEnergyBoostClick}>
                             <div className="bg-[#1A314E] px-[7.75px] max-w-[133.47px] h-[51px] flex items-center gap-[5px] border-[2.8px] border-[#FFFFFF] rounded-[20.87px] ">
                                 <div>
                                     <Image src={lightning} alt="lightning" />
@@ -724,21 +746,49 @@ export default function GameHome() {
                                 <div className="fixed inset-0 bg-[#000000A6]  flex items-center justify-center z-50" onClick={closeEnergyBoostOverlay}>
                                     <div className="bg-gradient-to-b from-black  to-brown-dark  border-t-[4px] border-t-[#6B4C2D] rounded-lg w-full mt-60 h-[570px] flex flex-col items-center justify-center p-4 relative" onClick={(e) => e.stopPropagation()}>
                                         <Image width={100} height={100} src={BigLightning} alt=" BigLightning" className="-mt-52" />
-                                        <h2 className="pt-10 text-[24px] leading-[32px] font-semibold text-white">BOOST TAP RATE</h2>
-                                        <p className="pt-[2px] text-[12px] leading-[16px] tracking-[0.4px] text-center text-white mt-3">Purchase treasure to get random tap rate</p>
-                                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal">From <strong>10</strong> to <strong>3k</strong> coins per tap!</p>
+                                        <h2 className="pt-10 text-[24px] leading-[32px] font-semibold text-white">ENERGY BOOST</h2>
+                                        <p className="pt-[2px] text-[14px] leading-[16px] tracking-[0.4px] text-center text-white my-3"><strong>Level up</strong> to increase your energy capacity</p>
+                                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal">Your energy capacity: <strong>{ENERGY_CAPACITY_VALUE}</strong></p>
+                                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal">Level <strong>{level.level}</strong> </p>
 
 
-                                        <Link href="/boosttaprate">
+
+
+
+                                        <button onClick={closeEnergyBoostOverlay} className="absolute top-2 right-2">
+                                            <Image src={Cross} alt="CrossImg" />
+                                        </button>
+                                    </div>
+
+                                </div>
+                            )}
+
+                            {isTapRateOverlayVisible && (
+                                <div className="fixed inset-0 bg-[#000000A6]  flex items-center justify-center z-50" onClick={closeTapRateOverlay}>
+                                    <div className="bg-gradient-to-b from-black  to-brown-dark  border-t-[4px] border-t-[#6B4C2D] rounded-lg w-full mt-60 h-[570px] flex flex-col items-center justify-center p-4 relative" onClick={(e) => e.stopPropagation()}>
+                                        <Image width={250} height={250} src={ShiningCoin} alt=" BigLightning" className="-mt-52" style={{ marginLeft: '1rem' }} />
+                                        <h2 className="text-[24px] leading-[32px] font-semibold text-white">BOOST TAP RATE</h2>
+
+                                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal">Your tap rate: <strong>{user_tap_rate_level}</strong>
+                                        <span className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal">&nbsp; &nbsp;Level <strong>{level.level}</strong> </span></p>
+                                        <p className="pt-[2px] text-[14px] leading-[16px] tracking-[0.4px] text-center text-white mb-3"><>Level up</> to increase your tap rate</p>
+
+                                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal mt-4">OR</p>
+                                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal mb-4">Pruchase boost to get up to <strong>10 000</strong>  <strong></strong> coins per tap for 15 Seconds!</p>
+
+
+
+
+                                        <Link href="/boosttapratewithcoin">
                                             <div className="pt-10 -mb-[25px]">
                                                 <button className="w-[365px] h-[48px] rounded-[16px] bg-[#00A6DE] text-center text-white text-[16px] leading-[16px] font-semibold">
-                                                    PURCHASE
+                                                    BOOST
                                                 </button>
                                             </div>
                                         </Link>
 
 
-                                        <button onClick={closeEnergyBoostOverlay} className="absolute top-2 right-2">
+                                        <button onClick={closeTapRateOverlay} className="absolute top-2 right-2">
                                             <Image src={Cross} alt="CrossImg" />
                                         </button>
                                     </div>
