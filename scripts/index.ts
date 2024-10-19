@@ -287,7 +287,7 @@ export const getAllRankInfo = async (setAllRanks: Function) => {
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
-    if (!(response && 'username' in response[0])) {
+    if (!Array.isArray(response) || response.length === 0 || !('username' in response[0])) {
         //showFailedMessage(response.message);
         return;
     } else {
@@ -303,7 +303,7 @@ export const getUserInvivites = async (userId: string | null, setUserInvites: Fu
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
-    if (!(response)) {
+    if (!response || !Array.isArray(response) || response.length === 0 ) {
         //showFailedMessage(response.message);
         return;
     } else {
@@ -329,7 +329,7 @@ export const getAllDailyBounuses = async (setAllDailyBonues: Function) => {
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
-    if (!(response)) {
+    if (!response || !Array.isArray(response) || response.length === 0 ) {
         //showFailedMessage(response.message);
         return;
     } else {
@@ -400,7 +400,7 @@ export const getAllTasks = async (setTask: Function) => {
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
-    if (!(response)) {
+    if (!response || !Array.isArray(response) || response.length === 0 ) {
         //showFailedMessage(response.message);
         return;
     } else {
