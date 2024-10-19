@@ -17,7 +17,7 @@ export const GameNavbar = () => {
         }
     }, [userInfo, router]);
 
-    const isObjectEmpty = (objectName:{}) => {
+    const isObjectEmpty = (objectName:object) => {
     
         return JSON.stringify(objectName) === "{}";
     };
