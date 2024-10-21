@@ -88,7 +88,7 @@ export const fetchApi = async (endpoint: string, parameters: Object | null, http
 
     } catch (err) {
         console.error('Error:', err);
-        showFailedMessage("Failed to fetch " + endpoint)
+        //showFailedMessage("Failed to fetch " + endpoint)
         return { message: "Failed" }
     }
 };
@@ -525,18 +525,27 @@ export const AwardTapboostPurchse = async (userId: string | null, boostId: numbe
     }
 }
 export const getTreasurePurchaseHistory = async (userId: string | null, setTreasurePurchaseHistory: Function) => {
-    const endpoint = '/api/treasure/history/' + userId + '';
+    const endpoint = `/api/treasure/history/${userId}`;  // Template literals make the concatenation cleaner
     const httpMethod = 'GET';
-    const response = await fetchApi(endpoint, null, httpMethod);
-    //console.log(response);
-    if (!(response)) {
-        //showFailedMessage(response.message);
-        return;
-    } else {
 
+    try {
+        const response = await fetchApi(endpoint, null, httpMethod);
+
+        // Check if the response has a valid purchase_history array
+        if (!response || !Array.isArray(response.purchase_history) || response.purchase_history.length === 0) {
+            console.error("No purchase history or invalid response format:", response);
+            return;
+        }
+
+        // Proceed if the response is valid
         setTreasurePurchaseHistory(response.purchase_history);
+
+    } catch (error) {
+        console.error("Error fetching treasure purchase history:", error);
+        // Optionally handle error messages (e.g., display to the user)
     }
-}
+};
+
 const sortUsersByRank = (userArray: Array<any>) => {
     return userArray.sort((a, b) => a.rank - b.rank);
 };
