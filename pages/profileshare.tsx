@@ -204,7 +204,7 @@ export default function ProfileShare() {
                 </div>
 
 
-                <div className="absolute top-[13px] left-[320px] z-50" style={{ cursor: 'pointer' }} onClick={() => router.back()}>
+                <div className="absolute" style={{ cursor: 'pointer', top:'2%', right:'2%', zIndex:2 }} onClick={() => router.back()}>
                     <Image width={35} height={35} src={Cross} alt="Cross" />
                 </div>
 
