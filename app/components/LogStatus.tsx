@@ -1,5 +1,5 @@
 import { logUserInOut } from '@/scripts';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAppContext } from '@/context';
 
 const LogStatus = () => {

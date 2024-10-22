@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import 'aos/dist/aos.css'; // Import AOS styles
 import AOS from 'aos'; // Import AOS library
 import standingdollarcoinb from '../../public/assets/standingdollarcoinb.png'
-import standingdollarcoin from '../../public/assets/standingdollarcoin.svg'
+// import standingdollarcoin from '../../public/assets/standingdollarcoin.svg'
 import MoneyBagChest from '../../public/assets/MoneyBagChest.png'
 import Image from 'next/image';
 
