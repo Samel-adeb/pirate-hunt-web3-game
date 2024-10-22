@@ -202,6 +202,47 @@ export const boostTapRateBonus = async (userId: string | null, id: number) => {
     }
 }
 
+export const updateWalletAddress = async (userId: string | null, wallet_address: string |null) => {
+    const endpoint = '/api/users/update-wallet-address/' + userId + '';
+    const httpMethod = 'PUT';
+    const parameters = {
+        "wallet_address": wallet_address,
+    }
+    if(!wallet_address){
+        return;
+    }
+    const response = await fetchApi(endpoint, parameters, httpMethod);
+    //console.log(response);
+    if (!(response && 'message' in response)) {
+        //showFailedMessage(response.message);
+        return;
+    } else {
+        // showSuccessMessage("Updated wallet address successfully!");
+    }
+}
+
+export const logUserInOut = async (userId: string | null, isLogin: boolean) => {
+    let endpoint=null;
+    let httpMethod = null;
+    if(isLogin) {
+        endpoint = '/api/users/log-online-status/' + userId + '';
+        httpMethod = 'PUT';
+    }
+    else{
+        endpoint = '/api/users/cancel-online-status/' + userId + '';
+        httpMethod = 'DELETE';
+    }
+    
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response && 'message' in response)) {
+        //showFailedMessage(response.message);
+        return;
+    } else {
+        // showSuccessMessage("logged user "+(isLogin ? "in" : "out")+" successfully");
+    }
+}
+
 
 
 export const getUserRank = async (userId: string | null, setUserRank: Function) => {

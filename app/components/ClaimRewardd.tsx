@@ -29,13 +29,13 @@ function ClaimReward({ setShowClaimSuccess }:{ setShowClaimSuccess: (arg0:boolea
         <h3 className='title'>Daily Rewards</h3>
         <p className='description'>Congratulations, you&apos;ve claimed your daily reward!</p>
 
-        <div className='reward-info'>
+        {/* <div className='reward-info'>
           <div>Day 1</div>
           <Image alt="" src={standingdollarcoin.src} width={50} height={50} />
           <div className='reward-amount'>500</div>
-        </div>
+        </div> */}
 
-        <button className='claim-btn'>Come back tomorrow</button>
+        {/* <button className='claim-btn'>Come back tomorrow</button> */}
       </div>
     </div>
   );
