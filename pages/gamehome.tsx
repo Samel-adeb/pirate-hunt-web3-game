@@ -43,16 +43,16 @@ export default function GameHome() {
     const { userId, username, userInfo, level, userBalance, setUserBalance, userRank, userDailyRewardInfo, user_tap_rate_level, setIsMusicOn } = useAppContext();
     const [energyLevel, setEnergyLevel] = useState<number>(0);
 
-    const ENERGY_CAPACITY_VALUE:number = userInfo['energy_capacity']; // Maximum energy capacity
+    const ENERGY_CAPACITY_VALUE: number = userInfo['energy_capacity']; // Maximum energy capacity
     const [timeLeft, setTimeLeft] = useState<string>('');
     const targetDate = userDailyRewardInfo ? new Date(userDailyRewardInfo.next_claim_time).getTime() : new Date();
     const [tapCount, setTapCount] = useState(0);
     // const [chestMoving, setChestMoving] = useState(false); 
-  
+
     const [showChest, setShowChest] = useState(false);
     const [showOverlay, setShowOverlay] = useState(false);
     const [claimed, setClaimed] = useState(false); // Track if the chest has been claimed
-    
+
     const getRandomCoinAmount = (min: number, max: number): number => {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
@@ -69,7 +69,7 @@ export default function GameHome() {
         direction: "0" // Initialize with a string value, e.g., '0'
     });
     const [canShowChest, setCanShowChest] = useState(true);
-   
+
     const [coins, setCoins] = useState<{ id: number; x: number; y: number }[]>([]);
     const [tempbal, setTempbal] = useState<number>(0);
     const router = useRouter();
@@ -216,39 +216,24 @@ export default function GameHome() {
 
 
 
-        if (energyLevel > user_tap_rate_level && !(user_tap_rate_level > 1)) {
-            // Create a new coin element by pushing a unique ID and the position
-            const newCoinId = Date.now();
-            setCoins((prevCoins) => [...prevCoins, { id: newCoinId, x, y }]);
 
-            // Remove the coin after 2 seconds
-            setTimeout(() => {
-                setCoins((prevCoins) => prevCoins.filter((coin) => coin.id !== newCoinId));
-            }, 700);
+        // Create a new coin element by pushing a unique ID and the position
+        const newCoinId = Date.now();
+        setCoins((prevCoins) => [...prevCoins, { id: newCoinId, x, y }]);
 
-            // console.log(user_tap_rate_level);
+        // Remove the coin after 2 seconds
+        setTimeout(() => {
+            setCoins((prevCoins) => prevCoins.filter((coin) => coin.id !== newCoinId));
+        }, 700);
 
-            setUserBalance(parseInt(userBalance) + parseInt(user_tap_rate_level));
-            setTempbal(tempbal + parseInt(user_tap_rate_level));
-            localStorage.setItem('tempbal', (tempbal + parseInt(user_tap_rate_level)).toString());
-            setEnergyLevel(energyLevel - parseInt(user_tap_rate_level));
+        // console.log(user_tap_rate_level);
 
-        } else if (user_tap_rate_level > 1) {
-            // Create a new coin element by pushing a unique ID and the position
-            const newCoinId = Date.now();
-            setCoins((prevCoins) => [...prevCoins, { id: newCoinId, x, y }]);
+        setUserBalance(parseInt(userBalance) + parseInt(user_tap_rate_level));
+        setTempbal(tempbal + parseInt(user_tap_rate_level));
+        localStorage.setItem('tempbal', (tempbal + parseInt(user_tap_rate_level)).toString());
+        setEnergyLevel(energyLevel - parseInt(user_tap_rate_level));
 
-            // Remove the coin after 2 seconds
-            setTimeout(() => {
-                setCoins((prevCoins) => prevCoins.filter((coin) => coin.id !== newCoinId));
-            }, 2000);
 
-            console.log(user_tap_rate_level);
-
-            setUserBalance(parseInt(userBalance) + parseInt(user_tap_rate_level));
-            setTempbal(tempbal + parseInt(user_tap_rate_level));
-            localStorage.setItem('tempbal', (tempbal + parseInt(user_tap_rate_level)).toString());
-        }
     };
 
     const moveChestRandomly = () => {
@@ -283,19 +268,19 @@ export default function GameHome() {
         // Set a timer to disable the chest after 5 seconds
         setTimeout(() => {
             setShowChest(false);
-            setCanShowChest(false); 
-         
+            setCanShowChest(false);
+
         }, 15000);
     };
-    
-      // Move chest at random positions every 2 seconds
-      useEffect(() => {
+
+    // Move chest at random positions every 2 seconds
+    useEffect(() => {
         if (showChest) {
-          const intervalId = setInterval(moveChestRandomly, 1000); // Moves every 2 seconds
-          return () => clearInterval(intervalId); // Cleanup on unmount
+            const intervalId = setInterval(moveChestRandomly, 1000); // Moves every 2 seconds
+            return () => clearInterval(intervalId); // Cleanup on unmount
         }
-      }, [showChest]);
-    
+    }, [showChest]);
+
 
     const handleCloseOverlay = async () => {
         const today = new Date().toISOString().split('T')[0];
@@ -314,21 +299,21 @@ export default function GameHome() {
 
 
         setShowOverlay(false);
-        setShowChest(false); 
+        setShowChest(false);
         // Optional: Hide the chest once the overlay is closed
-        setHasClaimed(true); 
+        setHasClaimed(true);
         // Set hasClaimed to true, so the chest won't show again
         if (!claimed) {
             if (!userId) {
                 console.error("User ID is null. Transaction cannot be processed.");
-                return; 
+                return;
             }
 
             try {
                 // Attempt to add the claim transaction
                 const response = await addClaimRandomTransaction(userId, generatedCoinAmount);
                 console.log("Transaction Response:", response); // Log response for debugging
-                
+
                 // Update the user's balance if the transaction was successful
                 setUserBalance((prevBalance: number) => prevBalance + generatedCoinAmount);
                 setClaimed(true); // Mark the chest as claimed
@@ -343,14 +328,14 @@ export default function GameHome() {
     };
 
     // Check whether the chest should be displayed at any point (for example, when loading the page)
-        useEffect(() => {
+    useEffect(() => {
         if (hasClaimedToday()) {
             // If the user has claimed today, prevent the chest from showing
             setShowChest(false);
             setHasClaimed(true);
         }
     }, []);
-    
+
 
     const [isOverlayVisible, setOverlayVisible] = useState(false);
     const [isEnergyOverlayVisible, setIsEnergyOverlayVisible] = useState(false);
@@ -537,62 +522,62 @@ export default function GameHome() {
                                 </div>
                             </div>
                             <div className="w-full h-screen">
-                            {/* Full-screen image to tap on */}
-                            <Image
-                                className="w-full h-screen object-cover overflow-hidden"
-                                src={piratehomeBg}
-                                alt="piratehomeBg"
-                                onClick={handleTap}
-                            />
-
-                            {/* Flying chest appears and moves after 50 taps */}
-                            {showChest && (
-                                <div
-                                className={`fixed flying-chest-animation ${chestPosition.direction === "0" || chestPosition.direction === "1" ? 'horizontal' : 'vertical'}`}
-                                style={{ top: chestPosition.top, left: chestPosition.left }} // Dynamic position
-                                onClick={() => setShowOverlay(true)}
-                                >
+                                {/* Full-screen image to tap on */}
                                 <Image
-                                    className="rounded-[8px]"
-                                    width={65}
-                                    height={65}
-                                    src={flyingchest}
-                                    alt="flying chest"
+                                    className="w-full h-screen object-cover overflow-hidden"
+                                    src={piratehomeBg}
+                                    alt="piratehomeBg"
+                                    onClick={handleTap}
                                 />
-                                </div>
-                            )}
 
-                            {/* Overlay for congratulatory message */}
-                            {showOverlay && (
-                                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                                <div className="bg-white p-8 rounded-md text-center relative w-[90%] max-w-lg">
-                                    {/* Close button */}
-                                    <button className="absolute top-4 right-4 text-black" onClick={handleCloseOverlay}>
-                                    <Image src={Cross} alt="Cross" />
-                                    </button>
-
-                                    {/* Chest image */}
-                                    <Image className="mx-auto rounded-[20px]" width={130} height={130} src={flyingchest} alt="Chest" />
-
-                                    {/* Congratulations message */}
-                                    <h2 className="text-xl font-bold mt-4">Congratulations Mate!</h2>
-                                    <p className="text-lg mt-2">You won</p>
-
-                                    {/* Coins image */}
-                                    <div className="flex items-center justify-center mx-auto pt-[8px] gap-[3px]">
-                                    <Image width={20} height={20} src={golddollarcoin} alt="Coins" />
-                                    <p className="text-[16px] font-semibold">{randomCoinAmount !== null ? randomCoinAmount : 0}</p>
+                                {/* Flying chest appears and moves after 50 taps */}
+                                {showChest && (
+                                    <div
+                                        className={`fixed flying-chest-animation ${chestPosition.direction === "0" || chestPosition.direction === "1" ? 'horizontal' : 'vertical'}`}
+                                        style={{ top: chestPosition.top, left: chestPosition.left }} // Dynamic position
+                                        onClick={() => setShowOverlay(true)}
+                                    >
+                                        <Image
+                                            className="rounded-[8px]"
+                                            width={65}
+                                            height={65}
+                                            src={flyingchest}
+                                            alt="flying chest"
+                                        />
                                     </div>
+                                )}
 
-                                    {/* Claim button */}
-                                    <button className="mt-6 px-10 py-2 font-semibold bg-green-500 text-white rounded" onClick={handleCloseOverlay}>
-                                    Claim
-                                    </button>
-                                </div>
-                                </div>
-                            )}
+                                {/* Overlay for congratulatory message */}
+                                {showOverlay && (
+                                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                                        <div className="bg-white p-8 rounded-md text-center relative w-[90%] max-w-lg">
+                                            {/* Close button */}
+                                            <button className="absolute top-4 right-4 text-black" onClick={handleCloseOverlay}>
+                                                <Image src={Cross} alt="Cross" />
+                                            </button>
 
-                            <style jsx>{`
+                                            {/* Chest image */}
+                                            <Image className="mx-auto rounded-[20px]" width={130} height={130} src={flyingchest} alt="Chest" />
+
+                                            {/* Congratulations message */}
+                                            <h2 className="text-xl font-bold mt-4">Congratulations Mate!</h2>
+                                            <p className="text-lg mt-2">You won</p>
+
+                                            {/* Coins image */}
+                                            <div className="flex items-center justify-center mx-auto pt-[8px] gap-[3px]">
+                                                <Image width={20} height={20} src={golddollarcoin} alt="Coins" />
+                                                <p className="text-[16px] font-semibold">{randomCoinAmount !== null ? randomCoinAmount : 0}</p>
+                                            </div>
+
+                                            {/* Claim button */}
+                                            <button className="mt-6 px-10 py-2 font-semibold bg-green-500 text-white rounded" onClick={handleCloseOverlay}>
+                                                Claim
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <style jsx>{`
                                 .flying-chest-animation {
                                 position: fixed;
                                 transition: transform 2s ease-in-out, top 2s ease-in-out, left 2s ease-in-out;
@@ -770,7 +755,7 @@ export default function GameHome() {
                                         <h2 className="text-[24px] leading-[32px] font-semibold text-white">BOOST TAP RATE</h2>
 
                                         <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal">Your tap rate: <strong>{user_tap_rate_level}</strong>
-                                        <span className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal">&nbsp; &nbsp;Level <strong>{level.level}</strong> </span></p>
+                                            <span className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal">&nbsp; &nbsp;Level <strong>{level.level}</strong> </span></p>
                                         <p className="pt-[2px] text-[14px] leading-[16px] tracking-[0.4px] text-center text-white mb-3"><>Level up</> to increase your tap rate</p>
 
                                         <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal mt-4">OR</p>
