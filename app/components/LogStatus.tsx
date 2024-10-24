@@ -21,11 +21,11 @@ const LogStatus = () => {
         window.addEventListener('beforeunload', handleLogOut);
 
         // Log out when the tab or window is hidden (optional if you want to log them out on tab switch)
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'hidden') {
-                handleLogOut();
-            }
-        });
+        // document.addEventListener('visibilitychange', () => {
+        //     if (document.visibilityState === 'hidden') {
+        //         handleLogOut();
+        //     }
+        // });
 
         // Cleanup event listeners when the component unmounts
         return () => {
