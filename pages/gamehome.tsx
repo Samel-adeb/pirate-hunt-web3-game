@@ -189,9 +189,7 @@ export default function GameHome() {
 
     const handleTap = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-        if (navigator.vibrate) {
-            navigator.vibrate(100);  // 200ms vibration
-        }
+        
 
         // Get the click position relative to the page
         const x = e.clientX;
@@ -216,23 +214,27 @@ export default function GameHome() {
 
 
 
+        if (energyLevel > parseInt(user_tap_rate_level)) {
+            // Create a new coin element by pushing a unique ID and the position
+            const newCoinId = Date.now();
+            setCoins((prevCoins) => [...prevCoins, { id: newCoinId, x, y }]);
 
-        // Create a new coin element by pushing a unique ID and the position
-        const newCoinId = Date.now();
-        setCoins((prevCoins) => [...prevCoins, { id: newCoinId, x, y }]);
+            // Remove the coin after 2 seconds
+            setTimeout(() => {
+                setCoins((prevCoins) => prevCoins.filter((coin) => coin.id !== newCoinId));
+            }, 700);
 
-        // Remove the coin after 2 seconds
-        setTimeout(() => {
-            setCoins((prevCoins) => prevCoins.filter((coin) => coin.id !== newCoinId));
-        }, 700);
+            // console.log(user_tap_rate_level);
 
-        // console.log(user_tap_rate_level);
-
-        setUserBalance(parseInt(userBalance) + parseInt(user_tap_rate_level));
-        setTempbal(tempbal + parseInt(user_tap_rate_level));
-        localStorage.setItem('tempbal', (tempbal + parseInt(user_tap_rate_level)).toString());
-        setEnergyLevel(energyLevel - parseInt(user_tap_rate_level));
-
+            setUserBalance(parseInt(userBalance) + parseInt(user_tap_rate_level));
+            setTempbal(tempbal + parseInt(user_tap_rate_level));
+            localStorage.setItem('tempbal', (tempbal + parseInt(user_tap_rate_level)).toString());
+            setEnergyLevel(energyLevel - parseInt(user_tap_rate_level));
+        }else{
+            if (navigator.vibrate) {
+                navigator.vibrate(100);  // 200ms vibration
+            }
+        }
 
     };
 
