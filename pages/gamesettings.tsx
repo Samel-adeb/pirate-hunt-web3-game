@@ -44,7 +44,7 @@ export default function GameSettings() {
 
     useEffect(() => {
         if (connected) {
-            alert("Connected Wallet: " + walletAddress);
+            // alert("Connected Wallet: " + walletAddress);
             updateWalletAddress(userId, walletAddress);
         }
     }, [connect, disconnect]);
@@ -94,22 +94,17 @@ export default function GameSettings() {
 
 
 
-                        <div className="pt-[10px]">
-                            <div className=" flex items-center justify-between bg-[#FFFFFF26] max-w-[363px] mx-auto p-[16px] rounded-[16px] ">
-                                <div className="flex flex-col items-start gap-y-[10px] justify-start">
+                        <div className="pt-[10px]" onClick={connected ? disconnect : connect}>
+                            <div className=" flex items-center justify-center bg-[#FFFFFF26] max-w-[363px] mx-auto p-[16px] rounded-[16px] ">
+                                <div className="flex flex-col gap-y-[10px] justify-center items-center cursor-pointer">
                                     <h1
-                                        className="text-[16px] leading-[16px] tracking-[0.4px] font-semibold text-white truncate max-w-[200px]"
-                                        style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '150px' }}>
-                                        <span>{connected && walletAddress}</span>
+                                        className="text-[12px] leading-[16px] tracking-[0.4px] font-semibold text-white truncate p-2 max-w-[400px]"
+                                        style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '250px' }}>
+                                        <span>{connected ? "Wallet: "+walletAddress : "Connect Wallet"}</span>
                                     </h1>
                                 </div>
 
-                                <div>
-
-                                    <button className='bg-white font-bold p-1 rounded' onClick={connected ? disconnect : connect}>
-                                        {connected ? "Disconnect Wallet" : "Connect Wallet"}
-                                    </button>
-                                </div>
+                               
 
                             </div>
                         </div>
