@@ -116,6 +116,11 @@ export const getUserInfo = async (userId: string | null, setUsername: Function, 
     ////console.log(response);
     if (!(response && 'user_id' in response)) {
         //showFailedMessage(response.message);
+        if(response && 'message' in response ) {
+            //showFailedMessage(response.message);
+            setUserInfo(response);
+            return;
+        }
         return;
     } else {
         setUsername(response.username);

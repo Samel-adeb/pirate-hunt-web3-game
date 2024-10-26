@@ -7,7 +7,7 @@ import "../app/globals.css";
 
 import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
 
-import Task from "../public/assets/task.png";
+import Task from "../public/assets/list.png";
 
 import BackButton from "../public/assets/backButton.svg";
 import { claimTaskDoneReward, getAllTasks, getDoneTasks } from '@/scripts';
@@ -16,10 +16,10 @@ import { showInfoMessage } from '@/scripts/utils';
 // import  DayOneOverlay  from "@/app/components/DayOneOverlay";
 
 interface task {
-    id: number;
+    task_id: number;
     task_name: string;
     task_reward: string;
-    task_description: string;
+    description: string;
     task_url: string;
 }
 interface doneTask {
@@ -46,11 +46,10 @@ export default function TaskList() {
         }
 
     }, []);
-    const isInviteClaimed = (donetaskId: number) => {
+    const IsTaskDone = (donetaskId: number) => {
         if (doneTasks) {
 
             const result = doneTasks.find((doneTask: doneTask) => doneTask.task_id == donetaskId);
-
             return !!result;
         } else {
             return false;
@@ -68,7 +67,7 @@ export default function TaskList() {
 
             }, 15000);
         } else {
-            showInfoMessage('Checking for task completion');
+            showInfoMessage('Still checking for task completion');
         }
     }
     const claimReward = async (taskId: number, task_reward: number) => {
@@ -90,7 +89,7 @@ export default function TaskList() {
                 <div className="flex flex-col items-center justify-center text-center">
                     <Image src={standingdollarcoin} alt="standingdollarcoin" width={50} height={50} />
                     <h1 className="pt-[20px] text-[24px] leading-[44px] text-white font-bold">TASKS</h1>
-                    <h5 className="  leading-[44px] text-white font-bold">Earn More Coins</h5>
+                    <h5 className="  leading-[44px] text-white font-bold">EARN MORE COINS</h5>
                 </div>
 
                 <div className="absolute top-[20px] left-[20px]" onClick={handleBackClick} style={{ cursor: 'pointer' }}>
@@ -101,36 +100,41 @@ export default function TaskList() {
 
 
                 <div>
-                    <h1 className="pl-[16px] text-[12px] leading-[44px] text-white font-bold">Task list ({doneTasks.length ?? 0} Done)</h1>
+                    <h1 className="pl-[16px] text-[12px] leading-[44px] text-white font-bold">TASK LIST ({doneTasks.length ?? 0} COMPLETED)</h1>
 
                     {
                         task?.map((task: task) => (
-                            <div key={task.id} className="flex items-center justify-between p-[16px] border-[0.5px] border-[#FFFFFF73]">
-                                <div className="flex gap-6">
-                                    <Image src={Task} alt="TelegramApp" width={40} height={20} className='h-[100%]' />
+                            <div key={task.task_id} className='flex flex-col border-[0.5px] border-[#FFFFFF73] p-[16px]'>
+                                <div  className="flex items-center justify-between  ">
 
-                                    <div className="flex flex-col gap-y-0">
-                                        <h2 className="text-[12px] text-white font-semibold">{task.task_name ?? "Task"}</h2>
-                                        <h6 className="text-[10px] text-white my-2">{task.task_description ?? ""}</h6>
+                                    <div className="flex items-center gap-6">
+                                        <Image src={Task} alt="TelegramApp" width={30} height={30} className='h-[100%]' />
 
+                                        <div className="flex items-center w-full">
+                                            <h2 className="text-[16px] text-white">{task.task_name ?? "Task"}</h2>
+                                        </div>
 
                                     </div>
-                                    <span className="flex">
-                                        <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
-                                        <p className="text-[12px] leading-[44px] text-white font-normal">{task.task_reward}</p>
-                                    </span>
+                                    <div className="flex items-center">
+                                        <span className="flex mx-3">
+                                            <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
+                                            <p className="text-[12px] leading-[44px] text-white font-normal font-semibold">{task.task_reward}</p>
+                                        </span>
+                                        <div className="bg-[#FFFFFF26] cursor-pointer font-bold items-center p-2 px-3 rounded-[8px] text-[12px] text-white">
+                                            {
+                                                IsTaskDone(task.task_id) ? (
+                                                    <h2 className="text-center -mt-[4px]">DONE</h2>
+                                                ) : (
+                                                    <h2 onClick={() => doTasks(task.task_id, task.task_url, task.task_reward)} className="text-center">{isDoningTask ? "Checking..." : "GO"}</h2>
+                                                )
+                                            }
+                                        </div>
+                                    </div>
+
+
                                 </div>
 
-                                <div className="border-[1px] border-[#FFC247] text-[12px] cursor-pointer  bg-[#FFFFFF26] text-white p-[8px] rounded-[8px]">
-                                    {
-                                        isInviteClaimed(task.id) ? (
-                                            <h2 className="text-center -mt-[4px]">CLAIMED</h2>
-                                        ) : (
-                                            <h2 onClick={() => doTasks(task.id, task.task_url, task.task_reward)} className="text-center -mt-[4px]">{isDoningTask ? "Checking..." : "GO"}</h2>
-                                        )
-                                    }
-                                </div>
-
+                                <h6 className="text-[12px] text-white my-2">{task.description ?? ""}</h6>
                             </div>
                         ))
 

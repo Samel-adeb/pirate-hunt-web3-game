@@ -5,26 +5,26 @@ import { useAppContext } from '@/context';
 export const GameNavbar = () => {
     const { userInfo } = useAppContext(); // Access userId from context
     const router = useRouter();
-    const [showNoConnection, setShowNoConnection] = useState<boolean>(false);
-
+    const [showIsBlocked, setShowIsBlocked] = useState<boolean>(false);
+    const [message, setMessage] = useState("Check your internet connection!");
     useEffect(() => {
         // alert(JSON.stringify(userInfo));
-        if (isObjectEmpty(userInfo) && router.pathname !== '/') {
-
-            setShowNoConnection(true);
+        if (!isObjectEmpty(userInfo) && router.pathname !== '/' && 'message' in userInfo) {
+            setMessage(userInfo.message);
+            setShowIsBlocked(true);
         } else {
-            setShowNoConnection(false);
+            setShowIsBlocked(false);
         }
     }, [userInfo, router]);
 
-    const isObjectEmpty = (objectName:object) => {
-    
+    const isObjectEmpty = (objectName: object) => {
+
         return JSON.stringify(objectName) === "{}";
     };
     return (
-        showNoConnection ? (
-            <div className='absolute h-screen w-full flex align-center justify-center items-center bg-black text-[#FFFFFF]' style={{zIndex:100}}>
-                Check your internet connection!
+        showIsBlocked ? (
+            <div className='absolute h-screen w-full flex align-center justify-center items-center bg-black text-[#FFFFFF]' style={{ zIndex: 100 }}>
+                {message}
             </div>) : (<></>)
     )
 }
