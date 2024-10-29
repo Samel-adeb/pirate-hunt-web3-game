@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload Test</title>
+</head>
+<body>
+    <h1>Upload an Image</h1>
+
+    <form id="imageUploadForm">
+        <!-- Image Input -->
+        <label for="image">Choose an image to upload:</label><br>
+        <input type="file" id="image" name="image" accept="image/*" required><br><br>
+
+        <!-- Submit Button -->
+        <button type="submit">Upload Image</button>
+    </form>
+
+    <script>
+        document.getElementById('imageUploadForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+
+            // Get the file input
+            var imageInput = document.getElementById('image').files[0];
+
+            // Create FormData object
+            var formData = new FormData();
+            formData.append('image', imageInput);
+
+            // Send the request using Fetch API
+            fetch('http://127.0.0.1:8000/api/admin/upload/image', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'mA2e2r3E5LvxLpuXcmh7twg66DKxEqQ9Mh5iJ6GpRxY5OVhJe2aK5YhCOqCy', // Add your Authorization token here
+                    // 'X-CSRF-TOKEN': 'csrf_token_here' if CSRF token is required
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Handle the response
+                alert('Image uploaded successfully');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to upload image');
+            });
+        });
+    </script>
+</body>
+</html>
