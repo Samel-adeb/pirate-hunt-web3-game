@@ -16,7 +16,6 @@ import ProfileSvg from "../public/assets/ProfileSvg.svg";
 import Prize from "../public/assets/Prize.svg";
 import golddollarcoin from "../public/assets/golddollarcoin.svg";
 import XAS from "../public/assets/XAS.svg";
-import Info from "../public/assets/Info.svg";
 import settings from "../public/assets/setting.png";
 import lightning from "../public/assets/lightning.svg";
 import treasureChest from "../public/assets/treasure chest.svg";
@@ -40,7 +39,7 @@ import { useRouter } from "next/router";
 
 export default function GameHome() {
 
-    const { userId, username, userInfo, level, userBalance, setUserBalance, userRank, userDailyRewardInfo, user_tap_rate_level, setIsMusicOn } = useAppContext();
+    const { userId, username, userInfo, level, userBalance, setUserBalance, userRank, userDailyRewardInfo, user_tap_rate_level, user_temp_tap_rate_level, setIsMusicOn } = useAppContext();
     const [energyLevel, setEnergyLevel] = useState<number>(0);
 
     const ENERGY_CAPACITY_VALUE: number = userInfo['energy_capacity']; // Maximum energy capacity
@@ -189,7 +188,7 @@ export default function GameHome() {
 
     const handleTap = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-        
+
 
         // Get the click position relative to the page
         const x = e.clientX;
@@ -214,8 +213,30 @@ export default function GameHome() {
 
 
 
-        if (energyLevel > parseInt(user_tap_rate_level)) {
+        if (parseInt(user_tap_rate_level) == parseInt(user_temp_tap_rate_level)) {
             // Create a new coin element by pushing a unique ID and the position
+            if (energyLevel > parseInt(user_tap_rate_level)) {
+                const newCoinId = Date.now();
+                setCoins((prevCoins) => [...prevCoins, { id: newCoinId, x, y }]);
+
+                // Remove the coin after 2 seconds
+                setTimeout(() => {
+                    setCoins((prevCoins) => prevCoins.filter((coin) => coin.id !== newCoinId));
+                }, 700);
+
+                // console.log(user_tap_rate_level);
+
+                setUserBalance(parseInt(userBalance) + parseInt(user_tap_rate_level));
+                setTempbal(tempbal + parseInt(user_tap_rate_level));
+                localStorage.setItem('tempbal', (tempbal + parseInt(user_tap_rate_level)).toString());
+                setEnergyLevel(energyLevel - parseInt(user_tap_rate_level));
+            } else {
+                if (navigator.vibrate) {
+                    navigator.vibrate(100);  // 200ms vibration
+                }
+            }
+        }
+        else {
             const newCoinId = Date.now();
             setCoins((prevCoins) => [...prevCoins, { id: newCoinId, x, y }]);
 
@@ -229,11 +250,6 @@ export default function GameHome() {
             setUserBalance(parseInt(userBalance) + parseInt(user_tap_rate_level));
             setTempbal(tempbal + parseInt(user_tap_rate_level));
             localStorage.setItem('tempbal', (tempbal + parseInt(user_tap_rate_level)).toString());
-            setEnergyLevel(energyLevel - parseInt(user_tap_rate_level));
-        }else{
-            if (navigator.vibrate) {
-                navigator.vibrate(100);  // 200ms vibration
-            }
         }
 
     };
@@ -416,8 +432,8 @@ export default function GameHome() {
                     }
                     <div className="relative overflow-hidden">
                         <div className=" relative w-full bg-cover bg-center overflow-hidden h-screen">
-                            <div className="absolute px-[14px] py-[6px] bg-[#854C348C] w-full ">
-                                <div className="flex items-center gap-[5px]">
+                            <div className="absolute px-1 py-[6px] bg-[#854C348C] w-full ">
+                                <div className="flex items-center justify-between">
                                     <Link href="/profile">
                                         <div className="border border-white/40 rounded-md flex items-center justify-start p-1">
                                             <Image
@@ -448,7 +464,7 @@ export default function GameHome() {
                                         </div>
                                     </Link>
                                     <Link href="/boosttapratewithcoin">
-                                        <div className="flex items-center justify-center max-w-[116px] border-[1px] px-[16px] rounded-[8px]  border-[#00A6DE7A]">
+                                        <div className="flex items-center justify-center max-w-[116px] border-[1px] px-1 rounded-[8px]  border-[#00A6DE7A]">
                                             <Image
                                                 width={20}
                                                 height={20}
@@ -476,9 +492,9 @@ export default function GameHome() {
                                                 <h1 className="text-[8.34px] p-2 font-bold leading-[16.46px] text-white">+{abbreviateNumber(userBalance)}</h1>
 
                                                 <div>
-                                                    <div >
+                                                    {/* <div >
                                                         <Image width={20} height={20} src={Info} alt="Info Icon" />
-                                                    </div>
+                                                    </div> */}
 
                                                     {isOverlayVisible && (
                                                         <div className="fixed bg-[#000000A6] inset-0 flex items-center justify-center z-50" onClick={closeOverlay}>
