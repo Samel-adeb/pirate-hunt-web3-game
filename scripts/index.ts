@@ -120,12 +120,8 @@ export const getUserInfo = async (userId: string | null, setUsername: Function, 
     } else {
         setUsername(response.username);
         setLevel(response.level);
-
-        const energy_capacity = await getEnergyCapacity(userId);
-        setUserInfo({ ...response, energy_capacity: energy_capacity });
-
-        const tapRate = await getTapRate(userId);
-        setUser_tap_rate_level(tapRate);
+        setUserInfo(response);
+        setUser_tap_rate_level(response.user_tap_rate_level);
         getUserBalance(userId, setUserBalance);
         getUserLevel(userId, setLevel);
         getUserRank(userId, setUserRank);
@@ -146,63 +142,6 @@ export const getUserBalance = async (userId: string | null, setUserBalance: Func
         setUserBalance(response.coin_balance);
     }
 }
-export const getEnergyCapacity = async (userId: string | null) => {
-    const endpoint = '/api/energy-capacity/tap/' + userId + '';
-    const httpMethod = 'GET';
-    const response = await fetchApi(endpoint, null, httpMethod);
-    ////console.log(response);
-    if (!(response && 'energy_capacity' in response)) {
-        //showFailedMessage(response.message);
-        return 100;
-    } else {
-        return (response.energy_capacity);
-    }
-}
-export const getTapRate = async (userId: string | null) => {
-    const endpoint = '/api/tap-rate/tap/' + userId + '';
-    const httpMethod = 'GET';
-    const response = await fetchApi(endpoint, null, httpMethod);
-    ////console.log(response);
-    if (!(response && 'tap_rate_reward' in response)) {
-        //showFailedMessage(response.message);
-        return 1;
-    } else {
-        return parseInt(response.tap_rate_reward);
-    }
-}
-
-export const getAllLevelTapRate = async (setTapTreasures: Function) => {
-    const endpoint = '/api/tap-rate/all';
-    const httpMethod = 'GET';
-    const response = await fetchApi(endpoint, null, httpMethod);
-    //console.log(response);
-    if (!(response && 'message' in response)) {
-        //showFailedMessage(response.message);
-        return;
-    } else {
-        setTapTreasures(response.data);
-        // console.log(response);
-
-    }
-}
-export const boostTapRateBonus = async (userId: string | null, id: number) => {
-    const endpoint = '/api/tap-rate/boost/' + userId + '';
-    const httpMethod = 'POST';
-    const parameters = {
-        "level_tap_rate_id": id
-    }
-    const response = await fetchApi(endpoint, parameters, httpMethod);
-    //console.log(response);
-    if (!(response && 'message' in response)) {
-        showFailedMessage(response.error);
-        return false;
-    } else {
-        showSuccessMessage("Tap Rate Boosted successfully");
-        return response;
-    }
-}
-
-
 
 export const getUserRank = async (userId: string | null, setUserRank: Function) => {
     const endpoint = '/api/ranks/user/' + userId + '';
