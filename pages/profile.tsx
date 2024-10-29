@@ -32,7 +32,7 @@ export default function Profile() {
     const { username, level, userBalance, userRank, allRanks, setAllRanks } = useAppContext();
     const router = useRouter();
 
-    
+
 
 
     const getAllRank = async () => {
@@ -53,7 +53,7 @@ export default function Profile() {
         coin_balance: string;
     }
 
-  
+
     return (
         <>
 
@@ -65,7 +65,7 @@ export default function Profile() {
                     <Image src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : HandonChest} width={100} height={100}
                         alt="HandonChest" className="w-full h-full object-cover" />
 
-                    <div className="absolute top-[15px] left-[320px] z-50" style={{ cursor: 'pointer' }} onClick={() => router.back()}>
+                    <div className="absolute" style={{ cursor: 'pointer', top: '2%', right: '2%', zIndex: 2 }} onClick={() => router.back()}>
                         <Image width={35} height={35} src={Cross} alt="Cross" />
                     </div>
 
@@ -101,7 +101,8 @@ export default function Profile() {
 
 
                 </div>
-                <div className="relative" style={{ minHeight:'150vh',
+                <div className="relative" style={{
+                    minHeight: '150vh',
                     background: `linear-gradient(180deg, #A16D45 85%, #3B2819 100%),
                         linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2))`
                 }}>
@@ -113,9 +114,9 @@ export default function Profile() {
                     {/* Overlay */}
 
 
-                    <div className="absolute inset-0 bg-[#000000B2]" style={{ minHeight:'150vh'}}>
+                    <div className="absolute inset-0 bg-[#000000B2]" style={{ minHeight: '150vh' }}>
 
-                        <div className="absolute -top-[50px] left-[35px] border-[1px] rounded-[16px] border-[#FFFFFF40] p-3" style={{ left: "10%", right: "10%", width: '80%',top: "-14%" }}>
+                        <div className="absolute -top-[50px] left-[35px] border-[1px] rounded-[16px] border-[#FFFFFF40] p-3" style={{ left: "10%", right: "10%", width: '80%', top: "-14%" }}>
 
                             <ProfileProgressBar progress={userBalance * 100 / level.next_level_threshold} /> {/* Change the progress value as needed */}
 

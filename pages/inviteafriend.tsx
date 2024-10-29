@@ -57,6 +57,7 @@ export default function InviteAFriend() {
 
     }, []);
 
+
     const handleCopyInviteLink = async () => {
         try {
             await navigator.clipboard.writeText(inviteLink);

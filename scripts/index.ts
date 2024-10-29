@@ -1,3 +1,4 @@
+import { tap } from 'node:test/reporters';
 import { showFailedMessage, showSuccessMessage } from './utils'
 
 const urll = process.env.NEXT_PUBLIC_API_URL;
@@ -88,7 +89,7 @@ export const fetchApi = async (endpoint: string, parameters: Object | null, http
 
     } catch (err) {
         console.error('Error:', err);
-        showFailedMessage("Failed to fetch " + endpoint)
+        //showFailedMessage("Failed to fetch " + endpoint)
         return { message: "Failed" }
     }
 };
@@ -109,19 +110,29 @@ export const regusterUser = async (userId: string | null, username: string | nul
 
 }
 
-export const getUserInfo = async (userId: string | null, setUsername: Function, setUserInfo: Function, setLevel: Function, setUser_tap_rate_level: Function, setUserBalance: Function, setUserRank: Function, setUserDailyRewardInfo: Function) => {
+export const getUserInfo = async (userId: string | null, setUsername: Function, setUserInfo: Function, setLevel: Function, setUser_tap_rate_level: Function, setUser_temp_tap_rate_level: Function, setUserBalance: Function, setUserRank: Function, setUserDailyRewardInfo: Function) => {
     const endpoint = '/api/users/user-info/' + userId + '';
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     ////console.log(response);
     if (!(response && 'user_id' in response)) {
         //showFailedMessage(response.message);
+        if (response && 'message' in response) {
+            //showFailedMessage(response.message);
+            setUserInfo(response);
+            return;
+        }
         return;
     } else {
         setUsername(response.username);
         setLevel(response.level);
-        setUserInfo(response);
-        setUser_tap_rate_level(response.user_tap_rate_level);
+
+        const energy_capacity = await getEnergyCapacity(userId);
+        setUserInfo({ ...response, energy_capacity: energy_capacity });
+
+        const tapRate = await getTapRate(userId);
+        setUser_tap_rate_level(tapRate);
+        setUser_temp_tap_rate_level(tapRate);
         getUserBalance(userId, setUserBalance);
         getUserLevel(userId, setLevel);
         getUserRank(userId, setUserRank);
@@ -142,6 +153,104 @@ export const getUserBalance = async (userId: string | null, setUserBalance: Func
         setUserBalance(response.coin_balance);
     }
 }
+export const getEnergyCapacity = async (userId: string | null) => {
+    const endpoint = '/api/energy-capacity/tap/' + userId + '';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    ////console.log(response);
+    if (!(response && 'energy_capacity' in response)) {
+        //showFailedMessage(response.message);
+        return 100;
+    } else {
+        return (response.energy_capacity);
+    }
+}
+export const getTapRate = async (userId: string | null) => {
+    const endpoint = '/api/tap-rate/tap/' + userId + '';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    ////console.log(response);
+    if (!(response && 'tap_rate_reward' in response)) {
+        //showFailedMessage(response.message);
+        return 1;
+    } else {
+        return parseInt(response.tap_rate_reward);
+    }
+}
+
+export const getAllLevelTapRate = async (setTapTreasures: Function) => {
+    const endpoint = '/api/tap-rate/all';
+    const httpMethod = 'GET';
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response && 'message' in response)) {
+        //showFailedMessage(response.message);
+        return;
+    } else {
+        setTapTreasures(response.data);
+        // console.log(response);
+
+    }
+}
+export const boostTapRateBonus = async (userId: string | null, id: number) => {
+    const endpoint = '/api/tap-rate/boost/' + userId + '';
+    const httpMethod = 'POST';
+    const parameters = {
+        "level_tap_rate_id": id
+    }
+    const response = await fetchApi(endpoint, parameters, httpMethod);
+    //console.log(response);
+    if (!(response && 'message' in response)) {
+        showFailedMessage(response.error);
+        return false;
+    } else {
+        showSuccessMessage("Tap Rate Boosted successfully");
+        return response;
+    }
+}
+
+export const updateWalletAddress = async (userId: string | null, wallet_address: string | null) => {
+    const endpoint = '/api/users/update-wallet-address/' + userId + '';
+    const httpMethod = 'PUT';
+    const parameters = {
+        "wallet_address": wallet_address,
+    }
+    if (!wallet_address) {
+        return;
+    }
+    const response = await fetchApi(endpoint, parameters, httpMethod);
+    //console.log(response);
+    if (!(response && 'message' in response)) {
+        //showFailedMessage(response.message);
+        return;
+    } else {
+        // showSuccessMessage("Updated wallet address successfully!");
+    }
+}
+
+export const logUserInOut = async (userId: string | null, isLogin: boolean) => {
+    let endpoint = null;
+    let httpMethod = null;
+    if (isLogin) {
+        endpoint = '/api/users/log-online-status/' + userId + '';
+        httpMethod = 'PUT';
+    }
+    else {
+        endpoint = '/api/users/cancel-online-status/' + userId + '';
+        httpMethod = 'DELETE';
+    }
+
+    const response = await fetchApi(endpoint, null, httpMethod);
+    //console.log(response);
+    if (!(response && 'message' in response)) {
+        //showFailedMessage(response.message);
+        return;
+    } else {
+        // showSuccessMessage("logged user "+(isLogin ? "in" : "out")+" successfully");
+    }
+}
+
+
 
 export const getUserRank = async (userId: string | null, setUserRank: Function) => {
     const endpoint = '/api/ranks/user/' + userId + '';
@@ -226,7 +335,7 @@ export const getAllRankInfo = async (setAllRanks: Function) => {
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
-    if (!(response && 'username' in response[0])) {
+    if (!Array.isArray(response) || response.length === 0 || !('username' in response[0])) {
         //showFailedMessage(response.message);
         return;
     } else {
@@ -242,7 +351,7 @@ export const getUserInvivites = async (userId: string | null, setUserInvites: Fu
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
-    if (!(response)) {
+    if (!response || !Array.isArray(response) || response.length === 0) {
         //showFailedMessage(response.message);
         return;
     } else {
@@ -268,7 +377,7 @@ export const getAllDailyBounuses = async (setAllDailyBonues: Function) => {
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
-    if (!(response)) {
+    if (!response || !Array.isArray(response) || response.length === 0) {
         //showFailedMessage(response.message);
         return;
     } else {
@@ -339,7 +448,7 @@ export const getAllTasks = async (setTask: Function) => {
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
-    if (!(response)) {
+    if (!response || !Array.isArray(response) || response.length === 0) {
         //showFailedMessage(response.message);
         return;
     } else {
@@ -359,6 +468,8 @@ export const getDoneTasks = async (userId: string | null, setDoneTasks: Function
         setDoneTasks(response);
     }
 }
+
+
 export const claimTaskDoneReward = async (userId: string | null, taskId: number) => {
     const endpoint = '/api/tasks/mark-done/' + userId + '/' + taskId;
     const httpMethod = 'PUT';
@@ -464,18 +575,27 @@ export const AwardTapboostPurchse = async (userId: string | null, boostId: numbe
     }
 }
 export const getTreasurePurchaseHistory = async (userId: string | null, setTreasurePurchaseHistory: Function) => {
-    const endpoint = '/api/treasure/history/' + userId + '';
+    const endpoint = `/api/treasure/history/${userId}`;  // Template literals make the concatenation cleaner
     const httpMethod = 'GET';
-    const response = await fetchApi(endpoint, null, httpMethod);
-    //console.log(response);
-    if (!(response)) {
-        //showFailedMessage(response.message);
-        return;
-    } else {
 
+    try {
+        const response = await fetchApi(endpoint, null, httpMethod);
+
+        // Check if the response has a valid purchase_history array
+        if (!response || !Array.isArray(response.purchase_history) || response.purchase_history.length === 0) {
+            console.error("No purchase history or invalid response format:", response);
+            return;
+        }
+
+        // Proceed if the response is valid
         setTreasurePurchaseHistory(response.purchase_history);
+
+    } catch (error) {
+        console.error("Error fetching treasure purchase history:", error);
+        // Optionally handle error messages (e.g., display to the user)
     }
-}
+};
+
 const sortUsersByRank = (userArray: Array<any>) => {
     return userArray.sort((a, b) => a.rank - b.rank);
 };

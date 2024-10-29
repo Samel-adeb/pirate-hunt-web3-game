@@ -20,7 +20,7 @@ function DailyBonuses({ isDailyOverlayVisible, closeDailyOverlay }: { isDailyOve
     const [isDayOneOverlayVisible, setIsDayOneOverlayVisible] = useState(false);
     const { userId, allDailyBonues, setAllDailyBonues, claimedDailyBonuses, setClaimedDailyBonuses } = useAppContext();
     const [currentDayBonus, setCurrentDayBonus] = useState<dailyBonus>();
-    const [next_claim_id, set_next_claim_id] = useState(0);
+    const [next_claim_id, set_next_claim_id] = useState(1);
     const load = async () => {
         await getClaimedDailyBonuses(userId, setClaimedDailyBonuses);
         await getAllDailyBounuses(setAllDailyBonues);

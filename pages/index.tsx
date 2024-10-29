@@ -11,17 +11,18 @@ import { useRouter } from 'next/navigation'; // Using App Router's useRouter
 import { GameNavbar } from '@/app/components/GameNavbar';
 import { useAppContext } from '@/context';
 import { getUserInfo, regusterUser, getUserId, getUsername } from '@/scripts';
+import { showFailedMessage } from "@/scripts/utils";
 
 export default function GameLoad() {
     const audioRef = useRef<HTMLAudioElement | null>(null);
-    const { userId, setUserid, username, setUsername, setUserInfo, setLevel, setUser_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
+    const { userId, setUserId, username,userInfo, setUsername, setUserInfo, setLevel, setUser_tap_rate_level, setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
 
     const load = async () => {
         if (userId && username) {
             // Only run if both userId and username are set
             //alert('userId: ' + userId + ' username: ' + username);
             await regusterUser(userId, username);
-            await getUserInfo(userId, setUsername, setUserInfo, setLevel, setUser_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo);
+            await getUserInfo(userId, setUsername, setUserInfo, setLevel, setUser_tap_rate_level,setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo);
         }
     };
 
@@ -31,7 +32,7 @@ export default function GameLoad() {
         const muserId = await getUserId();
         const musername = await getUsername();
 
-        setUserid(muserId);
+        setUserId(muserId);
         setUsername(musername);
     };
 
@@ -57,10 +58,20 @@ export default function GameLoad() {
     const router = useRouter();
 
     const changePage = () => {
-        router.push('/gamehome'); // Redirect to gamehome page
+        if (isObjectEmpty(userInfo) || ('message' in userInfo && userInfo.message==='Failed')) {
+
+            showFailedMessage('Please check your internet connection!');
+            load();
+        } else {
+            router.push('/gamehome'); // Redirect to gamehome page
+        }
+       
     }
 
+    const isObjectEmpty = (objectName: object) => {
 
+        return JSON.stringify(objectName) === "{}";
+    };
     useEffect(() => {
         // Set a timeout to simulate loading and redirect
         const timer = setTimeout(() => {

@@ -1,5 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { GameNavbar } from "@/app/components/GameNavbar";
+import { useTonConnect } from '@/hooks/useTonConnect'
 
 import "../app/globals.css";
 import Image from "next/image";
@@ -7,6 +8,7 @@ import Image from "next/image";
 import BackButton from "../public/assets/backButton.svg";
 import { useEffect } from 'react';
 import { useAppContext } from '@/context';
+import { updateWalletAddress } from '@/scripts';
 
 
 
@@ -17,7 +19,7 @@ export default function GameSettings() {
     // const handleClick = () => {
     //   router.push('/chooseexchange'); 
     // };
-    const { isMusicOn, setIsMusicOn } = useAppContext();
+    const { userId, isMusicOn, setIsMusicOn } = useAppContext();
     const router = useRouter(); // Initialize the router
 
     const handleBackClick = () => {
@@ -33,6 +35,19 @@ export default function GameSettings() {
         localStorage.setItem('musicOn', newMusicState.toString());
     }
 
+    const {
+        connect,
+        disconnect,
+        connected,
+        walletAddress,
+    } = useTonConnect();
+
+    useEffect(() => {
+        if (connected) {
+            // alert("Connected Wallet: " + walletAddress);
+            updateWalletAddress(userId, walletAddress);
+        }
+    }, [connect, disconnect]);
 
     return (
         <>
@@ -75,10 +90,29 @@ export default function GameSettings() {
 
                             </div>
                         </div>
+
+
+
+
+                        <div className="pt-[10px]" onClick={connected ? disconnect : connect}>
+                            <div className=" flex items-center justify-center bg-[#FFFFFF26] max-w-[363px] mx-auto p-[16px] rounded-[16px] ">
+                                <div className="flex flex-col gap-y-[10px] justify-center items-center cursor-pointer">
+                                    <h1
+                                        className="text-[12px] leading-[16px] tracking-[0.4px] font-semibold text-white truncate p-2 max-w-[400px]"
+                                        style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '250px' }}>
+                                        <span>{connected ? "Wallet: "+walletAddress : "Connect Wallet"}</span>
+                                    </h1>
+                                </div>
+
+                               
+
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
-
 
         </>
     )
