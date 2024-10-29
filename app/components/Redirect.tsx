@@ -6,7 +6,7 @@ import { getUserId, getUserInfo, getUsername, regusterUser } from '@/scripts';
 function Redirect() {
    
     const router = useRouter();
-    const { userId, setUserId, username, userInfo, setUsername, setUserInfo, setLevel, setUser_tap_rate_level, setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
+    const { userId, setUserId, username, setUsername, setUserInfo, setLevel, setUser_tap_rate_level, setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
 
 
     useEffect(() => {
@@ -18,7 +18,7 @@ function Redirect() {
                 }
         }
     }, [userId, router]); 
-    
+
     const load = async () => {
         if (userId && username) {
            

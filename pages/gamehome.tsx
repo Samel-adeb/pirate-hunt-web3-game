@@ -16,7 +16,6 @@ import ProfileSvg from "../public/assets/ProfileSvg.svg";
 import Prize from "../public/assets/Prize.svg";
 import golddollarcoin from "../public/assets/golddollarcoin.svg";
 import XAS from "../public/assets/XAS.svg";
-import Info from "../public/assets/Info.svg";
 import settings from "../public/assets/setting.png";
 import lightning from "../public/assets/lightning.svg";
 import treasureChest from "../public/assets/treasure chest.svg";
