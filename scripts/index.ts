@@ -1,3 +1,4 @@
+import { tap } from 'node:test/reporters';
 import { showFailedMessage, showSuccessMessage } from './utils'
 
 const urll = process.env.NEXT_PUBLIC_API_URL;
@@ -109,14 +110,14 @@ export const regusterUser = async (userId: string | null, username: string | nul
 
 }
 
-export const getUserInfo = async (userId: string | null, setUsername: Function, setUserInfo: Function, setLevel: Function, setUser_tap_rate_level: Function, setUserBalance: Function, setUserRank: Function, setUserDailyRewardInfo: Function) => {
+export const getUserInfo = async (userId: string | null, setUsername: Function, setUserInfo: Function, setLevel: Function, setUser_tap_rate_level: Function, setUser_temp_tap_rate_level: Function, setUserBalance: Function, setUserRank: Function, setUserDailyRewardInfo: Function) => {
     const endpoint = '/api/users/user-info/' + userId + '';
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     ////console.log(response);
     if (!(response && 'user_id' in response)) {
         //showFailedMessage(response.message);
-        if(response && 'message' in response ) {
+        if (response && 'message' in response) {
             //showFailedMessage(response.message);
             setUserInfo(response);
             return;
@@ -131,6 +132,7 @@ export const getUserInfo = async (userId: string | null, setUsername: Function, 
 
         const tapRate = await getTapRate(userId);
         setUser_tap_rate_level(tapRate);
+        setUser_temp_tap_rate_level(tapRate);
         getUserBalance(userId, setUserBalance);
         getUserLevel(userId, setLevel);
         getUserRank(userId, setUserRank);
@@ -207,13 +209,13 @@ export const boostTapRateBonus = async (userId: string | null, id: number) => {
     }
 }
 
-export const updateWalletAddress = async (userId: string | null, wallet_address: string |null) => {
+export const updateWalletAddress = async (userId: string | null, wallet_address: string | null) => {
     const endpoint = '/api/users/update-wallet-address/' + userId + '';
     const httpMethod = 'PUT';
     const parameters = {
         "wallet_address": wallet_address,
     }
-    if(!wallet_address){
+    if (!wallet_address) {
         return;
     }
     const response = await fetchApi(endpoint, parameters, httpMethod);
@@ -227,17 +229,17 @@ export const updateWalletAddress = async (userId: string | null, wallet_address:
 }
 
 export const logUserInOut = async (userId: string | null, isLogin: boolean) => {
-    let endpoint=null;
+    let endpoint = null;
     let httpMethod = null;
-    if(isLogin) {
+    if (isLogin) {
         endpoint = '/api/users/log-online-status/' + userId + '';
         httpMethod = 'PUT';
     }
-    else{
+    else {
         endpoint = '/api/users/cancel-online-status/' + userId + '';
         httpMethod = 'DELETE';
     }
-    
+
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
     if (!(response && 'message' in response)) {
@@ -349,7 +351,7 @@ export const getUserInvivites = async (userId: string | null, setUserInvites: Fu
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
-    if (!response || !Array.isArray(response) || response.length === 0 ) {
+    if (!response || !Array.isArray(response) || response.length === 0) {
         //showFailedMessage(response.message);
         return;
     } else {
@@ -375,7 +377,7 @@ export const getAllDailyBounuses = async (setAllDailyBonues: Function) => {
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
-    if (!response || !Array.isArray(response) || response.length === 0 ) {
+    if (!response || !Array.isArray(response) || response.length === 0) {
         //showFailedMessage(response.message);
         return;
     } else {
@@ -446,7 +448,7 @@ export const getAllTasks = async (setTask: Function) => {
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
     //console.log(response);
-    if (!response || !Array.isArray(response) || response.length === 0 ) {
+    if (!response || !Array.isArray(response) || response.length === 0) {
         //showFailedMessage(response.message);
         return;
     } else {

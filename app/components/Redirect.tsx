@@ -1,19 +1,41 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAppContext } from '@/context'; // Adjust the path according to your context structure
+import { getUserId, getUserInfo, getUsername, regusterUser } from '@/scripts';
 
 function Redirect() {
-    const { userId } = useAppContext(); // Access userId from context
+   
     const router = useRouter();
+    const { userId, setUserId, username, userInfo, setUsername, setUserInfo, setLevel, setUser_tap_rate_level, setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
+
 
     useEffect(() => {
-        // Check if userId is not defined
-        if (!userId && router.pathname !== '/') {
-            // Redirect to the desired page, e.g., login page or home page
-            router.push('/'); // Adjust the route based on your application
+        if (!userId && router.pathname !== '/') {              
+                if (userId && username) {
+                    load();
+                }else{
+                    getId();
+                }
         }
-    }, [userId, router]); // Run effect when userId or router changes
+    }, [userId, router]); 
+    
+    const load = async () => {
+        if (userId && username) {
+           
+            await regusterUser(userId, username);
+            await getUserInfo(userId, setUsername, setUserInfo, setLevel, setUser_tap_rate_level,setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo);
+        }
+    };
 
+
+    const getId = async () => {
+        //alert('getId loading...');
+        const muserId = await getUserId();
+        const musername = await getUsername();
+
+        setUserId(muserId);
+        setUsername(musername);
+    };
     return <></> 
 }
 

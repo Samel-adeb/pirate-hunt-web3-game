@@ -23,13 +23,13 @@ interface levelTapRate {
     duration: number;
 }
 function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible }: { treasure: levelTapRate | undefined; setIsPaymentOverlayVisible: (arg0: boolean) => void, isTapboost: boolean }) {
-    const { userId, userBalance, setUserBalance, setUser_tap_rate_level, countdownResetTapRate } = useAppContext();
+    const { userId, userBalance, setUserBalance, user_tap_rate_level, setUser_tap_rate_level, countdownResetTapRate } = useAppContext();
     const router = useRouter();
     const handleTransaction = async (id: number) => {
         const isSuccessful = await boostTapRateBonus(userId, id)
 
         if (isSuccessful) {
-            setUser_tap_rate_level(parseInt(isSuccessful.price_reward));
+            setUser_tap_rate_level(parseInt(user_tap_rate_level) + parseInt(isSuccessful.price_reward));
             countdownResetTapRate(parseInt(isSuccessful.duration));
             setUserBalance(parseInt(userBalance) - parseInt(isSuccessful.price));
             router.back();
