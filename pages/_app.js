@@ -10,10 +10,9 @@ function MyApp({ Component, pageProps }) {
     return (
         <AppWrapper>
             <LogStatus />  {/* Tracks user log in and out */}
-            <ToastContainer />
             <ToastContainer
                 position="top-center"
-                autoClose={998}
+                autoClose={700}
                 hideProgressBar
                 newestOnTop
                 closeOnClick
