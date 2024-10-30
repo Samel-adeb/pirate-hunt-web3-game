@@ -777,7 +777,7 @@ export default function GameHome() {
                                         <p className="pt-[2px] text-[14px] leading-[16px] tracking-[0.4px] text-center text-white mb-3"><>Level up</> to increase your tap rate</p>
 
                                         <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal mt-4">OR</p>
-                                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal mb-4">Pruchase boost to get up to <strong>10 000</strong>  <strong></strong> coins per tap for 15 Seconds!</p>
+                                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-center text-white pt-[10px] font-normal mb-4">Purchase boost to get up to <strong>10 000</strong>  <strong></strong> coins per tap for 15 Seconds!</p>
 
 
 

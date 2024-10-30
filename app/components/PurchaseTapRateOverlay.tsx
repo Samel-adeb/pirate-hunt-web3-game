@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { boostTapRateBonus } from '@/scripts';
 import { useAppContext } from '@/context';
 import { useRouter } from 'next/router';
+import { showFailedMessage } from '@/scripts/utils';
 
 interface levelTapRate {
     id: number;
@@ -29,10 +30,14 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible }: { tre
         const isSuccessful = await boostTapRateBonus(userId, id)
 
         if (isSuccessful) {
+            if(userBalance > parseInt(isSuccessful.price)){
             setUser_tap_rate_level(parseInt(user_tap_rate_level) + parseInt(isSuccessful.price_reward));
             countdownResetTapRate(parseInt(isSuccessful.duration));
             setUserBalance(parseInt(userBalance) - parseInt(isSuccessful.price));
             router.push('/gamehome');
+            }else{
+                showFailedMessage('Not enough balance');
+            }
         }
     };
 
