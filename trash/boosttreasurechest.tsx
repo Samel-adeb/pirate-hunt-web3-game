@@ -70,23 +70,27 @@ export default function BoostTreasureChest() {
     };
 
     function abbreviateNumber(number: number): string {
-        const abbrev = ["", "K", "M", "B", "T"]; // Array of suffixes
-        let i = 0;
+        if (number != undefined) {
+            const abbrev = ["", "K", "M", "B", "T"]; // Array of suffixes
+            let i = 0;
 
-        // Loop to divide the number and move to higher suffixes
-        while (number >= 1000 && i < abbrev.length - 1) {
-            number /= 1000;
-            i++;
+            // Loop to divide the number and move to higher suffixes
+            while (number >= 1000 && i < abbrev.length - 1) {
+                number /= 1000;
+                i++;
+            }
+
+            // Round to one decimal place and add the suffix
+            return number.toFixed(1).replace(/\.0$/, '') + abbrev[i];
+        } else {
+            return '0';
         }
-
-        // Round to one decimal place and add the suffix
-        return number.toFixed(1).replace(/\.0$/, '') + abbrev[i];
     }
     return (
         <>
             <GameNavbar />
             {
-                isPaymentOverlayVisible && (<PurchaseTreasureOverlay setIsPaymentOverlayVisible={setIsPaymentOverlayVisible} treasure={currentTreasue}  isTapboost={false} />)
+                isPaymentOverlayVisible && (<PurchaseTreasureOverlay setIsPaymentOverlayVisible={setIsPaymentOverlayVisible} treasure={currentTreasue} isTapboost={false} />)
             }
             <div className="relative bg-[#000000] h-[100vh + 100px]" style={{ minHeight: '100vh' }}>
 

@@ -30,12 +30,12 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible }: { tre
         const isSuccessful = await boostTapRateBonus(userId, id)
 
         if (isSuccessful) {
-            if(userBalance > parseInt(isSuccessful.price)){
-            setUser_tap_rate_level(parseInt(user_tap_rate_level) + parseInt(isSuccessful.price_reward));
-            countdownResetTapRate(parseInt(isSuccessful.duration));
-            setUserBalance(parseInt(userBalance) - parseInt(isSuccessful.price));
-            router.push('/gamehome');
-            }else{
+            if (userBalance > parseInt(isSuccessful.price)) {
+                setUser_tap_rate_level(parseInt(user_tap_rate_level) + parseInt(isSuccessful.price_reward));
+                countdownResetTapRate(parseInt(isSuccessful.duration));
+                setUserBalance(parseInt(userBalance) - parseInt(isSuccessful.price));
+                router.push('/gamehome');
+            } else {
                 showFailedMessage('Not enough balance');
             }
         }
@@ -48,23 +48,27 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible }: { tre
         });
     }, []);
     function abbreviateNumber(nnumber: number): string {
-        // Ensure the input is a valid number
-        let number = nnumber;
-        if (typeof nnumber !== 'number' || isNaN(nnumber)) {
-            number = parseInt(nnumber.toString());
+        if (nnumber != undefined) {
+            // Ensure the input is a valid number
+            let number = nnumber;
+            if (typeof nnumber !== 'number' || isNaN(nnumber)) {
+                number = parseInt(nnumber.toString());
+            }
+
+            const abbrev = ["", "K", "M", "B", "T"]; // Array of suffixes
+            let i = 0;
+
+            // Loop to divide the number and move to higher suffixes
+            while (number >= 1000 && i < abbrev.length - 1) {
+                number /= 1000;
+                i++;
+            }
+
+            // Ensure small numbers are handled and round to one decimal place
+            return number < 1000 ? number.toFixed(1).replace(/\.0$/, '') + abbrev[i] : number.toString();
+        } else {
+            return '0';
         }
-
-        const abbrev = ["", "K", "M", "B", "T"]; // Array of suffixes
-        let i = 0;
-
-        // Loop to divide the number and move to higher suffixes
-        while (number >= 1000 && i < abbrev.length - 1) {
-            number /= 1000;
-            i++;
-        }
-
-        // Ensure small numbers are handled and round to one decimal place
-        return number < 1000 ? number.toFixed(1).replace(/\.0$/, '') + abbrev[i] : number.toString();
     }
     return (
         treasure && (

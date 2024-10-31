@@ -79,7 +79,7 @@ const Boosttapratewithcoin = () => {
                     <strong className='text-[14px] px-1 text-[#FFFFFF]'>{treasure.price_reward} COIN(S)</strong>
                     per tap!
                   </div>
-                  <div className='fw-bold flex text-[12.47px]' style={{ alignItems: 'center' }}>{parseInt(treasure.price).toFixed(0)}
+                  <div className='fw-bold flex text-[12.47px]' style={{ alignItems: 'center' }}>{(treasure.price && parseInt(treasure.price)) ? parseInt(treasure.price).toFixed(0) : 0}
                     <Image src={Coin} alt='coin' width={20} height={20} className='mx-1' />
                   </div>
                   <button className='text-[10px] btn btn-warning rounded-2xl p-3' onClick={() => handlePayNowClick(treasure)}>BOOST</button>
