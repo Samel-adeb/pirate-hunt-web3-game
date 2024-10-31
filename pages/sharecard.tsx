@@ -12,7 +12,7 @@ import html2canvas from "html2canvas";
 
 export default function ShareCard() {
 
-    const uploadToCloudinary = async (dataURL: any) => {
+    const uploadToCloudinary = async (dataURL: string) => {
         const cloudName = 'dkksnrgl1'; // Replace with your cloud name
         const uploadPreset = 'my_preset'; // Replace with your upload preset
     
@@ -27,6 +27,7 @@ export default function ShareCard() {
         const data = await response.json();
         return data.secure_url; // This is the URL of the uploaded image
     };
+    
 
 
     const handleShare = async () => {

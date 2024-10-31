@@ -24,6 +24,7 @@ export default function ProfileShare() {
     const { userId, username, userInfo, level, userBalance, userInvites, setUserInvites, treasurePurchaseHistory, setTreasurePurchaseHistory } = useAppContext();
     const [isOverlayVisible, setOverlayVisible] = useState(false);
     // const [platform, setPlatform] = useState('');
+   // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [isSharing, setIsSharing] = useState(false); // State to track if sharing is in progress
     const router = useRouter();
 
