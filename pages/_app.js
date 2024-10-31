@@ -10,7 +10,18 @@ function MyApp({ Component, pageProps }) {
     return (
         <AppWrapper>
             <LogStatus />  {/* Tracks user log in and out */}
-            <ToastContainer />
+            <ToastContainer
+                position="top-center"
+                autoClose={700}
+                hideProgressBar
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable
+                pauseOnHover={false}
+                theme="colored"
+            />
             <Redirect />
             <Sound />
             <TonConnectUIProvider manifestUrl={`${process.env.NEXT_PUBLIC_MANIFEST_URL}`}>
