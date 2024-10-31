@@ -5,12 +5,14 @@ import BigCoin from "../public/assets/BigCoin.svg";
 import Cap from "../public/assets/Cap.png";
 import BigBaby from "../public/assets/BigBaby.png";
 import html2canvas from "html2canvas";
-
+import { useAppContext } from '@/context';
 
 
 
 
 export default function ShareCard() {
+
+    const { userBalance } = useAppContext();
 
     const uploadToCloudinary = async (dataURL: string) => {
         const cloudName = 'dkksnrgl1'; // Replace with your cloud name
@@ -69,7 +71,7 @@ export default function ShareCard() {
                     <h2 className="text-center text-white text-[20.57px] leading-[30.86px] tracking-[1.29px] font-medium">I have earned</h2>
                     <div className="-mt-[20px] flex items-center justify-center gap-[15px]">
                         <Image width={52.67} height={52.67} src={BigCoin} alt="BigCoin" />
-                        <h1 className="text-[36.87px] leading-[84.27px] font-bold text-white">100,000,000</h1>
+                        <h1 className="text-[36.87px] leading-[84.27px] font-bold text-white">{userBalance ? userBalance : 0}</h1>
                     </div>
                 </div>
 
