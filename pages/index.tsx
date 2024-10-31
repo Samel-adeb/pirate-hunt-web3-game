@@ -39,12 +39,12 @@ export default function GameLoad() {
     // Automatically start playing the background music and get userId/username
     useEffect(() => {
         getId();
-        if (audioRef.current) {
-            audioRef.current.volume = 0.5; // Adjust the volume (0.0 to 1.0)
-            audioRef.current.play().catch((err) => {
-                console.error('Failed to play audio:', err);
-            });
-        }
+        // if (audioRef.current) {
+        //     audioRef.current.volume = 0.5; // Adjust the volume (0.0 to 1.0)
+        //     audioRef.current.play().catch((err) => {
+        //         console.error('Failed to play audio:', err);
+        //     });
+        // }
     }, []);
 
     // Call `load` when both `userId` and `username` are set
