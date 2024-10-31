@@ -106,12 +106,7 @@ export default function Profile() {
                     background: `linear-gradient(180deg, #A16D45 85%, #3B2819 100%),
                         linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2))`
                 }}>
-                    {/* <div className=""
-                       
-                    >
-                       
-                    </div> */}
-                    {/* Overlay */}
+                  
 
 
                     <div className="absolute inset-0 bg-[#000000B2]" style={{ minHeight: '150vh' }}>
