@@ -468,6 +468,8 @@ export const getDoneTasks = async (userId: string | null, setDoneTasks: Function
         setDoneTasks(response);
     }
 }
+
+
 export const claimTaskDoneReward = async (userId: string | null, taskId: number) => {
     const endpoint = '/api/tasks/mark-done/' + userId + '/' + taskId;
     const httpMethod = 'PUT';
