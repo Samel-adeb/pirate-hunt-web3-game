@@ -165,17 +165,21 @@ export default function GameHome() {
     }, [energyLevel]); // This effect runs whenever energyLevel changes
 
     function abbreviateNumber(number: number): string {
-        const abbrev = ["", "K", "M", "B", "T"]; // Array of suffixes
-        let i = 0;
+        if (number) {
+            const abbrev = ["", "K", "M", "B", "T"]; // Array of suffixes
+            let i = 0;
 
-        // Loop to divide the number and move to higher suffixes
-        while (number >= 1000 && i < abbrev.length - 1) {
-            number /= 1000;
-            i++;
+            // Loop to divide the number and move to higher suffixes
+            while (number >= 1000 && i < abbrev.length - 1) {
+                number /= 1000;
+                i++;
+            }
+
+            // Round to one decimal place and add the suffix
+            return number.toFixed(1).replace(/\.0$/, '') + abbrev[i];
+        } else {
+            return '0';
         }
-
-        // Round to one decimal place and add the suffix
-        return number.toFixed(1).replace(/\.0$/, '') + abbrev[i];
     }
 
     const hasClaimedToday = () => {
