@@ -165,7 +165,7 @@ export default function GameHome() {
     }, [energyLevel]); // This effect runs whenever energyLevel changes
 
     function abbreviateNumber(number: number): string {
-        if (number) {
+        if (number != undefined) {
             const abbrev = ["", "K", "M", "B", "T"]; // Array of suffixes
             let i = 0;
 
@@ -747,7 +747,7 @@ export default function GameHome() {
                                 <div>
                                     <Image src={lightning} alt="lightning" />
                                 </div>
-                                <h1 className="text-[10.87px] leading-[25.02px] font-semibold text-white">{energyLevel.toFixed(0)}<span className="text-[8.51px] leading-[18.77px] text-[#FFFFFFA6]"> / {ENERGY_CAPACITY_VALUE}</span></h1>
+                                <h1 className="text-[10.87px] leading-[25.02px] font-semibold text-white">{(energyLevel && energyLevel.toFixed(0)) ? energyLevel.toFixed(0) : 0}<span className="text-[8.51px] leading-[18.77px] text-[#FFFFFFA6]"> / {ENERGY_CAPACITY_VALUE}</span></h1>
                             </div>
                             {isEnergyOverlayVisible && (
                                 <div className="fixed inset-0 bg-[#000000A6]  flex items-center justify-center z-50" onClick={closeEnergyBoostOverlay}>

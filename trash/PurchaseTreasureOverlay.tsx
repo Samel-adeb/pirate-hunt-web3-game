@@ -28,7 +28,7 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible, isTapbo
         connect,
         disconnect,
         connected,
-        
+
         sendTransaction,
     } = useTonConnect();
     const { userId, userBalance, setUserBalance, setUser_tap_rate_level, countdownResetTapRate } = useAppContext();
@@ -75,24 +75,28 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible, isTapbo
         });
     }, []);
     function abbreviateNumber(nnumber: number): string {
-        // Ensure the input is a valid number
-        let number = nnumber;
-        if (typeof nnumber !== 'number' || isNaN(nnumber)) {
-            number = parseInt(nnumber.toString());
+        if (nnumber != undefined) {
+            // Ensure the input is a valid number
+            let number = nnumber;
+            if (typeof nnumber !== 'number' || isNaN(nnumber)) {
+                number = parseInt(nnumber.toString());
+            }
+
+            const abbrev = ["", "K", "M", "B", "T"]; // Array of suffixes
+            let i = 0;
+
+            // Loop to divide the number and move to higher suffixes
+            while (number >= 1000 && i < abbrev.length - 1) {
+                number /= 1000;
+                i++;
+            }
+
+            // Ensure small numbers are handled and round to one decimal place
+            return number < 1000 ? number.toFixed(1).replace(/\.0$/, '') + abbrev[i] : number.toString();
+        } else {
+            return '0';
         }
-    
-        const abbrev = ["", "K", "M", "B", "T"]; // Array of suffixes
-        let i = 0;
-    
-        // Loop to divide the number and move to higher suffixes
-        while (number >= 1000 && i < abbrev.length - 1) {
-            number /= 1000;
-            i++;
-        }
-    
-        // Ensure small numbers are handled and round to one decimal place
-        return number < 1000 ? number.toFixed(1).replace(/\.0$/, '') + abbrev[i] : number.toString();
-    }    
+    }
     return (
         treasure && (
             <div data-aos='slide-up' className='w-full bg-black flex flex-col p-3 items-center h-[100%] absolute z-50 text-center rounded-[30px]' style={{ top: '10%', color: '#000321' }}>
