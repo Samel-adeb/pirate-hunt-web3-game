@@ -445,8 +445,8 @@ export default function GameHome() {
                                             />
 
                                             <div className="flex flex-col justify-center px-[6px]">
-                                                <h1 className="text-[10px] w-full break-all text-white font-semibold leading-tight">{username ? username.toUpperCase() : "Name"}</h1>
-                                                <div className="items-center  whitespace-nowrap">
+                                                <h1 className="text-[10px] w-full truncate text-white font-semibold leading-tight">{username ? username.toUpperCase() : "Name"}</h1>
+                                                <div className="items-center">
                                                     <div className="flex items-center">
                                                         <Image
                                                             width={15}
@@ -551,7 +551,7 @@ export default function GameHome() {
                                 {/* Flying chest appears and moves after 50 taps */}
                                 {showChest && (
                                     <div
-                                        className={`fixed flying-chest-animation ${chestPosition.direction === "0" || chestPosition.direction === "1" ? 'horizontal' : 'vertical'}`}
+                                        className={`fixed z-50 flying-chest-animation ${chestPosition.direction === "0" || chestPosition.direction === "1" ? 'horizontal' : 'vertical'}`}
                                         style={{ top: chestPosition.top, left: chestPosition.left }} // Dynamic position
                                         onClick={() => setShowOverlay(true)}
                                     >
@@ -584,7 +584,7 @@ export default function GameHome() {
                                             {/* Coins image */}
                                             <div className="flex items-center justify-center mx-auto pt-[8px] gap-[3px]">
                                                 <Image width={20} height={20} src={golddollarcoin} alt="Coins" />
-                                                <p className="text-[16px] font-semibold">{randomCoinAmount !== null ? randomCoinAmount : 0}</p>
+                                                <p className="text-[16px] font-semibold">{randomCoinAmount !== null ? randomCoinAmount : 2000}</p>
                                             </div>
 
                                             {/* Claim button */}
