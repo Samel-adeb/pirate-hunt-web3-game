@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation'; // Using App Router's useRouter
 import { GameNavbar } from '@/app/components/GameNavbar';
 import { useAppContext } from '@/context';
 import { getUserInfo, regusterUser, getUserId, getUsername } from '@/scripts';
-import { showFailedMessage, showInfoMessage, showWariningMessage } from "@/scripts/utils";
+import { showFailedMessage, showWariningMessage } from "@/scripts/utils";
 
 export default function GameLoad() {
     // const audioRef = useRef<HTMLAudioElement | null>(null);
