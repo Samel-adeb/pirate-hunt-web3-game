@@ -68,8 +68,7 @@ export const getUsername = async () => {
         const userId = userData.id;
         const firstName = userData.first_name;
         const lastName = userData.last_name;
-        const username = userData.username;
-
+        const username = userData.username || userData.first_name;
 
 
         return username;
