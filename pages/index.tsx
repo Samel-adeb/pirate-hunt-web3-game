@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation'; // Using App Router's useRouter
 import { GameNavbar } from '@/app/components/GameNavbar';
 import { useAppContext } from '@/context';
-import { getUserInfo, regusterUser, getUserId, getUsername } from '@/scripts';
+import { getUserInfo, registerUser, getUserId, getUsername } from '@/scripts';
 import { showFailedMessage, showWariningMessage } from "@/scripts/utils";
 
 export default function GameLoad() {
@@ -21,7 +21,7 @@ export default function GameLoad() {
         if (userId && username) {
             // Only run if both userId and username are set
             //alert('userId: ' + userId + ' username: ' + username);
-            await regusterUser(userId, username);
+            await registerUser(userId, username);
             await getUserInfo(userId, setUsername, setUserInfo, setLevel, setUser_tap_rate_level,setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo);
         }
     };
