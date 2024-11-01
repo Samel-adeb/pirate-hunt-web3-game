@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation'; // Using App Router's useRouter
 import { GameNavbar } from '@/app/components/GameNavbar';
 import { useAppContext } from '@/context';
 import { getUserInfo, regusterUser, getUserId, getUsername } from '@/scripts';
-import { showFailedMessage } from "@/scripts/utils";
+import { showFailedMessage, showInfoMessage, showWariningMessage } from "@/scripts/utils";
 
 export default function GameLoad() {
     // const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -62,8 +62,12 @@ export default function GameLoad() {
             showFailedMessage("Your information could not be retreived from telegram");
             
         }else if (isObjectEmpty(userInfo) || ('message' in userInfo && userInfo.message==='Failed')) {
-
-            showFailedMessage('Something went wrong');
+            
+            showFailedMessage('Something went wrong.');
+            setTimeout(() => {
+                showWariningMessage('Please Check your internet connection.');
+            }, 1000);
+            
             load();
         } else {
             router.push('/gamehome'); // Redirect to gamehome page

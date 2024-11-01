@@ -4,14 +4,14 @@ import { ToastContainer } from "react-toastify";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import Redirect from '../app/components/Redirect';
 import Sound from '../app/components/Sound';
-import LogStatus from '../app/components/LogStatus';
+// import LogStatus from '../app/components/LogStatus';
 import ErrorBoundary from '../app/components/ErrorBoundary'; // Import ErrorBoundary
 
 function MyApp({ Component, pageProps }) {
     return (
         <AppWrapper>
             <ErrorBoundary> {/* Wrap components inside ErrorBoundary */}
-                <LogStatus />
+                
                 <ToastContainer
                     position="top-center"
                     autoClose={700}
