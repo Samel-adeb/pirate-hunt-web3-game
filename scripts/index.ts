@@ -4,70 +4,78 @@ import { showFailedMessage, showSuccessMessage } from './utils'
 const urll = process.env.NEXT_PUBLIC_API_URL;
 
 export const getUserId = async () => {
-    // Get the URL
-    let url = window.location.href;
+    try {
+        // Get the URL
+        let url = window.location.href;
 
 
-    // Decode the URL twice
-    let decodedUrl = decodeURIComponent(decodeURIComponent(url));
+        // Decode the URL twice
+        let decodedUrl = decodeURIComponent(decodeURIComponent(url));
 
-    // Parse URL to get query parameters
-    let queryString = decodedUrl.split('#tgWebAppData=user=')[1];
-    if (queryString !== undefined) {
-        localStorage.setItem('url', url);
-    } else {
+        // Parse URL to get query parameters
+        let queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+        if (queryString !== undefined) {
+            localStorage.setItem('url', url);
+        } else {
 
-        url = localStorage.getItem('url') || '/';
-        decodedUrl = decodeURIComponent(decodeURIComponent(url));
-        queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+            url = localStorage.getItem('url') || '/';
+            decodedUrl = decodeURIComponent(decodeURIComponent(url));
+            queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+        }
+
+        const querytring = queryString.split('&')[0];
+        // Parse user data JSON
+        const userData = JSON.parse(querytring);
+
+        // Extract user information
+        const userId = userData.id;
+        const firstName = userData.first_name;
+        const lastName = userData.last_name;
+        const username = userData.username;
+
+
+        return userId;
+    } catch {
+        // showFailedMessage("Your userid and info could not be retreived");
     }
-
-    const querytring = queryString.split('&')[0];
-    // Parse user data JSON
-    const userData = JSON.parse(querytring);
-
-    // Extract user information
-    const userId = userData.id;
-    const firstName = userData.first_name;
-    const lastName = userData.last_name;
-    const username = userData.username;
-
-
-    return userId;
 
 }
 export const getUsername = async () => {
-    // Get the URL
-    let url = window.location.href;
+    try {
+        // Get the URL
+        let url = window.location.href;
 
 
-    // Decode the URL twice
-    let decodedUrl = decodeURIComponent(decodeURIComponent(url));
+        // Decode the URL twice
+        let decodedUrl = decodeURIComponent(decodeURIComponent(url));
 
-    // Parse URL to get query parameters
-    let queryString = decodedUrl.split('#tgWebAppData=user=')[1];
-    if (queryString !== undefined) {
-        localStorage.setItem('url', url);
-    } else {
+        // Parse URL to get query parameters
+        let queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+        if (queryString !== undefined) {
+            localStorage.setItem('url', url);
+        } else {
 
-        url = localStorage.getItem('url') || '/';
-        decodedUrl = decodeURIComponent(decodeURIComponent(url));
-        queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+            url = localStorage.getItem('url') || '/';
+            decodedUrl = decodeURIComponent(decodeURIComponent(url));
+            queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+        }
+
+        const querytring = queryString.split('&')[0];
+        // Parse user data JSON
+        const userData = JSON.parse(querytring);
+
+        // Extract user information
+        const userId = userData.id;
+        const firstName = userData.first_name;
+        const lastName = userData.last_name;
+        const username = userData.username;
+
+
+
+        return username;
+    } catch {
+        // showFailedMessage("Your username and info could not be retreived");
     }
-
-    const querytring = queryString.split('&')[0];
-    // Parse user data JSON
-    const userData = JSON.parse(querytring);
-
-    // Extract user information
-    const userId = userData.id;
-    const firstName = userData.first_name;
-    const lastName = userData.last_name;
-    const username = userData.username;
-
-
-
-    return username;
 
 }
 
