@@ -34,7 +34,7 @@ import { addClaimRandomTransaction } from "@/scripts";
 import DailyBonuses from "@/app/components/DailyBonuses";
 import { useRouter } from "next/router";
 import LogStatus from "@/app/components/LogStatus";
-
+import Cookies from 'js-cookie';
 // import ProgressBar from "@/app/components/ProgressBar";
 
 
@@ -105,8 +105,8 @@ export default function GameHome() {
 
 
 
-        // Retrieve energy level from local storage or set it to maximum
-        const storedEnergy = parseInt(localStorage.getItem('energy_') || '') || ENERGY_CAPACITY_VALUE;
+        // Retrieve energy level from local storage or set it to maximumlocalStorage.getItem('energy_')
+        const storedEnergy = parseInt(Cookies.get('energy_') || '') || ENERGY_CAPACITY_VALUE;
         setEnergyLevel(storedEnergy);
 
         // Countdown logic
@@ -147,7 +147,8 @@ export default function GameHome() {
             const energyIncrease = RECHARGE_SPEED * elapsedTime;
             const newEnergyLevel = Math.min(energyLevel + energyIncrease, ENERGY_CAPACITY_VALUE); // Ensure energy level doesn't exceed maximum
             setEnergyLevel(newEnergyLevel); // Update state
-            localStorage.setItem('energy_', newEnergyLevel.toString()); // Store updated energy in local storage
+            Cookies.set('energy_', newEnergyLevel.toString());
+            //localStorage.setItem('energy_', newEnergyLevel.toString()); // Store updated energy in local storage
         }
 
         // Update last update time
