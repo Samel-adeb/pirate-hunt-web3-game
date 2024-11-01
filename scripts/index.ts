@@ -101,8 +101,8 @@ export const fetchApi = async (endpoint: string, parameters: Object | null, http
     }
 };
 
-export const regusterUser = async (userId: string | null, username: string | null) => {
-    const endpoint = '/api/users/register';
+export const registerUser = async (userId: string | null, username: string | null) => {
+    const endpoint = '/api/users/register_me';
     const parameters = {
         "user_id": userId,
         "username": username
