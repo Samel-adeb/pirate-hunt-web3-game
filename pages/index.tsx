@@ -1,7 +1,7 @@
 //import Link from 'next/link';
 import "../app/globals.css";
 import Image from "next/image";
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import BlueSail from "../public/assets/BlueSail.png";
 import Cap from "../public/assets/Cap.png";
 // import telegramSvg from "../public/assets/telegramSvg.svg";
@@ -14,7 +14,7 @@ import { getUserInfo, regusterUser, getUserId, getUsername } from '@/scripts';
 import { showFailedMessage } from "@/scripts/utils";
 
 export default function GameLoad() {
-    const audioRef = useRef<HTMLAudioElement | null>(null);
+    // const audioRef = useRef<HTMLAudioElement | null>(null);
     const { userId, setUserId, username,userInfo, setUsername, setUserInfo, setLevel, setUser_tap_rate_level, setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
 
     const load = async () => {
@@ -58,9 +58,12 @@ export default function GameLoad() {
     const router = useRouter();
 
     const changePage = () => {
-        if (isObjectEmpty(userInfo) || ('message' in userInfo && userInfo.message==='Failed')) {
+        if (userId == undefined || username == undefined) {
+            showFailedMessage("Your information could not be retreived from telegram");
+            
+        }else if (isObjectEmpty(userInfo) || ('message' in userInfo && userInfo.message==='Failed')) {
 
-            showFailedMessage('Please check your internet connection!');
+            showFailedMessage('Something went wrong');
             load();
         } else {
             router.push('/gamehome'); // Redirect to gamehome page
@@ -175,10 +178,10 @@ export default function GameLoad() {
             </div>
 
             {/* Hidden Audio Element */}
-            <audio ref={audioRef} loop hidden>
+            {/* <audio ref={audioRef} loop hidden>
                 <source src="/ES_They%20Sold%20Their%20Souls%20-%20Bonnie%20Grace.mp3" type="audio/mp3" />
                 Your browser does not support the audio element.
-            </audio>
+            </audio> */}
         </div>
 
     );
