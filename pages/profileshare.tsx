@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { GameNavbar } from "@/app/components/GameNavbar";
 import { useRouter } from 'next/navigation';
 import Link from "next/link";
@@ -18,14 +18,13 @@ import Cross from "../public/assets/Cross.svg";
 import Tweet from "../public/assets/Tweet.svg";
 import { useAppContext } from '@/context';
 import { getTreasurePurchaseHistory, getUserInvivites } from '@/scripts';
+import html2canvas from 'html2canvas';
 
 
 export default function ProfileShare() {
     const { userId, username, userInfo, level, userBalance, userInvites, setUserInvites, treasurePurchaseHistory, setTreasurePurchaseHistory } = useAppContext();
     const [isOverlayVisible, setOverlayVisible] = useState(false);
-    // const [platform, setPlatform] = useState('');
-   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [isSharing, setIsSharing] = useState(false); // State to track if sharing is in progress
+
     const router = useRouter();
 
 
@@ -60,92 +59,57 @@ export default function ProfileShare() {
         return daysDifference;
     }
 
-    // const handleShare = async () => {
-    //     if (!navigator.share) {
-    //         alert('Sharing is not supported in your browser.');
-    //         return;
-    //     }
 
-    //     if (isSharing) {
-    //         alert('Sharing is already in progress.');
-    //         return;
-    //     }
 
-    //     setIsSharing(true); // Set sharing to true when sharing starts
+    // Reference to the container you want to capture, with correct TypeScript type
+    const shareSectionRef = useRef<HTMLDivElement | null>(null);
 
-    //     try {
-    //         const shareData = {
-    //             title: 'Pirate Hunt',
-    //             text: 'Check out my achievements in Pirate Hunt! Ive earned 100,000,000 coins!',
-    //             url: `${window.location.origin}/sharecard`, // Replace this with your /sharecard URL or specific page URL if needed
-    //         };
+    // Scroll to and capture the element
+    const scrollToAndCapture = async () => {
+        if (!shareSectionRef.current) return; // Ensure the ref is not null
 
-    //         // Modify share content based on the platform selected
-    //         if (platform === 'telegram') {
-    //             shareData.title = 'Pirate Hunt - Telegram Story';
-    //             shareData.text = 'Check out my achievements in Pirate Hunt on Telegram!';
-    //         } else if (platform === 'instagram') {
-    //             shareData.title = 'Pirate Hunt - Instagram Story';
-    //             shareData.text = 'Check out my achievements in Pirate Hunt on Instagram!';
-    //         } else if (platform === 'twitter') {
-    //             shareData.title = 'Pirate Hunt - Twitter Story';
-    //             shareData.text = 'Check out my achievements in Pirate Hunt on Twitter!';
-    //         }
+        // Scroll to the element
+        shareSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-    //         // Call Web Share API
-    //         await navigator.share(shareData);
-    //         console.log('Content shared successfully');
-    //     } catch (error) {
-    //         console.error('Error sharing:', error);
-    //     } finally {
-    //         setIsSharing(false); // Set sharing back to false when sharing ends
-    //     }
+        // Add a slight delay to apply the offset after centering
 
-    //     if (platform === 'telegram') {
-    //         handleShareToTelegram();
-    //     } else {
-    //         try {
-    //             if (!navigator.share) {
-    //                 alert('Sharing is not supported in your browser.');
-    //                 return;
-    //             }
+        window.scrollBy(0, 50); // Adjust '20' to whatever extra offset you need
 
-    //             if (isSharing) {
-    //                 alert('Sharing is already in progress.');
-    //                 return;
-    //             }
 
-    //             setIsSharing(true);
+        // Delay a bit to allow scroll positioning
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
-    //             const shareData = {
-    //                 title: 'Pirate Hunt',
-    //                 text: 'Check out my achievements in Pirate Hunt! Ive earned 100,000,000 coins!',
-    //                 url: `${window.location.origin}/sharecard`,
-    //             };
+        const canvas = await html2canvas(shareSectionRef.current);
+        return canvas.toDataURL('image/png');
+    };
 
-    //             if (platform === 'instagram') {
-    //                 shareData.title = 'Pirate Hunt - Instagram Story';
-    //                 shareData.text = 'Check out my achievements in Pirate Hunt on Instagram!';
-    //             } else if (platform === 'twitter') {
-    //                 shareData.title = 'Pirate Hunt - Twitter Story';
-    //                 shareData.text = 'Check out my achievements in Pirate Hunt on Twitter!';
-    //             }
+    // Define sharing functions for each platform
+    const handleTelegramShare = async () => {
+        closeOverlay();
+        const imageUrl = await scrollToAndCapture();
+        if (imageUrl) {
+            const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(imageUrl)}`;
+            window.open(telegramUrl, '_blank');
+        }
+    };
 
-    //             // Call Web Share API
-    //             await navigator.share(shareData);
-    //             console.log('Content shared successfully');
-    //         } catch (error) {
-    //             console.error('Error sharing:', error);
-    //         } finally {
-    //             setIsSharing(false);
-    //         }
-    //     }
-    // };
+    const handleInstagramShare = async () => {
+        closeOverlay();
+        const imageUrl = await scrollToAndCapture();
+        if (imageUrl) {
+            const instagramUrl = `https://www.instagram.com/create/story/?media=${encodeURIComponent(imageUrl)}`;
+            window.open(instagramUrl, '_blank');
+        }
+    };
 
-    // const handleShareToTelegram = () => {
-    //     const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.origin + '/sharecard')}&text=${encodeURIComponent('Check out my achievements in Pirate Hunt!')}`;
-    //     window.open(shareUrl, '_blank');
-    // };
+    const handleTwitterShare = async () => {
+        closeOverlay();
+        const imageUrl = await scrollToAndCapture();
+        if (imageUrl) {
+            const twitterUrl = `https://x.com/intent/tweet?url=${encodeURIComponent(imageUrl)}`;
+            window.open(twitterUrl, '_blank');
+        }
+    };
 
     return (
         <>
@@ -153,6 +117,7 @@ export default function ProfileShare() {
             <GameNavbar />
 
             <div className="relative h-[100vh + 200px]"
+                ref={shareSectionRef}
                 style={{
                     background: 'linear-gradient(180deg, #201101 0%, #472402 100%)',
                 }}>
@@ -205,7 +170,7 @@ export default function ProfileShare() {
                 </div>
 
 
-                <div className="absolute" style={{ cursor: 'pointer', top:'2%', right:'2%', zIndex:2 }} onClick={() => router.back()}>
+                <div className="absolute" style={{ cursor: 'pointer', top: '2%', right: '2%', zIndex: 2 }} onClick={() => router.back()}>
                     <Image width={35} height={35} src={Cross} alt="Cross" />
                 </div>
 
@@ -244,7 +209,7 @@ export default function ProfileShare() {
                                     <div className="pt-[20px]">
                                         <div
                                             className="px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247] border-[1px] border-[#FFC247]"
-                                            // onClick={() => setPlatform('telegram')} // Set platform to telegram on click
+                                            onClick={() => handleTelegramShare()} // Set platform to telegram on click
                                         >
                                             <div className="flex items-center gap-[8px]">
                                                 <Image src={Telegrame} alt="Telegrame" />
@@ -256,7 +221,7 @@ export default function ProfileShare() {
                                     <div className="pt-[5px]">
                                         <div
                                             className="px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247] border-[1px] border-[#FFC247]"
-                                            // onClick={() => setPlatform('instagram')} // Set platform to Instagram on click
+                                            onClick={() => handleInstagramShare()} // Set platform to Instagram on click
                                         >
                                             <div className="flex items-center gap-[8px]">
                                                 <Image src={Insta} alt="Insta" />
@@ -268,7 +233,7 @@ export default function ProfileShare() {
                                     <div className="pt-[5px]">
                                         <div
                                             className="px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247] border-[1px] border-[#FFC247]"
-                                            // onClick={() => setPlatform('twitter')} // Set platform to Twitter on click
+                                            onClick={() => handleTwitterShare()} // Set platform to Twitter on click
                                         >
                                             <div className="flex items-center gap-[8px]">
                                                 <Image src={Tweet} alt="Tweet" />
@@ -281,20 +246,7 @@ export default function ProfileShare() {
 
                                 </div>
 
-                                {/* Share Button */}
-                                <Link href="/sharecard">
-                                    <div className="pt-[10px]">
-                                        <button
-                                            className={`bg-[#FFC247] p-[10px] rounded-[25px] h-[51px] flex flex-col items-center justify-center text-[16px] leading-[16px] tracking-[0.4px] text-center text-white font-medium ${isSharing ? 'opacity-50 cursor-not-allowed' : ''
-                                                }`}
-                                            // onClick={handleShare} // Share the content on the selected platform
-                                            disabled={isSharing} // Disable button while sharing is in progress
-                                        >
-                                            {isSharing ? 'Sharing...' : 'Share'}
 
-                                        </button>
-                                    </div>
-                                </Link>
 
                                 <button
                                     onClick={closeOverlay}
