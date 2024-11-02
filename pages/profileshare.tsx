@@ -11,18 +11,19 @@ import baby from "../public/assets/baby.svg";
 import ProgressBar from "@/app/components/ProgressBar";
 import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
 import ShareButton from "../public/assets/ShareButton.svg";
+import Share from "../public/assets/share.png";
 import brownCross from "../public/assets/brownCross.svg";
-import Insta from "../public/assets/Insta.svg";
+import Insta from "../public/assets/whatsapp.png";
 import Telegrame from "../public/assets/Telegrame.svg";
 import Cross from "../public/assets/Cross.svg";
 import Tweet from "../public/assets/Tweet.svg";
 import { useAppContext } from '@/context';
-import { getTreasurePurchaseHistory, getUserInvivites } from '@/scripts';
+import { getInviteLink, getTreasurePurchaseHistory, getUserInvivites } from '@/scripts';
 import html2canvas from 'html2canvas';
 
 
 export default function ProfileShare() {
-    const { userId, username, userInfo, level, userBalance, userInvites, setUserInvites, treasurePurchaseHistory, setTreasurePurchaseHistory } = useAppContext();
+    const { userId, username, userInfo, level, userBalance, userInvites, inviteLink, setInviteLink, setUserInvites, treasurePurchaseHistory, setTreasurePurchaseHistory } = useAppContext();
     const [isOverlayVisible, setOverlayVisible] = useState(false);
 
     const router = useRouter();
@@ -30,6 +31,7 @@ export default function ProfileShare() {
 
     const load = async () => {
         await getUserInvivites(userId, setUserInvites);
+        await getInviteLink(userId, setInviteLink);
         await getTreasurePurchaseHistory(userId, setTreasurePurchaseHistory);
 
     }
@@ -60,6 +62,55 @@ export default function ProfileShare() {
     }
 
 
+    async function captureScreenshotAndShare() {
+        const shareSection = document.getElementById('shareSection');
+        if (!shareSection) {
+            // alert("Share section not found.");
+            return;
+        }
+
+        // Scroll to the element and delay for smooth experience
+        shareSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        try {
+            // Capture the screenshot
+            const canvas = await html2canvas(shareSection);
+
+            // Convert to Blob
+            canvas.toBlob(async (blob) => {
+                if (blob) {
+                    const file = new File([blob], "screenshot.png", { type: "image/png" });
+
+                    // Call the function to share the file
+                    shareFile(file);
+                } else {
+                    // alert("Failed to capture the screenshot.");
+                }
+            }, 'image/png');
+        } catch (error) {
+            console.error("Error capturing screenshot:", error);
+            // alert("Screenshot capture failed.");
+        }
+    }
+    async function shareFile(file: File) {
+        // Check if the Web Share API is supported
+        if (navigator.share && navigator.canShare({ files: [file] })) {
+            try {
+                await navigator.share({
+                    files: [file],
+                    title: "Treasure Hunt Screenshot",
+                    text: "Check out my screenshot from the Treasure Hunt app!",
+                });
+                //alert("Screenshot shared successfully!");
+            } catch (error) {
+                console.error("Error sharing screenshot:", error);
+                //alert("Failed to share the screenshot.");
+            }
+        } else {
+            //alert("Sharing not supported on this device.");
+        }
+    }
 
     // Reference to the container you want to capture, with correct TypeScript type
     const shareSectionRef = useRef<HTMLDivElement | null>(null);
@@ -82,23 +133,34 @@ export default function ProfileShare() {
         const canvas = await html2canvas(shareSectionRef.current);
         return canvas.toDataURL('image/png');
     };
+    const handleShare = async () => {
+        closeOverlay();
+        await captureScreenshotAndShare();
 
+    };
     // Define sharing functions for each platform
     const handleTelegramShare = async () => {
         closeOverlay();
+
         const imageUrl = await scrollToAndCapture();
         if (imageUrl) {
-            const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(imageUrl)}`;
-            window.open(telegramUrl, '_blank');
+            // const telegramUrl = `https://t.me/share/url?url=`;//${encodeURIComponent(imageUrl)}`;
+            const url = encodeURIComponent(inviteLink); // Link to share
+            const message = encodeURIComponent('Check out Pirate hunt!');
+            window.open(`https://t.me/share/url?url=${url}&text=${message}`, '_blank');
         }
+
+
     };
 
     const handleInstagramShare = async () => {
         closeOverlay();
         const imageUrl = await scrollToAndCapture();
         if (imageUrl) {
-            const instagramUrl = `https://www.instagram.com/create/story/?media=${encodeURIComponent(imageUrl)}`;
-            window.open(instagramUrl, '_blank');
+            // const instagramUrl = `https://www.instagram.com/create/story/?media=${encodeURIComponent(imageUrl)}`;
+            // window.open(instagramUrl, '_blank');
+            const message = encodeURIComponent('Check out Pirate hunt! \n' + inviteLink);
+            window.open(`https://wa.me/?text=${message}`, '_blank');
         }
     };
 
@@ -106,8 +168,12 @@ export default function ProfileShare() {
         closeOverlay();
         const imageUrl = await scrollToAndCapture();
         if (imageUrl) {
-            const twitterUrl = `https://x.com/intent/tweet?url=${encodeURIComponent(imageUrl)}`;
-            window.open(twitterUrl, '_blank');
+            // const twitterUrl = `https://x.com/intent/tweet?url=${encodeURIComponent(imageUrl)}`;
+            // window.open(twitterUrl, '_blank');
+
+            const url = encodeURIComponent(inviteLink);
+            const message = encodeURIComponent('Check out Pirate hunt!');
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${message}`, '_blank');
         }
     };
 
@@ -117,6 +183,7 @@ export default function ProfileShare() {
             <GameNavbar />
 
             <div className="relative h-[100vh + 200px]"
+                id="shareSection"
                 ref={shareSectionRef}
                 style={{
                     background: 'linear-gradient(180deg, #201101 0%, #472402 100%)',
@@ -209,11 +276,22 @@ export default function ProfileShare() {
                                     <div className="pt-[20px]">
                                         <div
                                             className="px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247] border-[1px] border-[#FFC247]"
+                                            onClick={() => handleShare()} // Set platform to telegram on click
+                                        >
+                                            <div className="flex items-center gap-[8px]">
+                                                <Image src={Share} alt="Share" width={30} />
+                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Share</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="pt-[20px]">
+                                        <div
+                                            className="px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247] border-[1px] border-[#FFC247]"
                                             onClick={() => handleTelegramShare()} // Set platform to telegram on click
                                         >
                                             <div className="flex items-center gap-[8px]">
-                                                <Image src={Telegrame} alt="Telegrame" />
-                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Telegram story</h1>
+                                                <Image src={Telegrame} alt="Telegrame" width={40} />
+                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Telegram</h1>
                                             </div>
                                         </div>
                                     </div>
@@ -224,8 +302,8 @@ export default function ProfileShare() {
                                             onClick={() => handleInstagramShare()} // Set platform to Instagram on click
                                         >
                                             <div className="flex items-center gap-[8px]">
-                                                <Image src={Insta} alt="Insta" />
-                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Instagram story</h1>
+                                                <Image src={Insta} alt="Insta" width={40} />
+                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Whatsapp</h1>
                                             </div>
                                         </div>
                                     </div>
@@ -236,8 +314,8 @@ export default function ProfileShare() {
                                             onClick={() => handleTwitterShare()} // Set platform to Twitter on click
                                         >
                                             <div className="flex items-center gap-[8px]">
-                                                <Image src={Tweet} alt="Tweet" />
-                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Twitter story</h1>
+                                                <Image src={Tweet} alt="Tweet" width={40} />
+                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Twitter</h1>
                                             </div>
                                         </div>
                                     </div>

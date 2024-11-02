@@ -338,7 +338,7 @@ export default function InviteAFriend() {
                         <button className="border-[#FFC247] border-[2.8px] cusor-pointer h-[44px] px-[14px] py-[8px] rounded-[8px] m-1">
                             <div className="flex items-center justify-center gap-[5px] ">
                                 {/* <Image src={Friend} alt="Friend" /> */}
-                                <h1 className="text-[12px] leading-[16px] text-white font-semibold" style={{ textWrap: 'nowrap', overflow: 'hidden' }}>{inviteLink ? inviteLink : 'https://...'}</h1>
+                                <h1 className="text-[12px] leading-[16px] text-white font-semibold" style={{ textWrap: 'nowrap', overflow: 'hidden', minWidth:'100%' }}>{inviteLink ? inviteLink : 'https://...'}</h1>
 
                             </div>
                         </button>
