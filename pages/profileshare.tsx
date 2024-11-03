@@ -96,7 +96,7 @@ export default function ProfileShare() {
             const params = {
                 text: "Check out my Pirate Hunt score!", // Caption for the story
                 widget_link: {
-                    url: "https://yourgame.com", // Link back to the game
+                    url: "http://t.me/Pirate_FunBot/Pirate", // Link back to the game
                     text: "Play Pirate Hunt"
                 }
             };
