@@ -40,7 +40,7 @@ import Cookies from 'js-cookie';
 
 export default function GameHome() {
 
-    const { userId, username, userInfo, level, userBalance, setUserBalance, userRank, userDailyRewardInfo, user_tap_rate_level, user_temp_tap_rate_level, setIsMusicOn } = useAppContext();
+    const { userId, username, userInfo, level, userBalance, setUserBalance, userRank, countdownTime, userDailyRewardInfo, user_tap_rate_level, user_temp_tap_rate_level, setIsMusicOn } = useAppContext();
     const [energyLevel, setEnergyLevel] = useState<number>(0);
 
     const ENERGY_CAPACITY_VALUE: number = userInfo['energy_capacity']; // Maximum energy capacity
@@ -57,7 +57,7 @@ export default function GameHome() {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
-    const [randomCoinAmount, setRandomCoinAmount] = useState<number | null>(null);
+    const [randomCoinAmount, setRandomCoinAmount] = useState<number | null>();
     const [hasClaimed, setHasClaimed] = useState(false); // state to track if the reward is claimed
     const [chestPosition, setChestPosition] = useState<{
         top: string;
@@ -78,7 +78,7 @@ export default function GameHome() {
 
     useEffect(() => {
 
-        if (localStorage.tempbal) {
+        if (Object.hasOwn(localStorage, 'tempbal')) {
             const bal = parseInt(localStorage.tempbal);
             if (bal > 0 && userId) {
                 addTapTransaction(userId, bal);
@@ -306,7 +306,7 @@ export default function GameHome() {
     }, [showChest]);
 
 
-    const handleCloseOverlay = async () => {
+    const handleCloseOverlay = async (_generatedCoinAmount: number) => {
         const today = new Date().toISOString().split('T')[0];
         const lastClaimDate = localStorage.getItem('lastClaimDate');
     
@@ -318,10 +318,11 @@ export default function GameHome() {
     
         const minAmount = 1000;
         const maxAmount = 50000;
-        const generatedCoinAmount = getRandomCoinAmount(minAmount, maxAmount);
+        // Removed the declaration of generatedCoinAmount here
+        const randomCoinAmount = getRandomCoinAmount(minAmount, maxAmount);
     
         // Update state before hiding the overlay
-        setRandomCoinAmount(generatedCoinAmount);
+        setRandomCoinAmount(randomCoinAmount);
     
         // Wait a moment before hiding overlay to allow state to update
         setTimeout(() => {
@@ -338,10 +339,10 @@ export default function GameHome() {
             }
     
             try {
-                const response = await addClaimRandomTransaction(userId, generatedCoinAmount);
+                const response = await addClaimRandomTransaction(userId, randomCoinAmount);
                 console.log("Transaction Response:", response);
     
-                setUserBalance((prevBalance: number) => prevBalance + generatedCoinAmount);
+                setUserBalance((prevBalance: number) => prevBalance + randomCoinAmount);
                 setClaimed(true);
     
                 localStorage.setItem('lastClaimDate', today);
@@ -350,6 +351,7 @@ export default function GameHome() {
             }
         }
     };
+    
 
     useEffect(() => {
         console.log("Updated Random Coin Amount:", randomCoinAmount);
@@ -565,7 +567,10 @@ export default function GameHome() {
                                     <div
                                         className={`fixed z-50 flying-chest-animation ${chestPosition.direction === "0" || chestPosition.direction === "1" ? 'horizontal' : 'vertical'}`}
                                         style={{ top: chestPosition.top, left: chestPosition.left }} // Dynamic position
-                                        onClick={() => setShowOverlay(true)}
+                                        onClick={() => {
+                                            // When the chest is clicked, show the overlay without generating coins here
+                                            setShowOverlay(true);
+                                        }}
                                     >
                                         <Image
                                             className="rounded-[8px]"
@@ -582,8 +587,8 @@ export default function GameHome() {
                                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                                         <div className="bg-white p-8 rounded-md text-center relative w-[90%] max-w-lg">
                                             {/* Close button */}
-                                            <button className="absolute top-4 right-4 text-black" onClick={handleCloseOverlay}>
-                                                <Image src={Cross} alt="Cross" />
+                                            <button className="absolute top-4 right-4 text-black" onClick={() => setShowOverlay(false)}>
+                                                <Image src={Cross} alt="Close" />
                                             </button>
 
                                             {/* Chest image */}
@@ -596,11 +601,18 @@ export default function GameHome() {
                                             {/* Coins image */}
                                             <div className="flex items-center justify-center mx-auto pt-[8px] gap-[3px]">
                                                 <Image width={20} height={20} src={golddollarcoin} alt="Coins" />
-                                                <p className="text-[16px] font-semibold">{randomCoinAmount ?? randomCoinAmount}</p>
+                                                <p className="text-[16px] font-semibold">{randomCoinAmount ??  randomCoinAmount}</p>
                                             </div>
 
                                             {/* Claim button */}
-                                            <button className="mt-6 px-10 py-2 font-semibold bg-green-500 text-white rounded" onClick={handleCloseOverlay}>
+                                            <button className="mt-6 px-10 py-2 font-semibold bg-green-500 text-white rounded" onClick={async () => {
+                                                const minAmount = 1000;   // Minimum coin amount
+                                                const maxAmount = 50000;  // Maximum coin amount
+                                                const generatedCoinAmount = getRandomCoinAmount(minAmount, maxAmount); // Generate a new random amount
+                                                
+                                                setRandomCoinAmount(generatedCoinAmount); // Set the random amount for display
+                                                await handleCloseOverlay(generatedCoinAmount); // Pass the random amount to the claim handler
+                                            }}>
                                                 Claim
                                             </button>
                                         </div>
@@ -655,6 +667,15 @@ export default function GameHome() {
                                 // handleDailyBonusClick={handleDailyBonusClick}
                                 closeDailyOverlay={closeDailyOverlay}
                             />
+
+                        </div>
+                        <div className="absolute" style={{ top: '30%', left: '85%', zIndex: 10 }}>
+
+                            {(countdownTime && countdownTime > 0) ?
+                                <div className=" rounded-full bg-white p-3"  >{countdownTime}</div> : <></>
+                            }
+
+
 
                         </div>
 

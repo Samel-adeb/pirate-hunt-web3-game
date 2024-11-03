@@ -32,7 +32,7 @@ export default function TaskList() {
     const handleBackClick = () => {
         router.back(); // Go back to the previous page
     };
-    const [isDoningTask, setIsDoingTask] = useState(false);
+    const [isDoningTask, setIsDoingTask] = useState<number|null>(null);
 
     const load = async () => {
         await getDoneTasks(userId, setDoneTasks);
@@ -59,10 +59,10 @@ export default function TaskList() {
         if (!isDoningTask) {
             window.open(task_url, '_blank');
 
-            setIsDoingTask(true);
+            setIsDoingTask(taskId);
             setTimeout(() => {
                 claimReward(taskId, parseInt(task_reward));
-                setIsDoingTask(false);
+                setIsDoingTask(null);
 
 
             }, 15000);
@@ -125,7 +125,7 @@ export default function TaskList() {
                                                 IsTaskDone(task.task_id) ? (
                                                     <h2 className="text-center -mt-[4px]">DONE</h2>
                                                 ) : (
-                                                    <h2 onClick={() => doTasks(task.task_id, task.task_url, task.task_reward)} className="text-center">{isDoningTask ? "Checking..." : "GO"}</h2>
+                                                    <h2 onClick={() => doTasks(task.task_id, task.task_url, task.task_reward)} className="text-center">{isDoningTask=== task.task_id? "Checking..." : "GO"}</h2>
                                                 )
                                             }
                                         </div>

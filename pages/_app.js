@@ -4,10 +4,23 @@ import { ToastContainer } from "react-toastify";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import Redirect from '../app/components/Redirect';
 import Sound from '../app/components/Sound';
-// import LogStatus from '../app/components/LogStatus';
+import { useEffect } from 'react';
 import ErrorBoundary from '../app/components/ErrorBoundary'; // Import ErrorBoundary
 
 function MyApp({ Component, pageProps }) {
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = 'https://telegram.org/js/telegram-web-app.js';
+        script.async = true;  // Load asynchronously
+        script.onload = () => {
+            console.log("Telegram Web App SDK loaded");
+        };
+        document.body.appendChild(script);
+
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
     return (
         <AppWrapper>
             <ErrorBoundary> {/* Wrap components inside ErrorBoundary */}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { GameNavbar } from "@/app/components/GameNavbar";
 import { useRouter } from 'next/navigation';
 import Link from "next/link";
@@ -11,26 +11,27 @@ import baby from "../public/assets/baby.svg";
 import ProgressBar from "@/app/components/ProgressBar";
 import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
 import ShareButton from "../public/assets/ShareButton.svg";
+
 import brownCross from "../public/assets/brownCross.svg";
-import Insta from "../public/assets/Insta.svg";
+import Insta from "../public/assets/whatsapp.png";
 import Telegrame from "../public/assets/Telegrame.svg";
 import Cross from "../public/assets/Cross.svg";
 import Tweet from "../public/assets/Tweet.svg";
 import { useAppContext } from '@/context';
-import { getTreasurePurchaseHistory, getUserInvivites } from '@/scripts';
+import { getInviteLink, getTreasurePurchaseHistory, getUserInvivites } from '@/scripts';
+import html2canvas from 'html2canvas';
 
 
 export default function ProfileShare() {
-    const { userId, username, userInfo, level, userBalance, userInvites, setUserInvites, treasurePurchaseHistory, setTreasurePurchaseHistory } = useAppContext();
+    const { userId, username, userInfo, level, userBalance, userInvites, inviteLink, setInviteLink, setUserInvites, treasurePurchaseHistory, setTreasurePurchaseHistory } = useAppContext();
     const [isOverlayVisible, setOverlayVisible] = useState(false);
-    // const [platform, setPlatform] = useState('');
-   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [isSharing, setIsSharing] = useState(false); // State to track if sharing is in progress
+
     const router = useRouter();
 
 
     const load = async () => {
         await getUserInvivites(userId, setUserInvites);
+        await getInviteLink(userId, setInviteLink);
         await getTreasurePurchaseHistory(userId, setTreasurePurchaseHistory);
 
     }
@@ -60,92 +61,86 @@ export default function ProfileShare() {
         return daysDifference;
     }
 
-    // const handleShare = async () => {
-    //     if (!navigator.share) {
-    //         alert('Sharing is not supported in your browser.');
-    //         return;
-    //     }
 
-    //     if (isSharing) {
-    //         alert('Sharing is already in progress.');
-    //         return;
-    //     }
+    // Reference to the container you want to capture, with correct TypeScript type
+    const shareSectionRef = useRef<HTMLDivElement | null>(null);
 
-    //     setIsSharing(true); // Set sharing to true when sharing starts
+    // Scroll to and capture the element
+    const scrollToAndCapture = async () => {
+        if (!shareSectionRef.current) return; // Ensure the ref is not null
 
-    //     try {
-    //         const shareData = {
-    //             title: 'Pirate Hunt',
-    //             text: 'Check out my achievements in Pirate Hunt! Ive earned 100,000,000 coins!',
-    //             url: `${window.location.origin}/sharecard`, // Replace this with your /sharecard URL or specific page URL if needed
-    //         };
+        // Scroll to the element
+        shareSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-    //         // Modify share content based on the platform selected
-    //         if (platform === 'telegram') {
-    //             shareData.title = 'Pirate Hunt - Telegram Story';
-    //             shareData.text = 'Check out my achievements in Pirate Hunt on Telegram!';
-    //         } else if (platform === 'instagram') {
-    //             shareData.title = 'Pirate Hunt - Instagram Story';
-    //             shareData.text = 'Check out my achievements in Pirate Hunt on Instagram!';
-    //         } else if (platform === 'twitter') {
-    //             shareData.title = 'Pirate Hunt - Twitter Story';
-    //             shareData.text = 'Check out my achievements in Pirate Hunt on Twitter!';
-    //         }
+        // Add a slight delay to apply the offset after centering
 
-    //         // Call Web Share API
-    //         await navigator.share(shareData);
-    //         console.log('Content shared successfully');
-    //     } catch (error) {
-    //         console.error('Error sharing:', error);
-    //     } finally {
-    //         setIsSharing(false); // Set sharing back to false when sharing ends
-    //     }
+        window.scrollBy(0, 50); // Adjust '20' to whatever extra offset you need
 
-    //     if (platform === 'telegram') {
-    //         handleShareToTelegram();
-    //     } else {
-    //         try {
-    //             if (!navigator.share) {
-    //                 alert('Sharing is not supported in your browser.');
-    //                 return;
-    //             }
 
-    //             if (isSharing) {
-    //                 alert('Sharing is already in progress.');
-    //                 return;
-    //             }
+        // Delay a bit to allow scroll positioning
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
-    //             setIsSharing(true);
+        const canvas = await html2canvas(shareSectionRef.current);
+        return canvas.toDataURL('image/png');
+    };
+    // Function to handle sharing
+    const handleShare = async () => {
+        // Optional: close any overlays if needed
+        closeOverlay();
 
-    //             const shareData = {
-    //                 title: 'Pirate Hunt',
-    //                 text: 'Check out my achievements in Pirate Hunt! Ive earned 100,000,000 coins!',
-    //                 url: `${window.location.origin}/sharecard`,
-    //             };
+        // Capture the section and get the image URL
+        const imageUrl = await scrollToAndCapture();
+        if (imageUrl && window.Telegram?.WebApp) {
+            // Define optional parameters
+            const params = {
+                text: "Check out my Pirate Hunt score!", // Caption for the story
+                widget_link: {
+                    url: "https://yourgame.com", // Link back to the game
+                    text: "Play Pirate Hunt"
+                }
+            };
 
-    //             if (platform === 'instagram') {
-    //                 shareData.title = 'Pirate Hunt - Instagram Story';
-    //                 shareData.text = 'Check out my achievements in Pirate Hunt on Instagram!';
-    //             } else if (platform === 'twitter') {
-    //                 shareData.title = 'Pirate Hunt - Twitter Story';
-    //                 shareData.text = 'Check out my achievements in Pirate Hunt on Twitter!';
-    //             }
+            // Share to Telegram story
+            window.Telegram.WebApp.shareToStory(imageUrl, params);
+        } else {
+            console.error("Telegram WebApp is not available or image capture failed.");
+        }
+    };
+    // Define sharing functions for each platform
+    const handleTelegramShare = async () => {
+        closeOverlay();
 
-    //             // Call Web Share API
-    //             await navigator.share(shareData);
-    //             console.log('Content shared successfully');
-    //         } catch (error) {
-    //             console.error('Error sharing:', error);
-    //         } finally {
-    //             setIsSharing(false);
-    //         }
-    //     }
-    // };
 
-    // const handleShareToTelegram = () => {
-    //     const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.origin + '/sharecard')}&text=${encodeURIComponent('Check out my achievements in Pirate Hunt!')}`;
-    //     window.open(shareUrl, '_blank');
-    // };
+        // const telegramUrl = `https://t.me/share/url?url=`;//${encodeURIComponent(imageUrl)}`;
+        const url = encodeURIComponent(inviteLink); // Link to share
+        const message = encodeURIComponent('Check out Pirate hunt!');
+        window.open(`https://t.me/share/url?url=${url}&text=${message}`, '_blank');
+
+
+
+    };
+
+    const handleInstagramShare = async () => {
+        closeOverlay();
+
+        // const instagramUrl = `https://www.instagram.com/create/story/?media=${encodeURIComponent(imageUrl)}`;
+        // window.open(instagramUrl, '_blank');
+        const message = encodeURIComponent('Check out Pirate hunt! \n' + inviteLink);
+        window.open(`https://wa.me/?text=${message}`, '_blank');
+
+    };
+
+    const handleTwitterShare = async () => {
+        closeOverlay();
+
+        // const twitterUrl = `https://x.com/intent/tweet?url=${encodeURIComponent(imageUrl)}`;
+        // window.open(twitterUrl, '_blank');
+
+        const url = encodeURIComponent(inviteLink);
+        const message = encodeURIComponent('Check out Pirate hunt!');
+        window.open(`https://twitter.com/intent/tweet?url=${url}&text=${message}`, '_blank');
+
+    };
 
     return (
         <>
@@ -153,6 +148,8 @@ export default function ProfileShare() {
             <GameNavbar />
 
             <div className="relative h-[100vh + 200px]"
+                id="shareSection"
+                ref={shareSectionRef}
                 style={{
                     background: 'linear-gradient(180deg, #201101 0%, #472402 100%)',
                 }}>
@@ -205,7 +202,7 @@ export default function ProfileShare() {
                 </div>
 
 
-                <div className="absolute" style={{ cursor: 'pointer', top:'2%', right:'2%', zIndex:2 }} onClick={() => router.back()}>
+                <div className="absolute" style={{ cursor: 'pointer', top: '2%', right: '2%', zIndex: 2 }} onClick={() => router.back()}>
                     <Image width={35} height={35} src={Cross} alt="Cross" />
                 </div>
 
@@ -244,11 +241,22 @@ export default function ProfileShare() {
                                     <div className="pt-[20px]">
                                         <div
                                             className="px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247] border-[1px] border-[#FFC247]"
-                                            // onClick={() => setPlatform('telegram')} // Set platform to telegram on click
+                                            onClick={() => handleShare()} // Set platform to telegram on click
                                         >
                                             <div className="flex items-center gap-[8px]">
-                                                <Image src={Telegrame} alt="Telegrame" />
-                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Telegram story</h1>
+                                                <Image src={Telegrame} alt="Telegrame" width={30} />
+                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Telegram Story</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="pt-[20px]">
+                                        <div
+                                            className="px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247] border-[1px] border-[#FFC247]"
+                                            onClick={() => handleTelegramShare()} // Set platform to telegram on click
+                                        >
+                                            <div className="flex items-center gap-[8px]">
+                                                <Image src={Telegrame} alt="Telegrame" width={40} />
+                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Telegram</h1>
                                             </div>
                                         </div>
                                     </div>
@@ -256,11 +264,11 @@ export default function ProfileShare() {
                                     <div className="pt-[5px]">
                                         <div
                                             className="px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247] border-[1px] border-[#FFC247]"
-                                            // onClick={() => setPlatform('instagram')} // Set platform to Instagram on click
+                                            onClick={() => handleInstagramShare()} // Set platform to Instagram on click
                                         >
                                             <div className="flex items-center gap-[8px]">
-                                                <Image src={Insta} alt="Insta" />
-                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Instagram story</h1>
+                                                <Image src={Insta} alt="Insta" width={40} />
+                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Whatsapp</h1>
                                             </div>
                                         </div>
                                     </div>
@@ -268,11 +276,11 @@ export default function ProfileShare() {
                                     <div className="pt-[5px]">
                                         <div
                                             className="px-[16px] py-[12px] rounded-[8px] hover:bg-[#FFC247] border-[1px] border-[#FFC247]"
-                                            // onClick={() => setPlatform('twitter')} // Set platform to Twitter on click
+                                            onClick={() => handleTwitterShare()} // Set platform to Twitter on click
                                         >
                                             <div className="flex items-center gap-[8px]">
-                                                <Image src={Tweet} alt="Tweet" />
-                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Twitter story</h1>
+                                                <Image src={Tweet} alt="Tweet" width={40} />
+                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Twitter</h1>
                                             </div>
                                         </div>
                                     </div>
@@ -281,20 +289,7 @@ export default function ProfileShare() {
 
                                 </div>
 
-                                {/* Share Button */}
-                                <Link href="/sharecard">
-                                    <div className="pt-[10px]">
-                                        <button
-                                            className={`bg-[#FFC247] p-[10px] rounded-[25px] h-[51px] flex flex-col items-center justify-center text-[16px] leading-[16px] tracking-[0.4px] text-center text-white font-medium ${isSharing ? 'opacity-50 cursor-not-allowed' : ''
-                                                }`}
-                                            // onClick={handleShare} // Share the content on the selected platform
-                                            disabled={isSharing} // Disable button while sharing is in progress
-                                        >
-                                            {isSharing ? 'Sharing...' : 'Share'}
 
-                                        </button>
-                                    </div>
-                                </Link>
 
                                 <button
                                     onClick={closeOverlay}
@@ -346,9 +341,12 @@ export default function ProfileShare() {
                     </div>
 
                     <div className="pt-[30px] text-center">
-                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-[#FFFFFF73] mt-3 mx-1">Coin increases when you engaged in the game by tapping<br />
-                            You can as well level up your Pirate Token by unlocking the<br /> boost from the Treasure Hunt
-                        </p>
+                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-[#FFFFFF73] mt-3 mx-1">Increase your coins by engaging in the </p>
+                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-[#FFFFFF73]  mx-1">game through tapping.</p>
+
+                        <p className="text-[12px]  leading-[16px] tracking-[0.4px] text-[#FFFFFF73] mt-3 mx-1">Level up your Pirate Token by unlocking </p>
+                        <p className="text-[12px]  leading-[16px] tracking-[0.4px] text-[#FFFFFF73]  mx-1">boosts in the Treasure Hunt.</p>
+
                     </div>
                 </div>
 

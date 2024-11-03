@@ -14,14 +14,21 @@ export const getUserId = async () => {
 
         // Parse URL to get query parameters
         let queryString = decodedUrl.split('#tgWebAppData=user=')[1];
-        if (queryString !== undefined) {
-            localStorage.setItem('url', url);
-        } else {
 
+        if(Object.hasOwn(localStorage,"url")){
             url = localStorage.getItem('url') || '/';
             decodedUrl = decodeURIComponent(decodeURIComponent(url));
-            queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+            queryString = decodedUrl.split('#tgWebAppData=user=')[1]; 
+        }else{
+            if (queryString !== undefined) {
+                localStorage.setItem('url', url);
+            } else {
+                url = localStorage.getItem('url') || '/';
+                decodedUrl = decodeURIComponent(decodeURIComponent(url));
+                queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+            }
         }
+        
 
         const querytring = queryString.split('&')[0];
         // Parse user data JSON
@@ -51,13 +58,18 @@ export const getUsername = async () => {
 
         // Parse URL to get query parameters
         let queryString = decodedUrl.split('#tgWebAppData=user=')[1];
-        if (queryString !== undefined) {
-            localStorage.setItem('url', url);
-        } else {
-
+        if(Object.hasOwn(localStorage,"url")){
             url = localStorage.getItem('url') || '/';
             decodedUrl = decodeURIComponent(decodeURIComponent(url));
-            queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+            queryString = decodedUrl.split('#tgWebAppData=user=')[1]; 
+        }else{
+            if (queryString !== undefined) {
+                localStorage.setItem('url', url);
+            } else {
+                url = localStorage.getItem('url') || '/';
+                decodedUrl = decodeURIComponent(decodeURIComponent(url));
+                queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+            }
         }
 
         const querytring = queryString.split('&')[0];
@@ -68,7 +80,7 @@ export const getUsername = async () => {
         const userId = userData.id;
         const firstName = userData.first_name;
         const lastName = userData.last_name;
-        const username = userData.username || userData.first_name;
+        const username = userData.username || userData.first_name || lastName || "Name Unknown";
 
 
         return username;
@@ -211,7 +223,7 @@ export const boostTapRateBonus = async (userId: string | null, id: number) => {
         showFailedMessage(response.error);
         return false;
     } else {
-        showSuccessMessage("Tap Rate Boosted successfully");
+        showSuccessMessage(response.message);
         return response;
     }
 }
