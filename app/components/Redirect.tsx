@@ -43,7 +43,7 @@ function Redirect() {
             // Set an event handler for the back button
             window.Telegram.WebApp.BackButton.onClick(() => {
                 // Handle the navigation, e.g., go to previous page
-                router.back();
+                router.push('/gamehome');
             });
         } else {
 
