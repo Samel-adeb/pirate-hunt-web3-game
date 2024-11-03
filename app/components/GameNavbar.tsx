@@ -6,11 +6,12 @@ export const GameNavbar = () => {
     const { userInfo } = useAppContext(); // Access userId from context
     const router = useRouter();
     const [showIsBlocked, setShowIsBlocked] = useState<boolean>(false);
-    const [message, setMessage] = useState("Check your internet connection!");
+    const [message, setMessage] = useState("Something went wrong");
     useEffect(() => {
         // alert(JSON.stringify(userInfo));
         if (!isObjectEmpty(userInfo) && router.pathname !== '/' && 'message' in userInfo) {
-            setMessage(userInfo.message);
+            setMessage("Something went wrong");
+            console.log(userInfo.message);
             setShowIsBlocked(true);
         } else {
             setShowIsBlocked(false);
