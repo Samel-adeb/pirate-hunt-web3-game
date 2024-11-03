@@ -66,23 +66,20 @@ export default function ProfileShare() {
     // Reference to the container you want to capture, with correct TypeScript type
     const shareSectionRef = useRef<HTMLDivElement | null>(null);
 
-    // Scroll to and capture the element
+    // Function to scroll, capture, and share
     const scrollToAndCapture = async () => {
         if (!shareSectionRef.current) return; // Ensure the ref is not null
 
         // Scroll to the element
         shareSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        window.scrollBy(0, 50); // Adjust offset as needed
 
-        // Add a slight delay to apply the offset after centering
-
-        window.scrollBy(0, 50); // Adjust '20' to whatever extra offset you need
-
-
-        // Delay a bit to allow scroll positioning
+        // Delay to allow the scroll positioning
         await new Promise((resolve) => setTimeout(resolve, 500));
 
+        // Capture the element as an image
         const canvas = await html2canvas(shareSectionRef.current);
-        return canvas.toDataURL('image/png');
+        return canvas.toDataURL('image/png'); // Return the image URL
     };
     // Function to handle sharing
     const handleShare = async () => {
@@ -111,7 +108,8 @@ export default function ProfileShare() {
             } catch (e) {
                 const error = e as CustomError;
                 showInfoMessage(error.message);
-                showInfoMessage(error.toString());
+              
+                showInfoMessage(error.stack);
                 console.log(error);
 
             }
