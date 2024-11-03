@@ -22,8 +22,12 @@ function Redirect() {
 
     useEffect(() => {
         const showTelegramBackButton = () => {
-            if (window.Telegram && window.Telegram.WebApp && router.pathname !== '/' && router.pathname !== '/gamehome') {
-                window.Telegram.WebApp.BackButton.show();
+            if (window.Telegram && window.Telegram.WebApp) {
+                if (router.pathname !== '/' && router.pathname !== '/gamehome') {
+                    window.Telegram.WebApp.BackButton.show();
+                } else {
+                    window.Telegram.WebApp.BackButton.hide();
+                }
                 // Set an event handler for the back button
                 window.Telegram.WebApp.BackButton.onClick(() => {
                     // Handle the navigation, e.g., go to previous page
