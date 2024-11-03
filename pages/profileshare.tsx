@@ -20,6 +20,7 @@ import Tweet from "../public/assets/Tweet.svg";
 import { useAppContext } from '@/context';
 import { getInviteLink, getTreasurePurchaseHistory, getUserInvivites } from '@/scripts';
 import html2canvas from 'html2canvas';
+import { showInfoMessage } from '@/scripts/utils';
 
 
 export default function ProfileShare() {
@@ -99,6 +100,23 @@ export default function ProfileShare() {
                     text: "Play Pirate Hunt"
                 }
             };
+
+            
+            if (!window.Telegram || !window.Telegram.WebApp) {
+                console.error("Telegram WebApp not available.");
+                return;
+            }
+
+            // Get the version from initParams
+            const version = window.Telegram.WebView.initParams.tgWebVersion;
+            
+            
+
+            // Check if the version supports shareToStory
+            if (!version || parseFloat(version) < 7.8) { 
+                showInfoMessage("Share To Story method is not supported on this version telegram "+ version);
+                return;               
+            }
 
             // Share to Telegram story
             window.Telegram.WebApp.shareToStory(imageUrl, params);

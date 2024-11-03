@@ -2,6 +2,7 @@
 declare global {
     interface Window {
         Telegram: {
+            WebView: any;
             WebApp: {
                 initData: string;
                 initDataUnsafe: object;
@@ -19,6 +20,7 @@ declare global {
                     show: () => void;
                     hide: () => void;
                     onClick: (callback: () => void) => void;
+                    offClick: () => void
                 };
                 shareToStory: (
                     media_url: string,
