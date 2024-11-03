@@ -18,7 +18,7 @@ import Telegrame from "../public/assets/Telegrame.svg";
 import Cross from "../public/assets/Cross.svg";
 import Tweet from "../public/assets/Tweet.svg";
 import { useAppContext } from '@/context';
-import { getInviteLink, getTreasurePurchaseHistory, getUserInvivites,} from '@/scripts';
+import { getInviteLink, getTreasurePurchaseHistory, getUserInvivites, } from '@/scripts';
 // import { uploadImage } from '@/scripts';
 // import html2canvas from 'html2canvas';
 import { showInfoMessage } from '@/scripts/utils';
@@ -110,13 +110,13 @@ export default function ProfileShare() {
 
             setIsLoading(true);
             // Upload image to get an HTTPS URL
-            const imageUrl =  `${process.env.NEXT_STORY_IMAGE_URL}`//await uploadImage(imageDataUrl);
+            const imageUrl = `${process.env.NEXT_STORY_IMAGE_URL}`//await uploadImage(imageDataUrl);
             if (!imageUrl) {
                 throw new Error("Failed to upload image.");
             }
-
+            // alert(imageUrl);
             const params = {
-                text: "Check out my Pirate Hunt score!", // Caption for the story
+                text: "I have earned " + userBalance + "coins on Pirate Hunt!", // Caption for the story
                 widget_link: {
                     url: inviteLink, // Link back to the game
                     text: "Play Pirate Hunt"
@@ -199,7 +199,7 @@ export default function ProfileShare() {
                                 height={35}
                                 src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : ProfileSvg} // Properly handle fallback
                                 alt="Profile Picture"
-                                style={{objectFit: 'contain'}}
+                                style={{ objectFit: 'contain' }}
                                 className="rounded-full"
                             />
 
