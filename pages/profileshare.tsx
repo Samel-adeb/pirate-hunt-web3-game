@@ -19,8 +19,7 @@ import Cross from "../public/assets/Cross.svg";
 import Tweet from "../public/assets/Tweet.svg";
 import { useAppContext } from '@/context';
 import { getInviteLink, getTreasurePurchaseHistory, getUserInvivites, uploadImage } from '@/scripts';
-
-import domtoimage from 'dom-to-image-more';
+import html2canvas from 'html2canvas';
 import { showInfoMessage } from '@/scripts/utils';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
 
@@ -69,24 +68,24 @@ export default function ProfileShare() {
     const shareSectionRef = useRef<HTMLDivElement | null>(null);
 
     const scrollToAndCapture = async () => {
+        // Scroll to the element
         if (shareSectionRef.current) {
-            // Scroll to the element
             shareSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            await new Promise((resolve) => setTimeout(resolve, 300));
+            window.scrollBy(0, 50); // Adjust offset as needed
+
+            // Delay to allow the scroll positioning
+            await new Promise((resolve) => setTimeout(resolve, 500));
         }
-    
-        try {
-            const dataUrl = await domtoimage.toPng(shareSectionRef.current || document.body, {
-                style: {
-                    transform: 'scale(1)', // Optional: can adjust scale if needed
-                    transformOrigin: 'top left',
-                },
-                quality: 0.9, // Set the quality for lower file size
-            });
-            return dataUrl;
-        } catch (error) {
-            console.error('Error capturing image:', error);
-        }
+
+        // Capture the visible portion of the viewport
+        const canvas = await html2canvas(document.getElementById('shareSection') ?? document.body, {
+            scrollX: -window.scrollX, // to capture the current scroll position
+            scrollY: -window.scrollY, // to capture the current scroll position
+            width: 200,  // set the width to the viewport's width
+            height: 600, // set the height to the viewport's height
+            useCORS: true // Ensure that CORS issues are handled, if needed
+        });
+        return canvas.toDataURL('image/png'); // Return the image URL
     };
 
 
