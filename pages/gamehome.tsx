@@ -306,7 +306,7 @@ export default function GameHome() {
     }, [showChest]);
 
 
-    const handleCloseOverlay = async (_generatedCoinAmount: number) => {
+    const handleCloseOverlay = async (randomCoinAmount: number) => {
         const today = new Date().toISOString().split('T')[0];
         const lastClaimDate = localStorage.getItem('lastClaimDate');
     
@@ -319,7 +319,7 @@ export default function GameHome() {
         const minAmount = 1000;
         const maxAmount = 50000;
         // Removed the declaration of generatedCoinAmount here
-        const randomCoinAmount = getRandomCoinAmount(minAmount, maxAmount);
+        // const randomCoinAmountt = getRandomCoinAmount(minAmount, maxAmount);
     
         // Update state before hiding the overlay
         setRandomCoinAmount(randomCoinAmount);

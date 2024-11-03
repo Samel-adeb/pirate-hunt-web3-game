@@ -105,10 +105,15 @@ export default function ProfileShare() {
             try {
                 // Share to Telegram story
                 window.Telegram.WebApp.shareToStory(imageUrl, params);
-            } catch (e:any ) {
-                showInfoMessage(e.message);
-                console.log(e);
-                
+            } catch (e) {
+                if (e instanceof Error) {
+                    showInfoMessage(e.message);
+                    console.log(e);
+                } else {
+                    // Handle unexpected error types
+                    showInfoMessage("An unknown error occurred");
+                    console.log("An unknown error occurred:", e);
+                }
             }
         } else {
             console.error("Telegram WebApp is not available or image capture failed.");
