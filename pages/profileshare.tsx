@@ -113,7 +113,7 @@ export default function ProfileShare() {
                 }
             };
 
-            window.Telegram.WebApp.shareToStory(imageUrl, params);
+            window.Telegram.WebApp.shareToStory("https://ipo.srw.mybluehost.me/storage//stories//1730642905.png", params);
         } catch (e) {
             const error = e as CustomError;
             showInfoMessage(error.message);
