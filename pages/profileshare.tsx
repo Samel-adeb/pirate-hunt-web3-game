@@ -18,8 +18,9 @@ import Telegrame from "../public/assets/Telegrame.svg";
 import Cross from "../public/assets/Cross.svg";
 import Tweet from "../public/assets/Tweet.svg";
 import { useAppContext } from '@/context';
-import { getInviteLink, getTreasurePurchaseHistory, getUserInvivites, uploadImage } from '@/scripts';
-import html2canvas from 'html2canvas';
+import { getInviteLink, getTreasurePurchaseHistory, getUserInvivites,} from '@/scripts';
+// import { uploadImage } from '@/scripts';
+// import html2canvas from 'html2canvas';
 import { showInfoMessage } from '@/scripts/utils';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
 
