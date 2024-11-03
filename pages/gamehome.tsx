@@ -306,7 +306,7 @@ export default function GameHome() {
     }, [showChest]);
 
 
-    const handleCloseOverlay = async (_generatedCoinAmount: number) => {
+    const handleCloseOverlay = async (generatedCoinAmount: number) => {
         const today = new Date().toISOString().split('T')[0];
         const lastClaimDate = localStorage.getItem('lastClaimDate');
     
@@ -316,13 +316,10 @@ export default function GameHome() {
             return;
         }
     
-        const minAmount = 1000;
-        const maxAmount = 50000;
-        // Removed the declaration of generatedCoinAmount here
-        const randomCoinAmount = getRandomCoinAmount(minAmount, maxAmount);
+   
     
         // Update state before hiding the overlay
-        setRandomCoinAmount(randomCoinAmount);
+        setRandomCoinAmount(generatedCoinAmount);
     
         // Wait a moment before hiding overlay to allow state to update
         setTimeout(() => {
@@ -339,10 +336,10 @@ export default function GameHome() {
             }
     
             try {
-                const response = await addClaimRandomTransaction(userId, randomCoinAmount);
+                const response = await addClaimRandomTransaction(userId, generatedCoinAmount);
                 console.log("Transaction Response:", response);
     
-                setUserBalance((prevBalance: number) => prevBalance + randomCoinAmount);
+                setUserBalance((prevBalance: number) => prevBalance + generatedCoinAmount);
                 setClaimed(true);
     
                 localStorage.setItem('lastClaimDate', today);
@@ -568,7 +565,10 @@ export default function GameHome() {
                                         className={`fixed z-50 flying-chest-animation ${chestPosition.direction === "0" || chestPosition.direction === "1" ? 'horizontal' : 'vertical'}`}
                                         style={{ top: chestPosition.top, left: chestPosition.left }} // Dynamic position
                                         onClick={() => {
-                                            // When the chest is clicked, show the overlay without generating coins here
+                                            const minAmount = 1000;   // Minimum coin amount
+                                            const maxAmount = 50000;  // Maximum coin amount
+                                            const generatedCoinAmount = getRandomCoinAmount(minAmount, maxAmount);
+                                            setRandomCoinAmount(generatedCoinAmount);
                                             setShowOverlay(true);
                                         }}
                                     >
@@ -587,7 +587,7 @@ export default function GameHome() {
                                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                                         <div className="bg-white p-8 rounded-md text-center relative w-[90%] max-w-lg">
                                             {/* Close button */}
-                                            <button className="absolute top-4 right-4 text-black" onClick={() => setShowOverlay(false)}>
+                                            <button className="absolute top-4 right-4 text-black" onClick={() => handleCloseOverlay(randomCoinAmount || 0)}>
                                                 <Image src={Cross} alt="Close" />
                                             </button>
 
@@ -601,18 +601,11 @@ export default function GameHome() {
                                             {/* Coins image */}
                                             <div className="flex items-center justify-center mx-auto pt-[8px] gap-[3px]">
                                                 <Image width={20} height={20} src={golddollarcoin} alt="Coins" />
-                                                <p className="text-[16px] font-semibold">{randomCoinAmount ??  randomCoinAmount}</p>
+                                                <p className="text-[16px] font-semibold">{randomCoinAmount !== null ? randomCoinAmount : 2000}</p>
                                             </div>
 
                                             {/* Claim button */}
-                                            <button className="mt-6 px-10 py-2 font-semibold bg-green-500 text-white rounded" onClick={async () => {
-                                                const minAmount = 1000;   // Minimum coin amount
-                                                const maxAmount = 50000;  // Maximum coin amount
-                                                const generatedCoinAmount = getRandomCoinAmount(minAmount, maxAmount); // Generate a new random amount
-                                                
-                                                setRandomCoinAmount(generatedCoinAmount); // Set the random amount for display
-                                                await handleCloseOverlay(generatedCoinAmount); // Pass the random amount to the claim handler
-                                            }}>
+                                            <button className="mt-6 px-10 py-2 font-semibold bg-green-500 text-white rounded" onClick={() => handleCloseOverlay(randomCoinAmount || 0)}>
                                                 Claim
                                             </button>
                                         </div>
