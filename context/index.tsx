@@ -70,7 +70,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         Cookies.set('userRank', JSON.stringify(userRank));
         Cookies.set('userDailyRewardInfo', JSON.stringify(userDailyRewardInfo));
         Cookies.set('allRanks', JSON.stringify(allRanks));
-        Cookies.set('userInvites', JSON.stringify(userInvites));
+        //Cookies.set('userInvites', JSON.stringify(userInvites));
         Cookies.set('inviteLink', inviteLink);
         Cookies.set('allDailyBonues', JSON.stringify(allDailyBonues));
         Cookies.set('claimedDailyBonuses', JSON.stringify(claimedDailyBonuses));
