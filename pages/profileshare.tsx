@@ -104,13 +104,14 @@ export default function ProfileShare() {
             interface CustomError extends Error {
                 message: string;
             }
-            showInfoMessage("")
+            
             try {
                 // Share to Telegram story
                 window.Telegram.WebApp.shareToStory(imageUrl, params);
             } catch (e) {
                 const error = e as CustomError;
                 showInfoMessage(error.message);
+                showInfoMessage(error.toString());
                 console.log(error);
 
             }
