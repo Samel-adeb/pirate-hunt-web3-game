@@ -15,11 +15,11 @@ export const getUserId = async () => {
         // Parse URL to get query parameters
         let queryString = decodedUrl.split('#tgWebAppData=user=')[1];
 
-        if(Object.hasOwn(localStorage,"url")){
+        if (Object.hasOwn(localStorage, "url")) {
             url = localStorage.getItem('url') || '/';
             decodedUrl = decodeURIComponent(decodeURIComponent(url));
-            queryString = decodedUrl.split('#tgWebAppData=user=')[1]; 
-        }else{
+            queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+        } else {
             if (queryString !== undefined) {
                 localStorage.setItem('url', url);
             } else {
@@ -28,7 +28,7 @@ export const getUserId = async () => {
                 queryString = decodedUrl.split('#tgWebAppData=user=')[1];
             }
         }
-        
+
 
         const querytring = queryString.split('&')[0];
         // Parse user data JSON
@@ -58,11 +58,11 @@ export const getUsername = async () => {
 
         // Parse URL to get query parameters
         let queryString = decodedUrl.split('#tgWebAppData=user=')[1];
-        if(Object.hasOwn(localStorage,"url")){
+        if (Object.hasOwn(localStorage, "url")) {
             url = localStorage.getItem('url') || '/';
             decodedUrl = decodeURIComponent(decodeURIComponent(url));
-            queryString = decodedUrl.split('#tgWebAppData=user=')[1]; 
-        }else{
+            queryString = decodedUrl.split('#tgWebAppData=user=')[1];
+        } else {
             if (queryString !== undefined) {
                 localStorage.setItem('url', url);
             } else {
@@ -614,6 +614,19 @@ export const getTreasurePurchaseHistory = async (userId: string | null, setTreas
         // Optionally handle error messages (e.g., display to the user)
     }
 };
+export const uploadImage = async (imageDataUrl: string) => {
+    // Send image data to your backend for storage
+    const url = urll + '/api/upload/image';
+    const response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({ image: imageDataUrl }),
+        headers: { 'Content-Type': 'application/json' }
+    });
+    const data = await response.json();
+    return process.env.NEXT_PUBLIC_API_URL + data.image_url; // URL of the uploaded image
+};
+
+
 
 const sortUsersByRank = (userArray: Array<any>) => {
     return userArray.sort((a, b) => a.rank - b.rank);
