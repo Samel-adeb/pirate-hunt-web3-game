@@ -18,7 +18,7 @@ import Telegrame from "../public/assets/Telegrame.svg";
 import Cross from "../public/assets/Cross.svg";
 import Tweet from "../public/assets/Tweet.svg";
 import { useAppContext } from '@/context';
-import { getInviteLink, getTreasurePurchaseHistory, getUserInvivites } from '@/scripts';
+import { getInviteLink, getTreasurePurchaseHistory, getUserInvivites, uploadImage } from '@/scripts';
 import html2canvas from 'html2canvas';
 import { showInfoMessage } from '@/scripts/utils';
 
@@ -81,15 +81,30 @@ export default function ProfileShare() {
         const canvas = await html2canvas(shareSectionRef.current);
         return canvas.toDataURL('image/png'); // Return the image URL
     };
-    // Function to handle sharing
+
+
+    
     const handleShare = async () => {
+        interface CustomError extends Error {
+            message: string;
+        }
         // Optional: close any overlays if needed
         closeOverlay();
 
-        // Capture the section and get the image URL
-        const imageUrl = await scrollToAndCapture();
-        if (imageUrl && window.Telegram?.WebApp) {
-            // Define optional parameters
+        try {
+            const imageDataUrl = await scrollToAndCapture();
+
+            if (!imageDataUrl) {
+                console.error("Image capture failed or imageDataUrl is empty.");
+                return;
+            }
+
+            // Upload image to get an HTTPS URL
+            const imageUrl = await uploadImage(imageDataUrl);
+            if (!imageUrl) {
+                throw new Error("Failed to upload image.");
+            }
+           
             const params = {
                 text: "Check out my Pirate Hunt score!", // Caption for the story
                 widget_link: {
@@ -98,26 +113,19 @@ export default function ProfileShare() {
                 }
             };
 
-            interface CustomError extends Error {
-                message: string;
-            }
-            
-            try {
-                // Share to Telegram story
-                window.Telegram.WebApp.shareToStory(imageUrl, params);
-            } catch (e) {
-                const error = e as CustomError;
-                showInfoMessage(error.message);
-              
-                showInfoMessage(error.stack);
-                console.log(error);
+            window.Telegram.WebApp.shareToStory(imageUrl, params);
+        } catch (e) {
+            const error = e as CustomError;
+            showInfoMessage(error.message);
 
-            }
-        } else {
-            console.error("Telegram WebApp is not available or image capture failed.");
+            showInfoMessage(error.stack);
+            console.log(error);
+
         }
+
     };
-    // Define sharing functions for each platform
+    
+
     const handleTelegramShare = async () => {
         closeOverlay();
 
@@ -343,7 +351,7 @@ export default function ProfileShare() {
                                 <span className="font-extrabold text-white">{userBalance ? userBalance : 0}</span> / {level.next_level_threshold ? level.next_level_threshold : 0}
                             </p>
                         </div>
-                        <div className="w-[280.32px] h-[0.38px] rounded-full">
+                        <div className="w-[280.32px] h-[0.38px]">
                             <ProgressBar progress={userBalance * 100 / level.next_level_threshold} /> {/* Change the progress value as needed */}
                         </div>
 
