@@ -96,7 +96,7 @@ export default function ProfileShare() {
             const params = {
                 text: "Check out my Pirate Hunt score!", // Caption for the story
                 widget_link: {
-                    url: "http://t.me/Pirate_FunBot/Pirate", // Link back to the game
+                    url: inviteLink, // Link back to the game
                     text: "Play Pirate Hunt"
                 }
             };
@@ -104,6 +104,7 @@ export default function ProfileShare() {
             interface CustomError extends Error {
                 message: string;
             }
+            showInfoMessage("")
             try {
                 // Share to Telegram story
                 window.Telegram.WebApp.shareToStory(imageUrl, params);
