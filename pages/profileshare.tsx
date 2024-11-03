@@ -11,7 +11,7 @@ import baby from "../public/assets/baby.svg";
 import ProgressBar from "@/app/components/ProgressBar";
 import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
 import ShareButton from "../public/assets/ShareButton.svg";
-import Share from "../public/assets/share.png";
+
 import brownCross from "../public/assets/brownCross.svg";
 import Insta from "../public/assets/whatsapp.png";
 import Telegrame from "../public/assets/Telegrame.svg";
