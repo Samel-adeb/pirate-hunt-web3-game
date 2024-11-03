@@ -151,7 +151,7 @@ export default function InviteAFriend() {
                                             <Image src={Dot} alt="Dot" />
                                             <Image width={12} height={12} src={standingdollarcoin} alt="standingdollarcoin" />
                                         </div>
-                                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-white"><span className="text-[#FFC247] font-medium">+15,00</span> for you and your friend</p>
+                                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-white"><span className="text-[#FFC247] font-medium">+15,000</span> for you and your friend</p>
                                     </div>
                                 </div>
                             </div>
