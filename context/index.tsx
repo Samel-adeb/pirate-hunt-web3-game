@@ -27,6 +27,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     const [tapTreasures, setTapTreasures] = useState([]);
     const [coinTreasures, setCoinTreasures] = useState([]);
     const [treasurePurchaseHistory, setTreasurePurchaseHistory] = useState([]);
+    const [countdownTime, setCountdownTime] = useState<number | null>(null);
 
     // Load state from cookies on client side only
     useEffect(() => {
@@ -105,11 +106,24 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         treasurePurchaseHistory,
     ]);
 
+    
+
     const countdownResetTapRate = (time: string) => {
-        setTimeout(() => {
-            setUser_tap_rate_level(user_temp_tap_rate_level);
-        }, parseInt(time) * 1000);
+        const initialTime = parseInt(time); // Convert the input time to a number
+        setCountdownTime(initialTime); // Set the initial countdown time in seconds
+
+        const interval = setInterval(() => {
+            setCountdownTime((prevTime) => {
+                if (prevTime === null || prevTime <= 1) {
+                    clearInterval(interval); // Stop the countdown when it reaches 0
+                    setUser_tap_rate_level(user_temp_tap_rate_level); // Reset the tap rate
+                    return null; // Clear the countdown time
+                }
+                return prevTime - 1; // Decrement countdown time by 1 second
+            });
+        }, 1000); // Update every second
     };
+
 
     return (
         <AppContext.Provider value={{
@@ -158,6 +172,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
             countdownResetTapRate,
             treasurePurchaseHistory,
             setTreasurePurchaseHistory,
+            countdownTime,
         }}>
             {children}
         </AppContext.Provider>

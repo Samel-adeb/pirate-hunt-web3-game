@@ -40,7 +40,7 @@ import Cookies from 'js-cookie';
 
 export default function GameHome() {
 
-    const { userId, username, userInfo, level, userBalance, setUserBalance, userRank, userDailyRewardInfo, user_tap_rate_level, user_temp_tap_rate_level, setIsMusicOn } = useAppContext();
+    const { userId, username, userInfo, level, userBalance, setUserBalance, userRank, countdownTime, userDailyRewardInfo, user_tap_rate_level, user_temp_tap_rate_level, setIsMusicOn } = useAppContext();
     const [energyLevel, setEnergyLevel] = useState<number>(0);
 
     const ENERGY_CAPACITY_VALUE: number = userInfo['energy_capacity']; // Maximum energy capacity
@@ -57,7 +57,7 @@ export default function GameHome() {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
-    const [randomCoinAmount, setRandomCoinAmount] = useState<number | null>(null);
+    const [randomCoinAmount, setRandomCoinAmount] = useState<number | null>();
     const [hasClaimed, setHasClaimed] = useState(false); // state to track if the reward is claimed
     const [chestPosition, setChestPosition] = useState<{
         top: string;
@@ -78,7 +78,7 @@ export default function GameHome() {
 
     useEffect(() => {
 
-        if (localStorage.tempbal) {
+        if (Object.hasOwn(localStorage, 'tempbal')) {
             const bal = parseInt(localStorage.tempbal);
             if (bal > 0 && userId) {
                 addTapTransaction(userId, bal);
@@ -306,7 +306,7 @@ export default function GameHome() {
     }, [showChest]);
 
 
-    const handleCloseOverlay = async () => {
+    const handleCloseOverlay = async (generatedCoinAmount: number) => {
         const today = new Date().toISOString().split('T')[0];
         const lastClaimDate = localStorage.getItem('lastClaimDate');
 
@@ -316,10 +316,8 @@ export default function GameHome() {
             return; // Exit if the user has already claimed today
         }
 
-        const minAmount = 1000;   // Minimum coin amount
-        const maxAmount = 50000;  // Maximum coin amount
-        const generatedCoinAmount = getRandomCoinAmount(minAmount, maxAmount); // 
-        setRandomCoinAmount(generatedCoinAmount); // Set the random coin amount to state
+
+        // Set the random coin amount to state
 
 
         setShowOverlay(false);
@@ -560,7 +558,14 @@ export default function GameHome() {
                                     <div
                                         className={`fixed z-50 flying-chest-animation ${chestPosition.direction === "0" || chestPosition.direction === "1" ? 'horizontal' : 'vertical'}`}
                                         style={{ top: chestPosition.top, left: chestPosition.left }} // Dynamic position
-                                        onClick={() => setShowOverlay(true)}
+                                        onClick={() => {
+                                            const minAmount = 1000;   // Minimum coin amount
+                                            const maxAmount = 50000;  // Maximum coin amount
+                                            const generatedCoinAmount = getRandomCoinAmount(minAmount, maxAmount);
+                                            setRandomCoinAmount(generatedCoinAmount);
+                                            setShowOverlay(true);
+                                        }
+                                        }
                                     >
                                         <Image
                                             className="rounded-[8px]"
@@ -577,7 +582,7 @@ export default function GameHome() {
                                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                                         <div className="bg-white p-8 rounded-md text-center relative w-[90%] max-w-lg">
                                             {/* Close button */}
-                                            <button className="absolute top-4 right-4 text-black" onClick={handleCloseOverlay}>
+                                            <button className="absolute top-4 right-4 text-black" onClick={() => handleCloseOverlay(randomCoinAmount || 0)}>
                                                 <Image src={Cross} alt="Cross" />
                                             </button>
 
@@ -591,11 +596,11 @@ export default function GameHome() {
                                             {/* Coins image */}
                                             <div className="flex items-center justify-center mx-auto pt-[8px] gap-[3px]">
                                                 <Image width={20} height={20} src={golddollarcoin} alt="Coins" />
-                                                <p className="text-[16px] font-semibold">{randomCoinAmount !== null ? randomCoinAmount : 2000}</p>
+                                                <p className="text-[16px] font-semibold">{randomCoinAmount !== null ? randomCoinAmount : 0}</p>
                                             </div>
 
                                             {/* Claim button */}
-                                            <button className="mt-6 px-10 py-2 font-semibold bg-green-500 text-white rounded" onClick={handleCloseOverlay}>
+                                            <button className="mt-6 px-10 py-2 font-semibold bg-green-500 text-white rounded" onClick={() => handleCloseOverlay(randomCoinAmount || 0)}>
                                                 Claim
                                             </button>
                                         </div>
@@ -650,6 +655,15 @@ export default function GameHome() {
                                 // handleDailyBonusClick={handleDailyBonusClick}
                                 closeDailyOverlay={closeDailyOverlay}
                             />
+
+                        </div>
+                        <div className="absolute" style={{ top: '30%', left: '85%', zIndex: 10 }}>
+
+                            {(countdownTime && countdownTime > 0) ?
+                                <div className=" rounded-full bg-white p-3"  >{countdownTime}</div> : <></>
+                            }
+
+
 
                         </div>
 
