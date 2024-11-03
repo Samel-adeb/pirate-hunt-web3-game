@@ -20,6 +20,7 @@ import Tweet from "../public/assets/Tweet.svg";
 import { useAppContext } from '@/context';
 import { getInviteLink, getTreasurePurchaseHistory, getUserInvivites } from '@/scripts';
 import html2canvas from 'html2canvas';
+import { showInfoMessage } from '@/scripts/utils';
 
 
 export default function ProfileShare() {
@@ -100,8 +101,15 @@ export default function ProfileShare() {
                 }
             };
 
-            // Share to Telegram story
-            window.Telegram.WebApp.shareToStory(imageUrl, params);
+
+            try {
+                // Share to Telegram story
+                window.Telegram.WebApp.shareToStory(imageUrl, params);
+            } catch (e:any ) {
+                showInfoMessage(e.message);
+                console.log(e);
+                
+            }
         } else {
             console.error("Telegram WebApp is not available or image capture failed.");
         }

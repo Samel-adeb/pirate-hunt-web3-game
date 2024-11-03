@@ -23,7 +23,16 @@ function Redirect() {
     useEffect(() => {
         const showTelegramBackButton = () => {
             if (window.Telegram && window.Telegram.WebApp) {
-                window.Telegram.WebApp.BackButton.show();
+                if (router.pathname !== '/' && router.pathname !== '/gamehome') {
+                    window.Telegram.WebApp.BackButton.show();
+                } else {
+                    window.Telegram.WebApp.BackButton.hide();
+                }
+                // Set an event handler for the back button
+                window.Telegram.WebApp.BackButton.onClick(() => {
+                    // Handle the navigation, e.g., go to previous page
+                    router.back();
+                });
             }
         };
 
@@ -33,16 +42,18 @@ function Redirect() {
         };
 
         if (window.Telegram && window.Telegram.WebApp) {
-            // SDK is already loaded
+
             showTelegramBackButton();
         } else {
-            // Add an event listener for the script load
+
             window.addEventListener('TelegramSdkLoaded', handleScriptLoad);
         }
 
-        // Cleanup listener on component unmount
         return () => {
             window.removeEventListener('TelegramSdkLoaded', handleScriptLoad);
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.BackButton.offClick();
+            }
         };
     }, [router.pathname]);
 
