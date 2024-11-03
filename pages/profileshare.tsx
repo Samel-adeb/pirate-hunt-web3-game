@@ -67,26 +67,26 @@ export default function ProfileShare() {
     // Reference to the container you want to capture, with correct TypeScript type
     const shareSectionRef = useRef<HTMLDivElement | null>(null);
 
-    const scrollToAndCapture = async () => {
-        // Scroll to the element
-        if (shareSectionRef.current) {
-            shareSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            window.scrollBy(0, 50); // Adjust offset as needed
+    // const scrollToAndCapture = async () => {
+    //     // Scroll to the element
+    //     if (shareSectionRef.current) {
+    //         shareSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    //         window.scrollBy(0, 50); // Adjust offset as needed
 
-            // Delay to allow the scroll positioning
-            await new Promise((resolve) => setTimeout(resolve, 500));
-        }
+    //         // Delay to allow the scroll positioning
+    //         await new Promise((resolve) => setTimeout(resolve, 500));
+    //     }
 
-        // Capture the visible portion of the viewport
-        const canvas = await html2canvas(document.getElementById('shareSection') ?? document.body, {
-            scrollX: -window.scrollX, // to capture the current scroll position
-            scrollY: -window.scrollY, // to capture the current scroll position
-            width: 200,  // set the width to the viewport's width
-            height: 600, // set the height to the viewport's height
-            useCORS: true // Ensure that CORS issues are handled, if needed
-        });
-        return canvas.toDataURL('image/png'); // Return the image URL
-    };
+    //     // Capture the visible portion of the viewport
+    //     const canvas = await html2canvas(document.getElementById('shareSection') ?? document.body, {
+    //         scrollX: -window.scrollX, // to capture the current scroll position
+    //         scrollY: -window.scrollY, // to capture the current scroll position
+    //         width: 200,  // set the width to the viewport's width
+    //         height: 600, // set the height to the viewport's height
+    //         useCORS: true // Ensure that CORS issues are handled, if needed
+    //     });
+    //     return canvas.toDataURL('image/png'); // Return the image URL
+    // };
 
 
 
@@ -100,16 +100,16 @@ export default function ProfileShare() {
 
         try {
 
-            const imageDataUrl = await scrollToAndCapture();
+            // const imageDataUrl = await scrollToAndCapture();
 
-            if (!imageDataUrl) {
-                console.error("Image capture failed or imageDataUrl is empty.");
-                return;
-            }
+            // if (!imageDataUrl) {
+            //     console.error("Image capture failed or imageDataUrl is empty.");
+            //     return;
+            // }
 
             setIsLoading(true);
             // Upload image to get an HTTPS URL
-            const imageUrl = await uploadImage(imageDataUrl);
+            const imageUrl =  `${process.env.NEXT_STORY_IMAGE_URL}`//await uploadImage(imageDataUrl);
             if (!imageUrl) {
                 throw new Error("Failed to upload image.");
             }
@@ -122,7 +122,7 @@ export default function ProfileShare() {
                 }
             };
 
-            window.Telegram.WebApp.shareToStory(imageDataUrl, params);
+            window.Telegram.WebApp.shareToStory(imageUrl, params);
 
         } catch (e) {
             const error = e as CustomError;
