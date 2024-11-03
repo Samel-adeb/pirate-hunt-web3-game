@@ -10,13 +10,32 @@ function Redirect() {
 
 
     useEffect(() => {
-        if (router.pathname === '/gamehome') {              
+        if (router.pathname !== '/' && !userId) {              
                 if (userId && username) {
                     load();
                 }else{
                     getId();
                 }
         }
+         // Function to display the Telegram back button
+         const showTelegramBackButton = () => {
+            if (
+                window.Telegram &&
+                window.Telegram.WebApp &&
+                router.pathname !== '/' &&
+                router.pathname !== '/gamehome'
+            ) {
+                // Show back button if not on '/' or '/gamehome'
+                window.Telegram.WebApp.BackButton.show();
+                window.Telegram.WebApp.BackButton.onClick(() => router.back());
+            } else {
+                // Hide the back button if on '/' or '/gamehome'
+                window.Telegram.WebApp.BackButton.hide();
+            }
+        };
+
+        // Ensure that the back button is displayed based on current route
+        showTelegramBackButton();
     }, [userId, router]); 
 
     const load = async () => {
