@@ -10,7 +10,7 @@ function Redirect() {
 
 
     useEffect(() => {
-        if (!userId && router.pathname !== '/') {              
+        if (router.pathname === '/gamehome') {              
                 if (userId && username) {
                     load();
                 }else{

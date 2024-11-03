@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "../globals.css";
 import { useEffect } from "react";
 import 'aos/dist/aos.css'; // Import AOS styles
@@ -26,18 +26,27 @@ interface levelTapRate {
 function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible }: { treasure: levelTapRate | undefined; setIsPaymentOverlayVisible: (arg0: boolean) => void, isTapboost: boolean }) {
     const { userId, userBalance, setUserBalance, user_tap_rate_level, setUser_tap_rate_level, countdownResetTapRate } = useAppContext();
     const router = useRouter();
-    const handleTransaction = async (id: number) => {
-        const isSuccessful = await boostTapRateBonus(userId, id)
+    const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
-        if (isSuccessful) {
-            if (userBalance > parseInt(isSuccessful.price)) {
-                setUser_tap_rate_level(parseInt(user_tap_rate_level) + parseInt(isSuccessful.price_reward));
-                countdownResetTapRate(parseInt(isSuccessful.duration));
-                setUserBalance(parseInt(userBalance) - parseInt(isSuccessful.price));
-                router.push('/gamehome');
+    const handleTransaction = async (id: number, price:string) => {
+        if (!isDisabled) {
+            setIsDisabled(true);
+            setTimeout(() => setIsDisabled(false), 2000);
+
+
+
+            if (userBalance > parseInt(price)) {
+                const isSuccessful = await boostTapRateBonus(userId, id)
+                if (isSuccessful) {
+                    setUser_tap_rate_level(parseInt(user_tap_rate_level) + parseInt(isSuccessful.price_reward));
+                    countdownResetTapRate(parseInt(isSuccessful.duration));
+                    setUserBalance(parseInt(userBalance) - parseInt(isSuccessful.price));
+                    router.push('/gamehome');
+                }
             } else {
                 showFailedMessage('Not enough balance');
             }
+
         }
     };
 
@@ -90,7 +99,7 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible }: { tre
                 </div>
                 <div className='my-2 w-full'>
                     <div>
-                        <button onClick={() => handleTransaction(treasure.id)} className='btn-warning rounded-[8px] w-75 font-bold text-white text-[14px] p-3'>Boost </button>
+                        <button onClick={() => handleTransaction(treasure.id, treasure.price)} className='btn-warning rounded-[8px] w-75 font-bold text-white text-[14px] p-3' style={{ opacity: isDisabled ? 0.5 : 1 }}>Boost </button>
 
                     </div>
 

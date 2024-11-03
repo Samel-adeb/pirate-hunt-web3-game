@@ -223,7 +223,7 @@ export const boostTapRateBonus = async (userId: string | null, id: number) => {
         showFailedMessage(response.error);
         return false;
     } else {
-        showSuccessMessage("Tap Rate Boosted successfully");
+        showSuccessMessage(response.message);
         return response;
     }
 }
