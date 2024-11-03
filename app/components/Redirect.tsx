@@ -28,11 +28,7 @@ function Redirect() {
                 } else {
                     window.Telegram.WebApp.BackButton.hide();
                 }
-                // Set an event handler for the back button
-                window.Telegram.WebApp.BackButton.onClick(() => {
-                    // Handle the navigation, e.g., go to previous page
-                    router.back();
-                });
+                
             }
         };
 
@@ -44,6 +40,11 @@ function Redirect() {
         if (window.Telegram && window.Telegram.WebApp) {
 
             showTelegramBackButton();
+            // Set an event handler for the back button
+            window.Telegram.WebApp.BackButton.onClick(() => {
+                // Handle the navigation, e.g., go to previous page
+                router.back();
+            });
         } else {
 
             window.addEventListener('TelegramSdkLoaded', handleScriptLoad);
