@@ -200,7 +200,7 @@ export default function GameHome() {
         const x = e.clientX;
         const y = e.clientY;
 
-        if (!hasClaimed) {  // Only allow taps to show the chest if the reward hasn't been claimed
+        if (!hasClaimed) {  
             setTapCount((prevCount) => {
                 const newCount = prevCount + 1;
 
@@ -309,47 +309,52 @@ export default function GameHome() {
     const handleCloseOverlay = async () => {
         const today = new Date().toISOString().split('T')[0];
         const lastClaimDate = localStorage.getItem('lastClaimDate');
-
+    
         // Check if the user has already claimed today
         if (lastClaimDate === today) {
             alert("You have already claimed the chest today.");
-            return; // Exit if the user has already claimed today
+            return;
         }
-
-        const minAmount = 1000;   // Minimum coin amount
-        const maxAmount = 50000;  // Maximum coin amount
-        const generatedCoinAmount = getRandomCoinAmount(minAmount, maxAmount); // 
-        setRandomCoinAmount(generatedCoinAmount); // Set the random coin amount to state
-
-
-        setShowOverlay(false);
-        setShowChest(false);
-        // Optional: Hide the chest once the overlay is closed
+    
+        const minAmount = 1000;
+        const maxAmount = 50000;
+        const generatedCoinAmount = getRandomCoinAmount(minAmount, maxAmount);
+    
+        // Update state before hiding the overlay
+        setRandomCoinAmount(generatedCoinAmount);
+    
+        // Wait a moment before hiding overlay to allow state to update
+        setTimeout(() => {
+            setShowOverlay(false);
+            setShowChest(false);
+        }, 0);
+    
         setHasClaimed(true);
-        // Set hasClaimed to true, so the chest won't show again
+    
         if (!claimed) {
             if (!userId) {
                 console.error("User ID is null. Transaction cannot be processed.");
                 return;
             }
-
+    
             try {
-                // Attempt to add the claim transaction
                 const response = await addClaimRandomTransaction(userId, generatedCoinAmount);
-                console.log("Transaction Response:", response); // Log response for debugging
-
-                // Update the user's balance if the transaction was successful
+                console.log("Transaction Response:", response);
+    
                 setUserBalance((prevBalance: number) => prevBalance + generatedCoinAmount);
-                setClaimed(true); // Mark the chest as claimed
-
-
+                setClaimed(true);
+    
                 localStorage.setItem('lastClaimDate', today);
             } catch (error) {
-                console.error("Error adding random claim transactions:", error); // Log any error
+                console.error("Error adding random claim transactions:", error);
             }
         }
-
     };
+
+    useEffect(() => {
+        console.log("Updated Random Coin Amount:", randomCoinAmount);
+    }, [randomCoinAmount]);
+    
 
     // Check whether the chest should be displayed at any point (for example, when loading the page)
     useEffect(() => {
@@ -591,7 +596,7 @@ export default function GameHome() {
                                             {/* Coins image */}
                                             <div className="flex items-center justify-center mx-auto pt-[8px] gap-[3px]">
                                                 <Image width={20} height={20} src={golddollarcoin} alt="Coins" />
-                                                <p className="text-[16px] font-semibold">{randomCoinAmount !== null ? randomCoinAmount : 2000}</p>
+                                                <p className="text-[16px] font-semibold">{randomCoinAmount ?? randomCoinAmount}</p>
                                             </div>
 
                                             {/* Claim button */}
