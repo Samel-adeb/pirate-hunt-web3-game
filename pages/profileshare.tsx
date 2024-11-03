@@ -101,14 +101,17 @@ export default function ProfileShare() {
                 }
             };
 
-
+            interface CustomError extends Error {
+                message: string;
+            }
             try {
                 // Share to Telegram story
                 window.Telegram.WebApp.shareToStory(imageUrl, params);
-            } catch (e:any ) {
-                showInfoMessage(e.message);
-                console.log(e);
-                
+            } catch (e) {
+                const error = e as CustomError;
+                showInfoMessage(error.message);
+                console.log(error);
+
             }
         } else {
             console.error("Telegram WebApp is not available or image capture failed.");
