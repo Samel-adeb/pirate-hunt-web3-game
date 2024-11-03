@@ -19,8 +19,10 @@ import Cross from "../public/assets/Cross.svg";
 import Tweet from "../public/assets/Tweet.svg";
 import { useAppContext } from '@/context';
 import { getInviteLink, getTreasurePurchaseHistory, getUserInvivites, uploadImage } from '@/scripts';
-import html2canvas from 'html2canvas';
+
+import domtoimage from 'dom-to-image-more';
 import { showInfoMessage } from '@/scripts/utils';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
 
 
 export default function ProfileShare() {
@@ -66,24 +68,30 @@ export default function ProfileShare() {
     // Reference to the container you want to capture, with correct TypeScript type
     const shareSectionRef = useRef<HTMLDivElement | null>(null);
 
-    // Function to scroll, capture, and share
     const scrollToAndCapture = async () => {
-        if (!shareSectionRef.current) return; // Ensure the ref is not null
-
-        // Scroll to the element
-        shareSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        window.scrollBy(0, 50); // Adjust offset as needed
-
-        // Delay to allow the scroll positioning
-        await new Promise((resolve) => setTimeout(resolve, 500));
-
-        // Capture the element as an image
-        const canvas = await html2canvas(shareSectionRef.current);
-        return canvas.toDataURL('image/png'); // Return the image URL
+        if (shareSectionRef.current) {
+            // Scroll to the element
+            shareSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            await new Promise((resolve) => setTimeout(resolve, 300));
+        }
+    
+        try {
+            const dataUrl = await domtoimage.toPng(shareSectionRef.current || document.body, {
+                style: {
+                    transform: 'scale(1)', // Optional: can adjust scale if needed
+                    transformOrigin: 'top left',
+                },
+                quality: 0.9, // Set the quality for lower file size
+            });
+            return dataUrl;
+        } catch (error) {
+            console.error('Error capturing image:', error);
+        }
     };
 
 
-    
+
+    const [isLoading, setIsLoading] = useState(false);
     const handleShare = async () => {
         interface CustomError extends Error {
             message: string;
@@ -92,6 +100,7 @@ export default function ProfileShare() {
         closeOverlay();
 
         try {
+
             const imageDataUrl = await scrollToAndCapture();
 
             if (!imageDataUrl) {
@@ -99,12 +108,13 @@ export default function ProfileShare() {
                 return;
             }
 
+            setIsLoading(true);
             // Upload image to get an HTTPS URL
             const imageUrl = await uploadImage(imageDataUrl);
             if (!imageUrl) {
                 throw new Error("Failed to upload image.");
             }
-           
+
             const params = {
                 text: "Check out my Pirate Hunt score!", // Caption for the story
                 widget_link: {
@@ -113,18 +123,21 @@ export default function ProfileShare() {
                 }
             };
 
-            window.Telegram.WebApp.shareToStory("https://ipo.srw.mybluehost.me/storage//stories//1730642905.png", params);
+            window.Telegram.WebApp.shareToStory(imageDataUrl, params);
+
         } catch (e) {
             const error = e as CustomError;
             showInfoMessage(error.message);
 
-            showInfoMessage(error.stack);
+            // showInfoMessage(error.stack);
             console.log(error);
 
+        } finally {
+            setIsLoading(false);
         }
 
     };
-    
+
 
     const handleTelegramShare = async () => {
         closeOverlay();
@@ -165,6 +178,11 @@ export default function ProfileShare() {
         <>
 
             <GameNavbar />
+            {
+                isLoading && <div id='loading' className='absolute bg- bg-[#000000A6] flex h-[100%] items-center justify-center w-full z-50'>
+                    <LoadingSpinner />
+                </div>
+            }
 
             <div className="relative h-[100vh + 200px]"
                 id="shareSection"
@@ -175,11 +193,13 @@ export default function ProfileShare() {
                 <div className="px-[16px] flex items-center gap-[50px]">
                     <Link href="/profile">
                         <div className="border border-white/40 rounded-md flex items-center justify-start p-1">
+
                             <Image
                                 width={35}
                                 height={35}
                                 src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : ProfileSvg} // Properly handle fallback
                                 alt="Profile Picture"
+                                style={{objectFit: 'contain'}}
                                 className="rounded-full"
                             />
 
@@ -323,7 +343,7 @@ export default function ProfileShare() {
                 </div>
 
                 <div className="pt-10 flex flex-col items-center justify-center">
-                    <div>
+                    <div className='w-full'>
                         <Image width={360} height={237} src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : baby} alt="baby" className='w-full ' />
                     </div>
 
