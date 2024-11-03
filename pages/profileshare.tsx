@@ -11,7 +11,7 @@ import baby from "../public/assets/baby.svg";
 import ProgressBar from "@/app/components/ProgressBar";
 import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
 import ShareButton from "../public/assets/ShareButton.svg";
-import Share from "../public/assets/share.png";
+
 import brownCross from "../public/assets/brownCross.svg";
 import Insta from "../public/assets/whatsapp.png";
 import Telegrame from "../public/assets/Telegrame.svg";
@@ -62,56 +62,6 @@ export default function ProfileShare() {
     }
 
 
-    async function captureScreenshotAndShare() {
-        const shareSection = document.getElementById('shareSection');
-        if (!shareSection) {
-            // alert("Share section not found.");
-            return;
-        }
-
-        // Scroll to the element and delay for smooth experience
-        shareSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        await new Promise(resolve => setTimeout(resolve, 500));
-
-        try {
-            // Capture the screenshot
-            const canvas = await html2canvas(shareSection);
-
-            // Convert to Blob
-            canvas.toBlob(async (blob) => {
-                if (blob) {
-                    const file = new File([blob], "screenshot.png", { type: "image/png" });
-
-                    // Call the function to share the file
-                    shareFile(file);
-                } else {
-                    // alert("Failed to capture the screenshot.");
-                }
-            }, 'image/png');
-        } catch (error) {
-            console.error("Error capturing screenshot:", error);
-            // alert("Screenshot capture failed.");
-        }
-    }
-    async function shareFile(file: File) {
-        // Check if the Web Share API is supported
-        if (navigator.share && navigator.canShare({ files: [file] })) {
-            try {
-                await navigator.share({
-                    files: [file],
-                    title: "Treasure Hunt Screenshot",
-                    text: "Check out my screenshot from the Treasure Hunt app!",
-                });
-                //alert("Screenshot shared successfully!");
-            } catch (error) {
-                console.error("Error sharing screenshot:", error);
-                //alert("Failed to share the screenshot.");
-            }
-        } else {
-            //alert("Sharing not supported on this device.");
-        }
-    }
-
     // Reference to the container you want to capture, with correct TypeScript type
     const shareSectionRef = useRef<HTMLDivElement | null>(null);
 
@@ -133,48 +83,63 @@ export default function ProfileShare() {
         const canvas = await html2canvas(shareSectionRef.current);
         return canvas.toDataURL('image/png');
     };
+    // Function to handle sharing
     const handleShare = async () => {
+        // Optional: close any overlays if needed
         closeOverlay();
-        await captureScreenshotAndShare();
 
+        // Capture the section and get the image URL
+        const imageUrl = await scrollToAndCapture();
+        if (imageUrl && window.Telegram?.WebApp) {
+            // Define optional parameters
+            const params = {
+                text: "Check out my Pirate Hunt score!", // Caption for the story
+                widget_link: {
+                    url: "https://yourgame.com", // Link back to the game
+                    text: "Play Pirate Hunt"
+                }
+            };
+
+            // Share to Telegram story
+            window.Telegram.WebApp.shareToStory(imageUrl, params);
+        } else {
+            console.error("Telegram WebApp is not available or image capture failed.");
+        }
     };
     // Define sharing functions for each platform
     const handleTelegramShare = async () => {
         closeOverlay();
 
-        const imageUrl = await scrollToAndCapture();
-        if (imageUrl) {
-            // const telegramUrl = `https://t.me/share/url?url=`;//${encodeURIComponent(imageUrl)}`;
-            const url = encodeURIComponent(inviteLink); // Link to share
-            const message = encodeURIComponent('Check out Pirate hunt!');
-            window.open(`https://t.me/share/url?url=${url}&text=${message}`, '_blank');
-        }
+
+        // const telegramUrl = `https://t.me/share/url?url=`;//${encodeURIComponent(imageUrl)}`;
+        const url = encodeURIComponent(inviteLink); // Link to share
+        const message = encodeURIComponent('Check out Pirate hunt!');
+        window.open(`https://t.me/share/url?url=${url}&text=${message}`, '_blank');
+
 
 
     };
 
     const handleInstagramShare = async () => {
         closeOverlay();
-        const imageUrl = await scrollToAndCapture();
-        if (imageUrl) {
-            // const instagramUrl = `https://www.instagram.com/create/story/?media=${encodeURIComponent(imageUrl)}`;
-            // window.open(instagramUrl, '_blank');
-            const message = encodeURIComponent('Check out Pirate hunt! \n' + inviteLink);
-            window.open(`https://wa.me/?text=${message}`, '_blank');
-        }
+
+        // const instagramUrl = `https://www.instagram.com/create/story/?media=${encodeURIComponent(imageUrl)}`;
+        // window.open(instagramUrl, '_blank');
+        const message = encodeURIComponent('Check out Pirate hunt! \n' + inviteLink);
+        window.open(`https://wa.me/?text=${message}`, '_blank');
+
     };
 
     const handleTwitterShare = async () => {
         closeOverlay();
-        const imageUrl = await scrollToAndCapture();
-        if (imageUrl) {
-            // const twitterUrl = `https://x.com/intent/tweet?url=${encodeURIComponent(imageUrl)}`;
-            // window.open(twitterUrl, '_blank');
 
-            const url = encodeURIComponent(inviteLink);
-            const message = encodeURIComponent('Check out Pirate hunt!');
-            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${message}`, '_blank');
-        }
+        // const twitterUrl = `https://x.com/intent/tweet?url=${encodeURIComponent(imageUrl)}`;
+        // window.open(twitterUrl, '_blank');
+
+        const url = encodeURIComponent(inviteLink);
+        const message = encodeURIComponent('Check out Pirate hunt!');
+        window.open(`https://twitter.com/intent/tweet?url=${url}&text=${message}`, '_blank');
+
     };
 
     return (
@@ -279,8 +244,8 @@ export default function ProfileShare() {
                                             onClick={() => handleShare()} // Set platform to telegram on click
                                         >
                                             <div className="flex items-center gap-[8px]">
-                                                <Image src={Share} alt="Share" width={30} />
-                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Share</h1>
+                                                <Image src={Telegrame} alt="Telegrame" width={30} />
+                                                <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Telegram Story</h1>
                                             </div>
                                         </div>
                                     </div>
@@ -379,9 +344,9 @@ export default function ProfileShare() {
                         <p className="text-[12px] leading-[16px] tracking-[0.4px] text-[#FFFFFF73] mt-3 mx-1">Increase your coins by engaging in the </p>
                         <p className="text-[12px] leading-[16px] tracking-[0.4px] text-[#FFFFFF73]  mx-1">game through tapping.</p>
 
-                        <p  className="text-[12px]  leading-[16px] tracking-[0.4px] text-[#FFFFFF73] mt-3 mx-1">Level up your Pirate Token by unlocking </p>
-                        <p  className="text-[12px]  leading-[16px] tracking-[0.4px] text-[#FFFFFF73]  mx-1">boosts in the Treasure Hunt.</p>
-                       
+                        <p className="text-[12px]  leading-[16px] tracking-[0.4px] text-[#FFFFFF73] mt-3 mx-1">Level up your Pirate Token by unlocking </p>
+                        <p className="text-[12px]  leading-[16px] tracking-[0.4px] text-[#FFFFFF73]  mx-1">boosts in the Treasure Hunt.</p>
+
                     </div>
                 </div>
 
