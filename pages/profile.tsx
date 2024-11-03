@@ -8,34 +8,34 @@ import FirstBadge from "../public/assets/FirstBadge.png";
 import userProfile from "../public/assets/userProfile.png";
 import GoldCup from "../public/assets/GoldCup.png";
 import Cross from "../public/assets/Cross.svg";
-// import SilverCup from "../public/assets/SilverCup.png";
-// import greenCup from "../public/assets/greenCup.png";
-// import ThickGoldCup from "../public/assets/ThickGold.png";
-// import friend1 from "../public/assets/friend1.png";
 import user1 from "../public/assets/user1.png";
-// import user2 from "../public/assets/user2.png";
 import AshDot from "../public/assets/AshDot.svg";
-// import FirstPlaceBadge from "../public/assets/FirstPlaceBadge.png";
 import standingdollarcoin from "../public/assets/standingdollarcoin.svg";
-// import pinkBadge from "../public/assets/pinkBadge.png";
-// import yellowBadge from "../public/assets/yellowBadge.png";
 import Link from "next/link";
 import { useAppContext } from "@/context";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import { useEffect } from "react";
-import { getAllRankInfo } from "@/scripts";
+import { addTapTransaction, getAllRankInfo } from "@/scripts";
 
 
 
 
 export default function Profile() {
-    const { username, level, userBalance, userRank, allRanks, setAllRanks } = useAppContext();
+    const { userId, username, level, userBalance, userRank, allRanks, setAllRanks } = useAppContext();
     const router = useRouter();
 
 
 
 
     const getAllRank = async () => {
+        if (Object.hasOwn(localStorage, 'tempbal')) {
+            const bal = parseInt(localStorage.tempbal);
+            if (bal > 0 && userId) {
+                await addTapTransaction(userId, bal);
+                localStorage.removeItem('tempbal');
+            }
+
+        }
         await getAllRankInfo(setAllRanks);
         //console.log(allRanks);
     }

@@ -376,9 +376,12 @@ export default function ProfileShare() {
                     </div>
 
                     <div className="pt-[30px] text-center">
-                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-[#FFFFFF73] mt-3 mx-1">Coin increases when you engaged in the game by tapping<br />
-                            You can as well level up your Pirate Token by unlocking the<br /> boost from the Treasure Hunt
-                        </p>
+                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-[#FFFFFF73] mt-3 mx-1">Increase your coins by engaging in the </p>
+                        <p className="text-[12px] leading-[16px] tracking-[0.4px] text-[#FFFFFF73]  mx-1">game through tapping.</p>
+
+                        <p  className="text-[12px]  leading-[16px] tracking-[0.4px] text-[#FFFFFF73] mt-3 mx-1">Level up your Pirate Token by unlocking </p>
+                        <p  className="text-[12px]  leading-[16px] tracking-[0.4px] text-[#FFFFFF73]  mx-1">boosts in the Treasure Hunt.</p>
+                       
                     </div>
                 </div>
 
