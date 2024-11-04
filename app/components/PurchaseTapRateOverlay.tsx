@@ -41,8 +41,8 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible }: { tre
                     setUserBalance(parseInt(userBalance) - parseInt(isSuccessful.price));
                     setUser_tap_rate_level(parseInt(user_tap_rate_level) + parseInt(isSuccessful.price_reward));
                     countdownResetTapRate(parseInt(isSuccessful.duration));
-                    
-                    alert(parseInt(userBalance) - parseInt(isSuccessful.price))
+
+                    // alert(parseInt(userBalance) - parseInt(isSuccessful.price))
                     router.push('/gamehome');
                 }
             } else {
