@@ -20,6 +20,7 @@ function DailyBonuses({ isDailyOverlayVisible, closeDailyOverlay }: { isDailyOve
     const [isDayOneOverlayVisible, setIsDayOneOverlayVisible] = useState(false);
     const { userId, allDailyBonues, setAllDailyBonues, claimedDailyBonuses, setClaimedDailyBonuses } = useAppContext();
     const [currentDayBonus, setCurrentDayBonus] = useState<dailyBonus>();
+    const [isDisabled, setIsDisabled] = useState(false);
     const [next_claim_id, set_next_claim_id] = useState(1);
     const load = async () => {
         await getClaimedDailyBonuses(userId, setClaimedDailyBonuses);
@@ -34,8 +35,25 @@ function DailyBonuses({ isDailyOverlayVisible, closeDailyOverlay }: { isDailyOve
 
     }, []);
 
+    useEffect(() => {
+        const disableTime = localStorage.getItem("bonusDisableTime");
+        if (disableTime) {
+            const remainingTime = 5 * 60 * 1000 - (Date.now() - parseInt(disableTime));
+            if (remainingTime > 0) {
+                setIsDisabled(true);
+                const timeout = setTimeout(() => {
+                    setIsDisabled(false);
+                    localStorage.removeItem("bonusDisableTime");
+                }, remainingTime);
+
+                return () => clearTimeout(timeout);
+            }
+        }
+    }, []);
+
 
     function handleDayOneOverlay(dailyBonus: dailyBonus) {
+        if (isDisabled || dailyBonus.id !== next_claim_id) return;
         if (isBonusAlreadyClaimed(dailyBonus.id)) {
             showInfoMessage('You have already claimed this bonus today!');
             return;
@@ -44,6 +62,14 @@ function DailyBonuses({ isDailyOverlayVisible, closeDailyOverlay }: { isDailyOve
             setCurrentDayBonus(dailyBonus);
             setIsDayOneOverlayVisible(true);
         }
+
+        setIsDisabled(true);
+        localStorage.setItem("bonusDisableTime", Date.now().toString());
+
+        setTimeout(() => {
+            setIsDisabled(false);
+            localStorage.removeItem("bonusDisableTime");
+        }, 5 * 60 * 1000);
     }
 
     const closeDayOneOverlay = () => {
@@ -105,26 +131,32 @@ function DailyBonuses({ isDailyOverlayVisible, closeDailyOverlay }: { isDailyOve
                                         <div key={dailyBonus.id} className="p-2">
                                             <div
                                                 className="flex flex-col border border-[#00A6DE] p-2 rounded-lg items-center justify-center cursor-pointer"
-
-                                                style={{ width: index === 6 ? '218%' : '' }}
+                                                style={{ width: index === 6 ? "218%" : "" }}
                                             >
                                                 <h1 className="text-white text-lg">
                                                     {dailyBonus.name ? dailyBonus.name : "Day"}
                                                 </h1>
-                                                {
-                                                    isBonusAlreadyClaimed(dailyBonus.id) ? (
-                                                        <div className="flex items-center bg-main justify-center p-3 rounded shadow text-white w-full" onClick={() => handleDayOneOverlay(dailyBonus)}>
-                                                            <p className="text-white font-bold mx-1">CLAIMED</p>
-
-                                                        </div>
-                                                    ) : (
-                                                        <div className="flex items-center bg-main justify-center p-3 rounded shadow text-white w-full" style={{ opacity: dailyBonus.id == next_claim_id ? 1 :  0.5 }} onClick={() => dailyBonus.id == next_claim_id ? handleDayOneOverlay(dailyBonus) : 0}>
-                                                            <p className="text-white font-bold mx-1">{dailyBonus.amount ? dailyBonus.amount : "0"}</p>
-                                                            <Image width={25} height={25} src={standingdollarcoin} alt="standingdollarcoin" />
-                                                        </div>
-                                                    )
-                                                }
-
+                                                {isBonusAlreadyClaimed(dailyBonus.id) ? (
+                                                    <div
+                                                        className="flex items-center bg-main justify-center p-3 rounded shadow text-white w-full"
+                                                    >
+                                                        <p className="text-white font-bold mx-1">CLAIMED</p>
+                                                    </div>
+                                                ) : (
+                                                    <div
+                                                        className="flex items-center bg-main justify-center p-3 rounded shadow text-white w-full"
+                                                        style={{
+                                                            opacity: dailyBonus.id === next_claim_id && !isDisabled ? 1 : 0.5,
+                                                            pointerEvents: dailyBonus.id === next_claim_id && !isDisabled ? "auto" : "none",
+                                                        }}
+                                                        onClick={() =>
+                                                            dailyBonus.id === next_claim_id && !isDisabled ? handleDayOneOverlay(dailyBonus) : null
+                                                        }
+                                                    >
+                                                        <p className="text-white font-bold mx-1">{dailyBonus.amount ? dailyBonus.amount : "0"}</p>
+                                                        <Image width={25} height={25} src={standingdollarcoin} alt="standingdollarcoin" />
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     ))

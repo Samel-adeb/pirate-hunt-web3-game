@@ -117,7 +117,7 @@ export default function ProfileShare() {
             }
             // alert(imageUrl);
             const params = {
-                text: "I have earned " + userBalance + " coins on Pirate Hunt!", // Caption for the story
+                text: "I have earned " + userBalance + " coins on Pirate Hunt!" + "you can check it out here" + inviteLink, // Caption for the story
                 widget_link: {
                     url: inviteLink, // Link back to the game
                     text: "Play Pirate Hunt"
