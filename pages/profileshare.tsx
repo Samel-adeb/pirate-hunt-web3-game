@@ -110,13 +110,14 @@ export default function ProfileShare() {
 
             setIsLoading(true);
             // Upload image to get an HTTPS URL
-            const imageUrl = `${process.env.NEXT_STORY_IMAGE_URL}`//await uploadImage(imageDataUrl);
+            const imageUrl = process.env.NEXT_PUBLIC_STORY_IMAGE_URL;//await uploadImage(imageDataUrl);
+            // alert(imageUrl)
             if (!imageUrl) {
-                throw new Error("Failed to upload image.");
+                throw new Error("Image not found");
             }
             // alert(imageUrl);
             const params = {
-                text: "I have earned " + userBalance + "coins on Pirate Hunt!", // Caption for the story
+                text: "I have earned " + userBalance + " coins on Pirate Hunt!", // Caption for the story
                 widget_link: {
                     url: inviteLink, // Link back to the game
                     text: "Play Pirate Hunt"

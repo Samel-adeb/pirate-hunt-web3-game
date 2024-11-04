@@ -29,7 +29,7 @@ import { useEffect } from 'react';
 import { useAppContext } from '@/context';
 import { useState } from "react";
 // import DayOneOverlay from "@/app/components/DayOneOverlay";
-import { addTapTransaction } from "@/scripts";
+import { addTapTransaction, getUserBalance } from "@/scripts";
 import { addClaimRandomTransaction } from "@/scripts";
 import DailyBonuses from "@/app/components/DailyBonuses";
 import { useRouter } from "next/router";
@@ -82,7 +82,7 @@ export default function GameHome() {
             const bal = parseInt(localStorage.tempbal);
             if (bal > 0 && userId) {
                 addTapTransaction(userId, bal);
-                setUserBalance(parseInt(userBalance) + bal);
+                getUserBalance(userId, setUserBalance);  
                 localStorage.removeItem('tempbal');
             }
 
@@ -192,7 +192,7 @@ export default function GameHome() {
 
 
 
-    const handleTap = (e: React.MouseEvent<HTMLDivElement>) => {
+    const handleTap = async (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
 
 
@@ -253,13 +253,15 @@ export default function GameHome() {
 
             // console.log(user_tap_rate_level);
 
-            setUserBalance(parseInt(userBalance) + parseInt(user_tap_rate_level));
+            
             setTempbal(tempbal + parseInt(user_tap_rate_level));
             localStorage.setItem('tempbal', (tempbal + parseInt(user_tap_rate_level)).toString());
+
+            setUserBalance(parseInt(userBalance) + parseInt(user_tap_rate_level));
         }
 
     };
-
+ 
     const moveChestRandomly = () => {
         const direction = Math.floor(Math.random() * 4); // 0: left, 1: right, 2: top, 3: bottom
         let newTop = '0px';
