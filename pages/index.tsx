@@ -102,7 +102,7 @@ export default function GameLoad() {
                     <div className="mt-6 pb-[10px] w-full flex flex-col items-center justify-center">
                         <div className="flex flex-col items justify-center text-center">
                             <h1 className="text-[32px] leading-[32px] font-medium text-white">Pirate hunt</h1>
-                            <p className="pt-[20px] font-medium text-white text-[12px] leading-[16px] max-w-[344px]">Ahoy, matey! Welcome to Pirate Hunt, a Telegram clicker mini-game that&apos;s a treasure trove of fun and excitement on<br /> the Ton Network</p>
+                            <p className="pt-[20px] font-medium text-white text-[12px] leading-[16px] max-w-[344px]">Ahoy, matey! Welcome to Pirate Hunt, a Telegram clicker mini-game that&apos;s a treasure trove of fun and excitement on the Ton Network</p>
                         </div>
                         {/* <div className="flex flex-col items-center justify-center">
                             <h2 className="pt-16 text-center text-white text-[14px] leading-[24px] font-bold tracking-[0.15%]">Connect with us</h2>

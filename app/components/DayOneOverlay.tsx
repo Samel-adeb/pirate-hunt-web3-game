@@ -53,7 +53,7 @@ const DayOneOverlay: FC<OverlayProps> = ({ isVisible, currentDayBonus, closeOver
         showClaimSuccess && (<ClaimReward setShowClaimSuccess={setShowClaimSuccess} />)
       }
       <div
-        className="bg-[#000000] border-t-[#00A6DE] border-t-[4px] flex flex-col h-[100%] items-center justify-center m-1 mt-60 my-[190px] p-4 relative m-1 rounded-[24.12px] w-full"
+        className="bg-[#000000] border-t-[#00A6DE] border-t-[4px] flex flex-col h-[100%] items-center justify-center m-1 mt-60 my-[190px] p-4 relative rounded-[24.12px] w-full"
         onClick={(e) => e.stopPropagation()} // Prevent closing the overlay when clicking inside
       >
         <div className="flex flex-col items-center justify-center text-center">
