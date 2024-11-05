@@ -10,7 +10,7 @@ function Redirect() {
 
 
     useEffect(() => {
-        if (router.pathname !== '/' && !userId) {
+        if (router.pathname !== '/') {
             if (userId && username) {
                 load();
             } else {
