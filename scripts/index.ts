@@ -220,8 +220,8 @@ export const boostTapRateBonus = async (userId: string | null, id: number) => {
     }
     const response = await fetchApi(endpoint, parameters, httpMethod);
     //console.log(response);
-    if (!(response && 'message' in response)) {
-        showFailedMessage(response.error);
+    if (!(response && 'message' in response) || (response && 'status' in response && response.status=='failed')) {
+        showFailedMessage(response.message);
         return false;
     } else {
         showSuccessMessage(response.message);

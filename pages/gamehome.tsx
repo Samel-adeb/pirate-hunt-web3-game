@@ -33,7 +33,6 @@ import { addTapTransaction, getUserBalance } from "@/scripts";
 import { addClaimRandomTransaction } from "@/scripts";
 import DailyBonuses from "@/app/components/DailyBonuses";
 import { useRouter } from "next/router";
-import LogStatus from "@/app/components/LogStatus";
 import Cookies from 'js-cookie';
 // import ProgressBar from "@/app/components/ProgressBar";
 
@@ -434,7 +433,7 @@ export default function GameHome() {
             <div>
                 <div className="h-screen">
                     <GameNavbar />
-                    <LogStatus />
+                   
                     {
                         tapCount == 0 && (
                             <div className="absolute z-50 text-sec" style={{ top: '80%', left: '38%', pointerEvents: 'none' }} >
