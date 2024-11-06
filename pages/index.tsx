@@ -16,18 +16,47 @@ import LogStatus from "@/app/components/LogStatus";
 
 export default function GameLoad() {
     // const audioRef = useRef<HTMLAudioElement | null>(null);
-    const { userId, setUserId, username,userInfo, setUsername, setUserInfo, setLevel, setUser_temp_tap_rate_level, setUserTaprateCount, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
-
+    const { userId, setUserId, username, userInfo, setUsername, setUserInfo, setLevel, setUser_temp_tap_rate_level, setUserTaprateCount, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
+    const router = useRouter();
     const load = async () => {
         if (userId && username) {
             // Only run if both userId and username are set
             //alert('userId: ' + userId + ' username: ' + username);
             await registerUser(userId, username);
             await getUserInfo(userId, setUsername, setUserInfo, setLevel, setUser_temp_tap_rate_level, setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo, setUserTaprateCount);
-            
+
         }
     };
+    const checkVersion = () => {
+        // Extract the `tgWebAppVersion` parameter from the URL
+        const urlParams = new URLSearchParams(window.location.hash.replace('#', ''));
+        const tgWebAppVersion = urlParams.get('tgWebAppVersion');
 
+        if (tgWebAppVersion) {
+            // Split version into major and minor parts
+            const [major, minor] = tgWebAppVersion.split('.').map(Number);
+
+            // Compare version: unsupported if version is less than 7.10
+            if (major < 7 || (major === 7 && minor < 10)) {
+                showWariningMessage(
+                    `Your tgWebAppVersion is ${tgWebAppVersion} and unsupported. Update your Telegram app.`
+                );
+                return false;
+            } else {
+                getId();
+                console.log(`tgWebAppVersion is ${tgWebAppVersion}, which is supported.`);
+                return true;
+            }
+        } else {
+            console.warn('tgWebAppVersion not found in URL.');
+            return true;
+        }
+    };
+    useEffect(() => {
+
+        checkVersion();
+
+    }, []);
 
     const getId = async () => {
         //alert('getId loading...');
@@ -38,16 +67,8 @@ export default function GameLoad() {
         setUsername(musername);
     };
 
-    // Automatically start playing the background music and get userId/username
-    useEffect(() => {
-        getId();
-        // if (audioRef.current) {
-        //     audioRef.current.volume = 0.5; // Adjust the volume (0.0 to 1.0)
-        //     audioRef.current.play().catch((err) => {
-        //         console.error('Failed to play audio:', err);
-        //     });
-        // }
-    }, []);
+
+
 
     // Call `load` when both `userId` and `username` are set
     useEffect(() => {
@@ -57,24 +78,24 @@ export default function GameLoad() {
     }, [userId, username]); // Trigger when both userId and username are set
 
     const [isLoading, setIsLoading] = useState(true); // State for loader
-    const router = useRouter();
+
 
     const changePage = () => {
         if (userId == undefined || username == undefined) {
             showFailedMessage("Your information could not be retreived from telegram");
-            
-        }else if (isObjectEmpty(userInfo) || ('message' in userInfo && userInfo.message==='Failed')) {
-            
+
+        } else if (isObjectEmpty(userInfo) || ('message' in userInfo && userInfo.message === 'Failed')) {
+
             showFailedMessage('Something went wrong.');
             setTimeout(() => {
                 showWariningMessage('Please Check your internet connection.');
             }, 1000);
-            
+
             load();
         } else {
             router.push('/gamehome'); // Redirect to gamehome page
         }
-       
+
     }
 
     const isObjectEmpty = (objectName: object) => {
@@ -95,7 +116,7 @@ export default function GameLoad() {
     return (
 
         <div>
-             <LogStatus />
+            <LogStatus />
             <div className="bg-[#000000] relative h-screen" style={{ maxHeight: '100vh', minHeight: '100vh' }}>
                 <GameNavbar />
                 <div className="flex flex-col items-center justify-center">
