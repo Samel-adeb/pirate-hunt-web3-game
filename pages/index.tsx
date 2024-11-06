@@ -12,17 +12,19 @@ import { GameNavbar } from '@/app/components/GameNavbar';
 import { useAppContext } from '@/context';
 import { getUserInfo, registerUser, getUserId, getUsername } from '@/scripts';
 import { showFailedMessage, showWariningMessage } from "@/scripts/utils";
+import LogStatus from "@/app/components/LogStatus";
 
 export default function GameLoad() {
     // const audioRef = useRef<HTMLAudioElement | null>(null);
-    const { userId, setUserId, username,userInfo, setUsername, setUserInfo, setLevel, setUser_tap_rate_level, setUser_temp_tap_rate_level, setUserTaprateCount, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
+    const { userId, setUserId, username,userInfo, setUsername, setUserInfo, setLevel, setUser_temp_tap_rate_level, setUserTaprateCount, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
 
     const load = async () => {
         if (userId && username) {
             // Only run if both userId and username are set
             //alert('userId: ' + userId + ' username: ' + username);
             await registerUser(userId, username);
-            await getUserInfo(userId, setUsername, setUserInfo, setLevel, setUser_tap_rate_level,setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo, setUserTaprateCount);
+            await getUserInfo(userId, setUsername, setUserInfo, setLevel, setUser_temp_tap_rate_level, setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo, setUserTaprateCount);
+            
         }
     };
 
@@ -93,6 +95,7 @@ export default function GameLoad() {
     return (
 
         <div>
+             <LogStatus />
             <div className="bg-[#000000] relative h-screen" style={{ maxHeight: '100vh', minHeight: '100vh' }}>
                 <GameNavbar />
                 <div className="flex flex-col items-center justify-center">

@@ -9,7 +9,7 @@ import EnlargedBoost from '../../public/assets/lightning.svg'
 import Image from 'next/image';
 
 
-import { boostTapRateBonus } from '@/scripts';
+import { boostTapRateBonus, getTapRate } from '@/scripts';
 import { useAppContext } from '@/context';
 import { useRouter } from 'next/router';
 import { showFailedMessage } from '@/scripts/utils';
@@ -24,14 +24,14 @@ interface levelTapRate {
     duration: number;
 }
 function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible }: { treasure: levelTapRate | undefined; setIsPaymentOverlayVisible: (arg0: boolean) => void, isTapboost: boolean }) {
-    const { userId, userBalance, setUserBalance, user_tap_rate_level, setUser_tap_rate_level, countdownResetTapRate } = useAppContext();
+    const { userId, userBalance, setUserBalance, user_tap_rate_level, setUser_tap_rate_level, setUserTaprateCount, countdownResetTapRate } = useAppContext();
     const router = useRouter();
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
-    const handleTransaction = async (id: number, price:string) => {
+    const handleTransaction = async (id: number, price: string) => {
         if (!isDisabled) {
             setIsDisabled(true);
-            setTimeout(() => setIsDisabled(false), 2000);
+            setTimeout(() => setIsDisabled(false), 10000);
 
 
 
@@ -42,6 +42,7 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible }: { tre
                     setUser_tap_rate_level(parseInt(user_tap_rate_level) + parseInt(isSuccessful.price_reward));
                     countdownResetTapRate(parseInt(isSuccessful.duration));
 
+                    await getTapRate(userId, setUserTaprateCount);
                     // alert(parseInt(userBalance) - parseInt(isSuccessful.price))
                     router.push('/gamehome');
                 }
