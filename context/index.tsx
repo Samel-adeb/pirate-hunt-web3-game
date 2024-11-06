@@ -11,6 +11,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     const [userInfo, setUserInfo] = useState({});
     const [level, setLevel] = useState({});
     const [user_tap_rate_level, setUser_tap_rate_level] = useState<number>(1);
+    
+    const [userTaprateCount, setUserTaprateCount] = useState({});
     const [user_temp_tap_rate_level, setUser_temp_tap_rate_level] = useState<number>(1);
     const [userBalance, setUserBalance] = useState<number>(0);
     const [userRank, setUserRank] = useState({});
@@ -39,6 +41,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
             setLevel(JSON.parse(Cookies.get('level') || '{}'));
             setUser_tap_rate_level(Number(Cookies.get('user_tap_rate_level') || 1));
             setUser_temp_tap_rate_level(Number(Cookies.get('user_temp_tap_rate_level') || 1));
+            setUserTaprateCount(JSON.parse(Cookies.get('userTaprateCount') || '{}'));
             setUserBalance(Number(Cookies.get('userBalance') || 0));
             setUserRank(JSON.parse(Cookies.get('userRank') || '{}'));
             setUserDailyRewardInfo(JSON.parse(Cookies.get('userDailyRewardInfo') || '{}'));
@@ -65,6 +68,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         Cookies.set('userInfo', JSON.stringify(userInfo));
         Cookies.set('level', JSON.stringify(level));
         Cookies.set('user_tap_rate_level', String(user_tap_rate_level));
+        Cookies.set('userTaprateCount', JSON.stringify(userTaprateCount));
         Cookies.set('user_temp_tap_rate_level', String(user_temp_tap_rate_level));
         Cookies.set('userBalance', String(userBalance));
         Cookies.set('userRank', JSON.stringify(userRank));
@@ -88,6 +92,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         userInfo,
         level,
         user_tap_rate_level,
+        userTaprateCount,
         user_temp_tap_rate_level,
         userBalance,
         userRank,
@@ -139,6 +144,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
             setLevel,
             user_tap_rate_level,
             setUser_tap_rate_level,
+            userTaprateCount,
+            setUserTaprateCount,
             user_temp_tap_rate_level,
             setUser_temp_tap_rate_level,
             userBalance,

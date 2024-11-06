@@ -6,7 +6,7 @@ import { getUserId, getUserInfo, getUsername, registerUser } from '@/scripts';
 function Redirect() {
 
     const router = useRouter();
-    const { userId, setUserId, username, setUsername, setUserInfo, setLevel, setUser_tap_rate_level, setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
+    const { userId, setUserId, username, setUsername, setUserInfo, setLevel, setUser_tap_rate_level,setUserTaprateCount, setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
 
 
     useEffect(() => {
@@ -62,7 +62,7 @@ function Redirect() {
         if (userId && username) {
 
             await registerUser(userId, username);
-            await getUserInfo(userId, setUsername, setUserInfo, setLevel, setUser_tap_rate_level, setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo);
+            await getUserInfo(userId, setUsername, setUserInfo, setLevel, setUser_tap_rate_level, setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo, setUserTaprateCount);
         }
     };
 

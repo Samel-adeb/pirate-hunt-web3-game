@@ -40,7 +40,7 @@ import Cookies from 'js-cookie';
 
 export default function GameHome() {
 
-    const { userId, username, userInfo, level, userBalance, setUserBalance, userRank, countdownTime, userDailyRewardInfo, user_tap_rate_level, user_temp_tap_rate_level, setIsMusicOn } = useAppContext();
+    const { userId, username, userInfo, level, userBalance, setUserBalance, userRank, countdownTime, userDailyRewardInfo, user_tap_rate_level, userTaprateCount, user_temp_tap_rate_level, setIsMusicOn } = useAppContext();
     const [energyLevel, setEnergyLevel] = useState<number>(0);
 
     const ENERGY_CAPACITY_VALUE: number = userInfo['energy_capacity']; // Maximum energy capacity
@@ -82,7 +82,7 @@ export default function GameHome() {
             const bal = parseInt(localStorage.tempbal);
             if (bal > 0 && userId) {
                 addTapTransaction(userId, bal);
-                getUserBalance(userId, setUserBalance);  
+                getUserBalance(userId, setUserBalance);
                 localStorage.removeItem('tempbal');
             }
 
@@ -200,7 +200,7 @@ export default function GameHome() {
         const x = e.clientX;
         const y = e.clientY;
 
-        if (!hasClaimed) {  
+        if (!hasClaimed) {
             setTapCount((prevCount) => {
                 const newCount = prevCount + 1;
 
@@ -253,7 +253,7 @@ export default function GameHome() {
 
             // console.log(user_tap_rate_level);
 
-            
+
             setTempbal(tempbal + parseInt(user_tap_rate_level));
             localStorage.setItem('tempbal', (tempbal + parseInt(user_tap_rate_level)).toString());
 
@@ -261,7 +261,7 @@ export default function GameHome() {
         }
 
     };
- 
+
     const moveChestRandomly = () => {
         const direction = Math.floor(Math.random() * 4); // 0: left, 1: right, 2: top, 3: bottom
         let newTop = '0px';
@@ -311,51 +311,51 @@ export default function GameHome() {
     const handleCloseOverlay = async (generatedCoinAmount: number) => {
         const today = new Date().toISOString().split('T')[0];
         const lastClaimDate = localStorage.getItem('lastClaimDate');
-    
+
         // Check if the user has already claimed today
         if (lastClaimDate === today) {
             alert("You have already claimed the chest today.");
             return;
         }
-    
-   
-    
+
+
+
         // Update state before hiding the overlay
         setRandomCoinAmount(generatedCoinAmount);
-    
+
         // Wait a moment before hiding overlay to allow state to update
         setTimeout(() => {
             setShowOverlay(false);
             setShowChest(false);
         }, 0);
-    
+
         setHasClaimed(true);
-    
+
         if (!claimed) {
             if (!userId) {
                 console.error("User ID is null. Transaction cannot be processed.");
                 return;
             }
-    
+
             try {
                 const response = await addClaimRandomTransaction(userId, generatedCoinAmount);
                 console.log("Transaction Response:", response);
-    
+
                 setUserBalance((prevBalance: number) => prevBalance + generatedCoinAmount);
                 setClaimed(true);
-    
+
                 localStorage.setItem('lastClaimDate', today);
             } catch (error) {
                 console.error("Error adding random claim transactions:", error);
             }
         }
     };
-    
+
 
     useEffect(() => {
         console.log("Updated Random Coin Amount:", randomCoinAmount);
     }, [randomCoinAmount]);
-    
+
 
     // Check whether the chest should be displayed at any point (for example, when loading the page)
     useEffect(() => {
@@ -734,6 +734,7 @@ export default function GameHome() {
                             <div className="absolute animate-bounce-up" style={{ top: '30%', left: '7%' }} onClick={handleTapRateClick}>
                                 <div className="tapcoin-animation">
                                     <Image src={TapCoin} alt="TapCoin" className="gap-[50px]" />
+                                    <span className="bg-white p-2 text-[8px] rounded-full font-bold">{userTaprateCount.boost_count_today} / {userTaprateCount.totalBoostCount}</span>
                                 </div>
                             </div>
                             {coins.map((coin) => (
