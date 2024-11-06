@@ -129,7 +129,7 @@ export const registerUser = async (userId: string | null, username: string | nul
 
 }
 
-export const getUserInfo = async (userId: string | null, setUsername: Function, setUserInfo: Function, setLevel: Function, setUser_tap_rate_level: Function, setUser_temp_tap_rate_level: Function, setUserBalance: Function, setUserRank: Function, setUserDailyRewardInfo: Function) => {
+export const getUserInfo = async (userId: string | null, setUsername: Function, setUserInfo: Function, setLevel: Function, setUser_tap_rate_level: Function, setUser_temp_tap_rate_level: Function, setUserBalance: Function, setUserRank: Function, setUserDailyRewardInfo: Function, setUserTaprateCount:Function) => {
     const endpoint = '/api/users/user-info/' + userId + '';
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
@@ -149,7 +149,7 @@ export const getUserInfo = async (userId: string | null, setUsername: Function, 
         const energy_capacity = await getEnergyCapacity(userId);
         setUserInfo({ ...response, energy_capacity: energy_capacity });
 
-        const tapRate = await getTapRate(userId);
+        const tapRate = await getTapRate(userId, setUserTaprateCount);
         setUser_tap_rate_level(tapRate);
         setUser_temp_tap_rate_level(tapRate);
         getUserBalance(userId, setUserBalance);
@@ -184,7 +184,7 @@ export const getEnergyCapacity = async (userId: string | null) => {
         return (response.energy_capacity);
     }
 }
-export const getTapRate = async (userId: string | null) => {
+export const getTapRate = async (userId: string | null, setUserTaprateCount:Function) => {
     const endpoint = '/api/tap-rate/tap/' + userId + '';
     const httpMethod = 'GET';
     const response = await fetchApi(endpoint, null, httpMethod);
@@ -193,6 +193,7 @@ export const getTapRate = async (userId: string | null) => {
         //showFailedMessage(response.message);
         return 1;
     } else {
+        setUserTaprateCount(response);
         return parseInt(response.tap_rate_reward);
     }
 }
