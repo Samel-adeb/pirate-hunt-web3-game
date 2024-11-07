@@ -60,7 +60,7 @@ const Boosttapratewithcoin = () => {
           <Image src={Lightning} alt="MoneyBagChest" width={150} height={150} />
 
           <h1 className="font-semibold text-white text-[24px] leading-[32px]">Boosts Tap Rate</h1>
-          <p className="pt-[10px] text-[12px] max-w-[352px] text-[#FFFFFFA6] font-normal">Purchase any of the boost to temorarily boost your Tap rate</p>
+          <p className="pt-[10px] text-[12px] max-w-[352px] text-[#FFFFFFA6] font-normal">Purchase any of the boost to temporarily boost your Tap rate</p>
         </div>
 
         <div className="absolute top-[20px] left-[20px]" onClick={handleBackClick} style={{ cursor: 'pointer' }}>
