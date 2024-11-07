@@ -169,7 +169,7 @@ export default function InviteAFriend() {
                                     <div className="pt-[9px]" key={invite.id}>
                                         <div className=" flex items-center justify-between w-[358px] h-[62px] py-[8px] px-[16px] mx-auto bg-[#080019] border-[1px] border-[#FFFFFF26] rounded-[8px]">
                                             <div className="flex items-center gap-[10px]">
-                                                <Image src={invite.level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${invite.level.image_url}` : friend1} alt="friend1" width={40} height={40} className="mr-1 rounded-full" />
+                                                <Image src={invite.level.image_url ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${invite.level.image_url}` : friend1} alt="friend1" width={40} height={40} className="mr-1 rounded-full" />
                                                 <div>
                                                     <h1 className="text-[12px] leading-[24px] tracking-[0.15%] font-semibold text-white">{invite.username ? invite.username : "Name"}</h1>
                                                     <div className="flex items-center gap-[3px]">

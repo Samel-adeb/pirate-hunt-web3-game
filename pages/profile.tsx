@@ -62,7 +62,7 @@ export default function Profile() {
             <div>
                 <div className="relative">
                     {/* Image */}
-                    <Image src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : HandonChest} width={100} height={100}
+                    <Image src={level.image_url ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${level.image_url}` : HandonChest} width={100} height={100}
                         alt="HandonChest" className="w-full h-full object-cover" />
 
                     <div className="absolute" style={{ cursor: 'pointer', top: '2%', right: '2%', zIndex: 2 }} onClick={() => router.back()}>
@@ -91,7 +91,7 @@ export default function Profile() {
                     <Link href="/profileshare">
                         <div className="absolute top-[5px] left-[16px]">
                             <div className="flex gap-[5px] items-center bg-white p-[6.27px] rounded-[6.27px]">
-                                <Image width={27.19} height={27.19} src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : userProfile} alt="userProfile" className="rounded-[16px]" />
+                                <Image width={27.19} height={27.19} src={level.image_url ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${level.image_url}` : userProfile} alt="userProfile" className="rounded-[16px]" />
 
                                 <h1 className="text-[9.31px] text-[#000000] leading-[13.96px] font-semibold">{username ? username : "User"}</h1>
                             </div>
@@ -134,7 +134,7 @@ export default function Profile() {
                                                     </div>
 
                                                     <div className="flex items-center gap-[5px]">
-                                                        <Image src={user.level_image_url ? process.env.NEXT_PUBLIC_API_URL + user.level_image_url : user1} alt="user" className="rounded-[50px]" width='50' height='50' /> {/* Use user's image or fallback to user1 */}
+                                                        <Image src={user.level_image_url ? process.env.NEXT_PUBLIC_IMAGE_URL + user.level_image_url : user1} alt="user" className="rounded-[50px]" width='50' height='50' /> {/* Use user's image or fallback to user1 */}
                                                         <div>
                                                             <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">
                                                                 {user.username} {/* Display the user's name */}
@@ -189,7 +189,7 @@ export default function Profile() {
                                                 className="mr-1 rounded-[16px]"
                                                 width={35}
                                                 height={35}
-                                                src={level.image_url ? process.env.NEXT_PUBLIC_API_URL + level.image_url : user1} alt="user1" />
+                                                src={level.image_url ? process.env.NEXT_PUBLIC_IMAGE_URL + level.image_url : user1} alt="user1" />
 
                                             <div>
                                                 <h1 className="text-[16px] leading-[24px] font-semibold text-white tracking-[0.15%]">{username ? username : "Me"}</h1>
