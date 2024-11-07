@@ -451,7 +451,7 @@ export default function GameHome() {
                                             <Image
                                                 width={35}
                                                 height={35}
-                                                src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : ProfileSvg} // Properly handle fallback
+                                                src={level.image_url ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${level.image_url}` : ProfileSvg} // Properly handle fallback
                                                 alt="Profile Picture"
                                                 className="rounded-full"
                                             />

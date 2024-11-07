@@ -114,7 +114,7 @@ export default function BoostTreasureChest() {
                                 <div key={treasure.id} className="pt-[5px] my-2" onClick={() => handlePayNowClick(treasure)}>
                                     <div className="flex items-center mx-auto rounded-[8px] px-[16px] py-[8px] border-[1px] border-[#FFC247A6] w-[361px] hover:bg-[#FFC247]">
                                         <div className='mx-1'>
-                                            <Image src={treasure.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${treasure.image_url}` : Boost2} alt="Boost2" width={100} height={100} className='rounded-[8px]' />
+                                            <Image src={treasure.image_url ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${treasure.image_url}` : Boost2} alt="Boost2" width={100} height={100} className='rounded-[8px]' />
                                         </div>
                                         <div className="flex flex-col w-full items-right gap-y-[10px]">
                                             <h2 className="text-[16px] text-white font-bold">{treasure.name ?? 'Chest'}</h2>

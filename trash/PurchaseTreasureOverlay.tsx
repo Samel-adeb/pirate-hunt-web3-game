@@ -113,7 +113,7 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible, isTapbo
                 </div>
 
                 <div className='my-2' data-aos="zoom-in">
-                    <Image alt='treasure chest' src={treasure.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${treasure.image_url}` : EnlargedBoost} className='rounded-[8px]' width={300} height={300} />
+                    <Image alt='treasure chest' src={treasure.image_url ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${treasure.image_url}` : EnlargedBoost} className='rounded-[8px]' width={300} height={300} />
                 </div>
                 <div className='my-2 w-full'>
                     <div>

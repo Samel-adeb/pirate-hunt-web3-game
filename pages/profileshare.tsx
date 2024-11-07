@@ -198,7 +198,7 @@ export default function ProfileShare() {
                             <Image
                                 width={35}
                                 height={35}
-                                src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : ProfileSvg} // Properly handle fallback
+                                src={level.image_url ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${level.image_url}` : ProfileSvg} // Properly handle fallback
                                 alt="Profile Picture"
                                 style={{ objectFit: 'contain' }}
                                 className="rounded-full"
@@ -253,7 +253,7 @@ export default function ProfileShare() {
                                 <Image
                                     width={50}
                                     height={50}
-                                    src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : ShareButton} alt="ShareButton"
+                                    src={level.image_url ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${level.image_url}` : ShareButton} alt="ShareButton"
                                     className="rounded-full" />
                             </div>
                             <p className="text-[16px] leading-[32px] font-bold text-white">Share story</p>
@@ -345,7 +345,7 @@ export default function ProfileShare() {
 
                 <div className="pt-10 flex flex-col items-center justify-center">
                     <div className='w-full'>
-                        <Image width={360} height={237} src={level.image_url ? `${process.env.NEXT_PUBLIC_API_URL}${level.image_url}` : baby} alt="baby" className='w-full ' />
+                        <Image width={360} height={237} src={level.image_url ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${level.image_url}` : baby} alt="baby" className='w-full ' />
                     </div>
 
                     <div className="pt-[20px]">
