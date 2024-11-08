@@ -20,7 +20,7 @@ export default function GameLoad() {
     const { userId, setUserId, username, userInfo, setUsername, setUserInfo, setLevel, setUser_temp_tap_rate_level, setUserTaprateCount, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
     const router = useRouter();
     const load = async () => {
-        clearCache("2024-11-08_cleanup", "true");
+        clearCache("2024-11-08_cleanup3", "true");
         if (userId && username) {
             // Only run if both userId and username are set
             //alert('userId: ' + userId + ' username: ' + username);
