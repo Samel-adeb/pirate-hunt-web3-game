@@ -104,8 +104,8 @@ export default function GameHome() {
 
 
 
-        // Retrieve energy level from local storage or set it to maximumlocalStorage.getItem('energy_')
-        const storedEnergy = parseInt(Cookies.get('energy_') || '') || ENERGY_CAPACITY_VALUE;
+        // Retrieve energy level from local storage or set it to maximumlocalStorage.getItem('energy__')
+        const storedEnergy = parseInt(Cookies.get('energy__') || '') || ENERGY_CAPACITY_VALUE;
         setEnergyLevel(storedEnergy);
 
         // Countdown logic
@@ -146,8 +146,8 @@ export default function GameHome() {
             const energyIncrease = RECHARGE_SPEED * elapsedTime;
             const newEnergyLevel = Math.min(energyLevel + energyIncrease, ENERGY_CAPACITY_VALUE); // Ensure energy level doesn't exceed maximum
             setEnergyLevel(newEnergyLevel); // Update state
-            Cookies.set('energy_', newEnergyLevel.toString());
-            //localStorage.setItem('energy_', newEnergyLevel.toString()); // Store updated energy in local storage
+            Cookies.set('energy__', newEnergyLevel.toString());
+            //localStorage.setItem('energy__', newEnergyLevel.toString()); // Store updated energy in local storage
         }
 
         // Update last update time

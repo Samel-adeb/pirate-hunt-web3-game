@@ -13,12 +13,14 @@ import { useAppContext } from '@/context';
 import { getUserInfo, registerUser, getUserId, getUsername } from '@/scripts';
 import { showFailedMessage, showWariningMessage } from "@/scripts/utils";
 import LogStatus from "@/app/components/LogStatus";
+import { clearCache } from "@/scripts/ClearCache";
 
 export default function GameLoad() {
     // const audioRef = useRef<HTMLAudioElement | null>(null);
     const { userId, setUserId, username, userInfo, setUsername, setUserInfo, setLevel, setUser_temp_tap_rate_level, setUserTaprateCount, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
     const router = useRouter();
     const load = async () => {
+        clearCache("2024-11-08_clean");
         if (userId && username) {
             // Only run if both userId and username are set
             //alert('userId: ' + userId + ' username: ' + username);
