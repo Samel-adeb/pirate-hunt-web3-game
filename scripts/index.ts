@@ -150,6 +150,7 @@ export const getUserInfo = async (userId: string | null, setUsername: Function, 
         setUserInfo({ ...response, energy_capacity: energy_capacity });
 
         const tapRate = await getTapRate(userId, setUserTaprateCount);
+        
         setUser_tap_rate_level(tapRate);
         setUser_temp_tap_rate_level(tapRate);
         getUserBalance(userId, setUserBalance);

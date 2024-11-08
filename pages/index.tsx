@@ -17,7 +17,7 @@ import { clearCache } from "@/scripts/ClearCache";
 
 export default function GameLoad() {
     // const audioRef = useRef<HTMLAudioElement | null>(null);
-    const { userId, setUserId, username, userInfo, setUsername, setUserInfo, setLevel, setUser_temp_tap_rate_level, setUserTaprateCount, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
+    const { userId, setUserId, username, userInfo, setUsername, setUserInfo, setLevel,setUser_tap_rate_level, setUser_temp_tap_rate_level, setUserTaprateCount, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
     const router = useRouter();
     const load = async () => {
         clearCache("2024-11-08_cleanup_", "true");
@@ -25,7 +25,7 @@ export default function GameLoad() {
             // Only run if both userId and username are set
             //alert('userId: ' + userId + ' username: ' + username);
             await registerUser(userId, username);
-            await getUserInfo(userId, setUsername, setUserInfo, setLevel, setUser_temp_tap_rate_level, setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo, setUserTaprateCount);
+            await getUserInfo(userId, setUsername, setUserInfo, setLevel, setUser_tap_rate_level, setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo, setUserTaprateCount);
 
         }
     };
