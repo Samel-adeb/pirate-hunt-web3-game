@@ -18,7 +18,7 @@ import Copy from "../public/assets/Copy.svg";
 import LoadingSpinner from '@/app/components/LoadingSpinner';
 import { useAppContext } from "@/context";
 import { claimInviteReward, getInviteClaimed, getInviteLink, getUserInvivites } from "@/scripts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { showInfoMessage } from "@/scripts/utils";
 import BackButton from "../public/assets/backButton.svg";
 interface invite {
@@ -44,7 +44,7 @@ interface inviteClaimed {
 export default function InviteAFriend() {
     const { userId, userInvites, setUserInvites,userBalance,setUserBalance, inviteLink, setInviteLink, claimedInvites, setClaimedInvites } = useAppContext();
     //console.log(userInvites);
-
+    const [isDisabled, setDisabled] = useState(false);
     const load = async () => {
         await getUserInvivites(userId, setUserInvites);
         await getInviteLink(userId, setInviteLink);
@@ -78,6 +78,7 @@ export default function InviteAFriend() {
         }
     }
     const handleClaimInvite = async (inviteId: number) => {
+        setDisabled(true);
         const isSuccessful = await claimInviteReward(userId, inviteId);
         load();
         if (isSuccessful) {
@@ -185,7 +186,11 @@ export default function InviteAFriend() {
                                             {
                                                 isInviteClaimed(invite.id) ? (
                                                     <button className='bg-[#1A314E] text-[14px] p-1 rounded text-white'>Claimed</button>) :
-                                                    (<button className='bg-[#1A314E] text-[14px] p-1 rounded text-white' onClick={() => handleClaimInvite(invite.id)}>Claim</button>)
+                                                    !isDisabled ?
+                                                    (<button className='bg-[#1A314E] text-[14px] p-1 rounded text-white' onClick={() => handleClaimInvite(invite.id)}>Claim</button>):
+                                                    
+                                                    (<button className='bg-[#1A314E] text-[14px] p-1 rounded text-white' style={{opacity:0.5}} disabled>Claim</button>)
+                                                    
                                             }
 
                                         </div>

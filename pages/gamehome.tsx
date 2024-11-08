@@ -177,7 +177,7 @@ export default function GameHome() {
             }
 
             // Round to one decimal place and add the suffix
-            return number.toFixed(1).replace(/\.0$/, '') + abbrev[i];
+            return number.toFixed(1).replace(/\.0$/, '') + abbrev[i] || '0';
         } else {
             return '0';
         }
@@ -501,7 +501,7 @@ export default function GameHome() {
                                             {/* <p className="text-[8px] leading-[12px] font-medium text-[#FFFFFFBF] text-center whitespace-nowrap">Pirate Token</p> */}
                                             <div className="flex items-center">
                                                 <Image width={12.34} height={12.34} src={golddollarcoin} alt="Gold Dollar Coin" />
-                                                <h1 className="text-[8.34px] p-2 font-bold leading-[16.46px] text-white">+{abbreviateNumber(userBalance)}</h1>
+                                                <h1 className="text-[8.34px] p-2 font-bold leading-[16.46px] text-white">+{isNaN(userBalance) ? "0" : abbreviateNumber(userBalance)}</h1>
 
                                                 <div>
                                                     {/* <div >

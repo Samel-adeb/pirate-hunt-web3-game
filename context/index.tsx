@@ -110,7 +110,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         coinTreasures,
         treasurePurchaseHistory,
     ]);
-    
+   
     
 
     const countdownResetTapRate = (time: string) => {
