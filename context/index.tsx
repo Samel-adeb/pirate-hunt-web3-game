@@ -67,9 +67,9 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         Cookies.set('isMusicOn', String(isMusicOn));
         Cookies.set('userInfo', JSON.stringify(userInfo));
         Cookies.set('level', JSON.stringify(level));
-        // Cookies.set('user_tap_rate_level', String(user_tap_rate_level));
+        Cookies.set('user_tap_rate_level', String(user_tap_rate_level));
         Cookies.set('userTaprateCount', JSON.stringify(userTaprateCount));
-        // Cookies.set('user_temp_tap_rate_level', String(user_temp_tap_rate_level));
+        Cookies.set('user_temp_tap_rate_level', String(user_temp_tap_rate_level));
         Cookies.set('userBalance', String(userBalance));
         Cookies.set('userRank', JSON.stringify(userRank));
         Cookies.set('userDailyRewardInfo', JSON.stringify(userDailyRewardInfo));
@@ -110,7 +110,9 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         coinTreasures,
         treasurePurchaseHistory,
     ]);
-
+    useEffect(()=>{
+        alert(user_tap_rate_level);
+    },[user_tap_rate_level])
     
 
     const countdownResetTapRate = (time: string) => {
