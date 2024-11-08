@@ -110,9 +110,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         coinTreasures,
         treasurePurchaseHistory,
     ]);
-    useEffect(()=>{
-        alert(user_tap_rate_level);
-    },[user_tap_rate_level])
+    
     
 
     const countdownResetTapRate = (time: string) => {
