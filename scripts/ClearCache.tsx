@@ -10,8 +10,11 @@ export const clearCache = (key:string, value = '') => {
 
         // Clear all cookies
         const allCookies = Cookies.get();
+        // alert(JSON.stringify(allCookies))
         Object.keys(allCookies).forEach(cookieName => Cookies.remove(cookieName));
-
+        Object.keys(allCookies).forEach(cookieName => {
+            Cookies.remove(cookieName, { path: '/' });
+        });
         // Add the specified key to localStorage with an optional value
         localStorage.setItem(key, value);
     }
