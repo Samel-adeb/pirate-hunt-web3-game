@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState, useRef } from 'react';
 import { GameNavbar } from "@/app/components/GameNavbar";
 import { useRouter } from 'next/navigation';

@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import Coin from '../public/assets/standingdollarcoin.svg'
 import Lightning from "../public/assets/lightning.svg";
