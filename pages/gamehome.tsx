@@ -33,6 +33,8 @@ import { addClaimRandomTransaction } from "@/scripts";
 import DailyBonuses from "@/app/components/DailyBonuses";
 import { useRouter } from "next/router";
 import Cookies from 'js-cookie';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import ProgressBar from "@/app/components/ProgressBar";
 
 
@@ -345,8 +347,17 @@ export default function GameHome() {
                 localStorage.setItem('lastClaimDate', today);
             } catch (error) {
                 console.error("Error adding random claim transactions:", error);
+                toast.error("An error occurred while processing your transaction.", {
+                    position: "top-center", // Toast appears at the top center
+                    autoClose: 5000, // Auto close after 5 seconds
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
-        }
+        }   
     };
 
 
@@ -608,6 +619,7 @@ export default function GameHome() {
                                             <button className="mt-6 px-10 py-2 font-semibold bg-green-500 text-white rounded" onClick={() => handleCloseOverlay(randomCoinAmount || 0)}>
                                                 Claim
                                             </button>
+                                            <ToastContainer />
                                         </div>
                                     </div>
                                 )}
