@@ -35,7 +35,7 @@
     ".next/types/**/*.ts",
     "scripts/utils.js",
     "trash/boosttaprate.tsx_"
-, "pages/_app.js"  ],
+, "pages/_app.js", "app/layout.tsxw"  ],
   "exclude": [
     "node_modules"
   ]
