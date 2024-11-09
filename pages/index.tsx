@@ -19,16 +19,7 @@ export default function GameLoad() {
     // const audioRef = useRef<HTMLAudioElement | null>(null);
     const { userId, setUserId, username, userInfo, setUsername, setUserInfo, setLevel,setUser_tap_rate_level, setUser_temp_tap_rate_level, setUserTaprateCount, setUserBalance, setUserRank, setUserDailyRewardInfo } = useAppContext();
     const router = useRouter();
-    const load = async () => {
-        clearCache("2024-11-08_cleanup_", "true");
-        if (userId && username) {
-            // Only run if both userId and username are set
-            //alert('userId: ' + userId + ' username: ' + username);
-            await registerUser(userId, username);
-            await getUserInfo(userId, setUsername, setUserInfo, setLevel, setUser_tap_rate_level, setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo, setUserTaprateCount);
 
-        }
-    };
     const checkVersion = () => {
         // Extract the `tgWebAppVersion` parameter from the URL
         const urlParams = new URLSearchParams(window.location.hash.replace('#', ''));
@@ -60,6 +51,17 @@ export default function GameLoad() {
 
     }, []);
 
+    const load = async () => {
+        clearCache("2024-11-08_cleanup_", "true");
+        if (userId && username) {
+            // Only run if both userId and username are set
+            //alert('userId: ' + userId + ' username: ' + username);
+            await registerUser(userId, username);
+            await getUserInfo(userId, setUsername, setUserInfo, setLevel, setUser_tap_rate_level, setUser_temp_tap_rate_level, setUserBalance, setUserRank, setUserDailyRewardInfo, setUserTaprateCount);
+
+        }
+    };
+
     const getId = async () => {
         //alert('getId loading...');
         const muserId = await getUserId();
@@ -68,9 +70,6 @@ export default function GameLoad() {
         setUserId(muserId);
         setUsername(musername);
     };
-
-
-
 
     // Call `load` when both `userId` and `username` are set
     useEffect(() => {
@@ -83,15 +82,15 @@ export default function GameLoad() {
 
 
     const changePage = () => {
-        if (userId == undefined || username == undefined) {
+        if (userId == undefined) {
             showFailedMessage("Your information could not be retreived from telegram");
 
         } else if (isObjectEmpty(userInfo) || ('message' in userInfo && userInfo.message === 'Failed')) {
 
             showFailedMessage('Something went wrong.');
-            setTimeout(() => {
-                showWariningMessage('Please Check your internet connection.');
-            }, 1000);
+            // setTimeout(() => {
+            //     //showWariningMessage('Please Check your internet connection.');
+            // }, 1000);
 
             load();
         } else {
@@ -109,7 +108,7 @@ export default function GameLoad() {
         const timer = setTimeout(() => {
             setIsLoading(false);
 
-        }, 5000); // 3 seconds timeout
+        }, 2500); // 3 seconds timeout
 
         return () => clearTimeout(timer); // Clean up the timer on component unmount
     }, [router]);
