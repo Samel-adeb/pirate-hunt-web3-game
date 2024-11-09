@@ -17,7 +17,9 @@ import brownCross from "../public/assets/brownCross.svg";
 import Insta from "../public/assets/whatsapp.png";
 import Telegrame from "../public/assets/Telegrame.svg";
 import Cross from "../public/assets/Cross.svg";
-import Tweet from "../public/assets/Tweet.svg";
+// import Tweet from "../public/assets/Tweet.svg";
+
+import twitter from "../public/assets/twitter.png";
 import { useAppContext } from '@/context';
 import { getInviteLink, getTreasurePurchaseHistory, getUserInvivites, } from '@/scripts';
 // import { uploadImage } from '@/scripts';
@@ -320,7 +322,7 @@ export default function ProfileShare() {
                                             onClick={() => handleTwitterShare()} // Set platform to Twitter on click
                                         >
                                             <div className="flex items-center gap-[8px]">
-                                                <Image src={Tweet} alt="Tweet" width={40} />
+                                                <Image src={twitter} alt="twitter" height={10} width={30} />
                                                 <h1 className="tracking-[0.4px] text-[16px] leading-[16px] font-medium">Twitter</h1>
                                             </div>
                                         </div>
