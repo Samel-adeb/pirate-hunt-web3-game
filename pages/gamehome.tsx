@@ -1,3 +1,4 @@
+'use client'
 import { GameNavbar } from "@/app/components/GameNavbar";
 import Image from "next/image";
 import Link from 'next/link';

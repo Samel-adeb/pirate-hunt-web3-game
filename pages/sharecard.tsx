@@ -1,3 +1,4 @@
+'use client'
 import "../app/globals.css";
 import BigCoin from "../public/assets/BigCoin.svg";
 import Cap from "../public/assets/Cap.png";

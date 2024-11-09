@@ -1,3 +1,4 @@
+'use client'
 import { useRouter } from 'next/navigation';
 import { GameNavbar } from "@/app/components/GameNavbar";
 import { useTonConnect } from '@/hooks/useTonConnect'
