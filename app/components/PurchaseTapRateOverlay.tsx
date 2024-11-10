@@ -36,21 +36,43 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible }: { tre
 
 
             if (userBalance > parseInt(price)) {
-                const isSuccessful = await boostTapRateBonus(userId, id)
-                if (isSuccessful) {
-                    if ('price' in isSuccessful) {
-                        setUserBalance(parseInt(userBalance) - parseInt(isSuccessful.price));
-                        setUser_tap_rate_level(parseInt(user_tap_rate_level) + parseInt(isSuccessful.price_reward));
-                        countdownResetTapRate(parseInt(isSuccessful.duration));
-
+                try {
+                    // Attempt to boost tap rate bonus
+                    const isSuccessful = await boostTapRateBonus(userId, id);
+            
+                    // Check if response is valid
+                    if (isSuccessful && !isNaN(parseInt(isSuccessful.price)) 
+                        && !isNaN(parseInt(isSuccessful.price_reward)) 
+                        && !isNaN(parseInt(isSuccessful.duration))) {
+            
+                        // Deduct price from user balance
+                        const newBalance = parseInt(userBalance) - parseInt(isSuccessful.price);
+                        setUserBalance(newBalance);
+            
+                        // Increase the user's tap rate level
+                        const newTapRateLevel = parseInt(user_tap_rate_level) + parseInt(isSuccessful.price_reward);
+                        setUser_tap_rate_level(newTapRateLevel);
+            
+                        // Reset tap rate countdown
+                        const duration = parseInt(isSuccessful.duration);
+                        countdownResetTapRate(duration);
+            
+                        // Refresh the user's tap rate count
                         await getTapRate(userId, setUserTaprateCount);
-                        // alert(parseInt(userBalance) - parseInt(isSuccessful.price))
+            
+                        // Navigate to the game home page
                         router.push('/gamehome');
+                    } else {
+                        console.error("Invalid response: Inconsistent data received.");
                     }
+                } catch (error) {
+                    console.error("An error occurred while processing the tap rate boost:", error);
                 }
             } else {
+                // Show a failure message if the user balance is insufficient
                 showFailedMessage('Not enough balance');
             }
+            
 
         }
     };
