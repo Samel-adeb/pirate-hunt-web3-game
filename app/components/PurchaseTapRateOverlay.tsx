@@ -38,7 +38,7 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible }: { tre
             if (userBalance > parseInt(price)) {
                 const isSuccessful = await boostTapRateBonus(userId, id)
                 if (isSuccessful) {
-                    if ('price' in isSuccessful) {
+                    if (isNaN(parseInt(isSuccessful.price)) || isNaN(parseInt(isSuccessful.price_reward)) || isNaN(parseInt(isSuccessful.duration))) {
                         setUserBalance(parseInt(userBalance) - parseInt(isSuccessful.price));
                         setUser_tap_rate_level(parseInt(user_tap_rate_level) + parseInt(isSuccessful.price_reward));
                         countdownResetTapRate(parseInt(isSuccessful.duration));
@@ -46,6 +46,9 @@ function PurchaseTreasureOverlay({ treasure, setIsPaymentOverlayVisible }: { tre
                         await getTapRate(userId, setUserTaprateCount);
                         // alert(parseInt(userBalance) - parseInt(isSuccessful.price))
                         router.push('/gamehome');
+                    }else{
+                        console.log("Invalid response");
+                        
                     }
                 }
             } else {
