@@ -43,9 +43,9 @@ interface inviteClaimed {
     invited_username: string;
 }
 export default function InviteAFriend() {
-    const { userId, userInvites, setUserInvites,userBalance,setUserBalance, inviteLink, setInviteLink, claimedInvites, setClaimedInvites } = useAppContext();
+    const { userId, userInvites, setUserInvites, userBalance, setUserBalance, inviteLink, setInviteLink, claimedInvites, setClaimedInvites } = useAppContext();
     //console.log(userInvites);
-    const [isDisabled, setDisabled] = useState(false);
+    const [isDisabled, setDisabled] = useState(0);
     const load = async () => {
         await getUserInvivites(userId, setUserInvites);
         await getInviteLink(userId, setInviteLink);
@@ -79,7 +79,7 @@ export default function InviteAFriend() {
         }
     }
     const handleClaimInvite = async (inviteId: number) => {
-        setDisabled(true);
+        setDisabled(inviteId);
         const isSuccessful = await claimInviteReward(userId, inviteId);
         load();
         if (isSuccessful) {
@@ -99,7 +99,7 @@ export default function InviteAFriend() {
 
 
             <div>
-                <div className="relative pb-20" style={{ background: 'linear-gradient(173.23deg, #000000 -5.41%, #171000 36.99%, #150E00 91.05%)', minHeight:'100vh' }}>
+                <div className="relative pb-20" style={{ background: 'linear-gradient(173.23deg, #000000 -5.41%, #171000 36.99%, #150E00 91.05%)', minHeight: '100vh' }}>
                     {/* Image Container */}
                     <div className="relative">
                         <Image src={CaptainDogs} alt="CaptainDogs" />
@@ -187,11 +187,11 @@ export default function InviteAFriend() {
                                             {
                                                 isInviteClaimed(invite.id) ? (
                                                     <button className='bg-[#1A314E] text-[14px] p-1 rounded text-white'>Claimed</button>) :
-                                                    !isDisabled ?
-                                                    (<button className='bg-[#1A314E] text-[14px] p-1 rounded text-white' onClick={() => handleClaimInvite(invite.id)}>Claim</button>):
-                                                    
-                                                    (<button className='bg-[#1A314E] text-[14px] p-1 rounded text-white' style={{opacity:0.5}} disabled>Claim</button>)
-                                                    
+                                                    isDisabled !== invite.id ?
+                                                        (<button className='bg-[#1A314E] text-[14px] p-1 rounded text-white' onClick={() => handleClaimInvite(invite.id)}>Claim</button>) :
+
+                                                        (<button className='bg-[#1A314E] text-[14px] p-1 rounded text-white' style={{ opacity: 0.5 }} disabled>Claim</button>)
+
                                             }
 
                                         </div>
@@ -344,13 +344,13 @@ export default function InviteAFriend() {
                         <button className="border-[#FFC247] border-[2.8px] cusor-pointer h-[44px] px-[14px] py-[8px] rounded-[8px] m-1">
                             <div className="flex items-center justify-center gap-[5px] ">
                                 {/* <Image src={Friend} alt="Friend" /> */}
-                                <h1 className="text-[12px] leading-[16px] text-white font-semibold" style={{ textWrap: 'nowrap', overflow: 'hidden', minWidth:'100%' }}>{inviteLink ? inviteLink : 'https://...'}</h1>
+                                <h1 className="text-[12px] leading-[16px] text-white font-semibold" style={{ textWrap: 'nowrap', overflow: 'hidden', minWidth: '100%' }}>{inviteLink ? inviteLink : 'https://...'}</h1>
 
                             </div>
                         </button>
 
                         <button className=" rounded-[8px]" onClick={handleCopyInviteLink}>
-                            <Image style={{ maxWidth: "1000px", color:"white" }} src={Copy} alt="Copy" width={30} height={30}  />
+                            <Image style={{ maxWidth: "1000px", color: "white" }} src={Copy} alt="Copy" width={30} height={30} />
                         </button>
                     </div>
 
