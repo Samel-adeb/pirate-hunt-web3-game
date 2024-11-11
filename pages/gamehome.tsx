@@ -41,7 +41,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function GameHome() {
 
-    const { userId, username, userInfo, level, userBalance, setUserBalance, userRank, countdownTime, userDailyRewardInfo, user_tap_rate_level, userTaprateCount, user_temp_tap_rate_level, setIsMusicOn } = useAppContext();
+    const { userId, username, userInfo, level, userBalance, setUserBalance,  countdownTime, userDailyRewardInfo, user_tap_rate_level, userTaprateCount, user_temp_tap_rate_level, setIsMusicOn } = useAppContext();
     const [energyLevel, setEnergyLevel] = useState<number>(0);
 
     const ENERGY_CAPACITY_VALUE: number = userInfo['energy_capacity']; // Maximum energy capacity
@@ -771,7 +771,7 @@ export default function GameHome() {
                             <p className="bg-white p-2 text-[8px] rounded-full font-bold flex items-center justify-center">Tasks</p>
                         </div>
 
-                        <Link href="/profile">
+                        {/* <Link href="/profile">
                             <div className="absolute" style={{ bottom: '5%', left: '10%' }}>
                                 <div className="flex items-center  p-[10.38px] bg-[#1A314E] border-[3.24px] border-white max-w-[165.97px] h-[51.9px] rounded-[20.76px] gap-[2px]">
                                     <div>
@@ -781,7 +781,7 @@ export default function GameHome() {
                                     <h1 className="text-[10.76px] leading-[31.14px] font-semibold text-white">{userRank.rank}<span className="text-[8.57px] leading-[23.36px] font-semibold text-[#FFFFFFA6]"> / {userRank.total_users}</span></h1>
                                 </div>
                             </div>
-                        </Link>
+                        </Link> */}
                         {/* <div className="w-[200.31px] h-[5.57px] absolute top-[675px] left-[105.6px]">
                             <ProgressBar  progress={60} />
                         </div> */}
