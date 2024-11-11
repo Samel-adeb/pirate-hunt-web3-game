@@ -500,13 +500,9 @@ export default function GameHome() {
                                     </Link>
                                     <div className="bg-[#1A314E] rounded-[25.71px] px-[6px] py-[4px] flex items-center">
 
-                                        <Link href="/tasklist">
-                                            <div className="mr-[5px]">
-                                                <Image src={XAS} alt="XAS Icon" className="flex-shrink-0" />
-                                            </div>
-                                        </Link>
+                                        
 
-                                        <div className="border-r-[1px] border-r-[#FFFFFF8C] h-[16px]"></div>
+                                        {/* <div className="border-r-[1px] border-r-[#FFFFFF8C] h-[16px]"></div> */}
 
                                         <div className="flex flex-col items-center justify-center px-[5px]">
                                             {/* <p className="text-[8px] leading-[12px] font-medium text-[#FFFFFFBF] text-center whitespace-nowrap">Pirate Token</p> */}
@@ -764,6 +760,17 @@ export default function GameHome() {
                                 </div>
                             ))}
                         </div>
+
+                        <div className="absolute animate-bounce-up" style={{ top: '52%', left: '8%' }}>
+                            <Link href="/tasklist">
+                                <div className="mr-[5px]">
+                                    <Image width={50} height={50} src={XAS} alt="XAS Icon" className="flex-shrink-0" />
+                                </div>
+                            </Link>
+
+                            <p className="bg-white p-2 text-[8px] rounded-full font-bold flex items-center justify-center">Tasks</p>
+                        </div>
+
                         <Link href="/profile">
                             <div className="absolute" style={{ bottom: '5%', left: '10%' }}>
                                 <div className="flex items-center  p-[10.38px] bg-[#1A314E] border-[3.24px] border-white max-w-[165.97px] h-[51.9px] rounded-[20.76px] gap-[2px]">
